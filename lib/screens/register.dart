@@ -12,7 +12,12 @@ class MyRegistration extends StatefulWidget {
   }
   Widget build(BuildContext context) {
     return MaterialApp(
-      color: Colors.white,
+      theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
+        ),
+      ),
       initialRoute: '/',
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
@@ -49,6 +54,8 @@ class MyRegistrationState extends State<MyRegistration> {
             child: Form(
       key: _formKey,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
             "Inkwell".toUpperCase(),
@@ -64,10 +71,10 @@ class MyRegistrationState extends State<MyRegistration> {
           ),
           //TODOS: Add redirection to login page
           // FIX THIS:
-          _buildFormField("First Name"),
-          _buildFormField("Last Name"),
-          _buildFormField("User Name"),
-          _buildFormField("Passcode"),
+          _buildFormField("First Name", Icon(null)),
+          _buildFormField("Last Name", Icon(null)),
+          _buildFormField("User Name", Icon(null)),
+          _buildFormField("Passcode", Icon(Icons.lock)),
           ElevatedButton(
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -81,11 +88,21 @@ class MyRegistrationState extends State<MyRegistration> {
 }
 
 @override
-_buildFormField(String formInput) {
+_buildFormField(String formInput, Icon iconName) {
   return Container(
       width: 300,
+      margin: new EdgeInsets.all(5),
+      color: const Color(0xFF071A4A),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       child: TextFormField(
-        decoration: InputDecoration(hintText: formInput),
+        decoration: InputDecoration(
+          hintText: formInput, 
+          hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+          suffixIcon: iconName,
+          border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white),
         // The validator receives the text that the user has entered.
-      ));
+      )));
 }

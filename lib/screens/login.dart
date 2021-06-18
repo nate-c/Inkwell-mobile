@@ -12,7 +12,12 @@ class MyLogin extends StatefulWidget {
   }
     Widget build(BuildContext context) {
     return MaterialApp(
-      color: Colors.white,
+      theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(
+        bodyColor: Colors.white,
+        displayColor: Colors.white,
+        ),
+      ),
       initialRoute: '/',
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
@@ -47,8 +52,9 @@ class MyLoginState extends State<MyLogin> {
             key: _formKey,
             child: Form(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  
                   Text(
                     "Inkwell".toUpperCase(),
                     style: TextStyle(
@@ -57,13 +63,13 @@ class MyLoginState extends State<MyLogin> {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    "Don't have an account? Register",
+                    "Don't have an account? Register.",
                     style: TextStyle(fontSize: 15),
                     textAlign: TextAlign.center,
                   ),
                   //TODO: Add redirection to registration page
-                  _buildFormField('User Name'),
-                  _buildFormField('Passcode'),
+                  _buildFormField('User Name', Icon(null)),
+                  _buildFormField('Passcode', Icon(Icons.lock)),
                   ElevatedButton(
                     onPressed: () {},
                     child: Text('Log in'.toUpperCase()),
@@ -75,10 +81,20 @@ class MyLoginState extends State<MyLogin> {
 }
 
 @override
-_buildFormField(String formInput) {
+_buildFormField(String formInput, Icon iconName) {
   return Container(
       width: 300,
+      margin: new EdgeInsets.all(5),
+      color: const Color(0xFF071A4A),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       child: TextFormField(
-        decoration: InputDecoration(hintText: formInput),
-      ));
+        decoration: InputDecoration(
+          hintText: formInput, 
+          hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+          suffixIcon: iconName,
+          border: InputBorder.none
+          ),
+        style: TextStyle(color: Colors.white),
+      )));
 }
