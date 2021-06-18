@@ -79,7 +79,11 @@ class MyRegistrationState extends State<MyRegistration> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
             },
-            child: Text('Register'.toUpperCase()),
+            child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xFF002179), 
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), 
+            )
           ),
         ],
       ),
@@ -91,7 +95,7 @@ class MyRegistrationState extends State<MyRegistration> {
 _buildFormField(String formInput, Icon iconName) {
   return Container(
       width: 300,
-      margin: new EdgeInsets.all(5),
+      margin: new EdgeInsets.all(15),
       color: const Color(0xFF071A4A),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -102,7 +106,7 @@ _buildFormField(String formInput, Icon iconName) {
           suffixIcon: iconName,
           border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontSize: 15),
         // The validator receives the text that the user has entered.
       )));
 }
