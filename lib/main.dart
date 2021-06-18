@@ -25,6 +25,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Inkwell'),
+      initialRoute: '/',
+      routes: {
+        // '/': (context) => MyHomePage(title: 'Inkwell'),
+        '/login': (context) => MyLogin(),
+        '/register': (context) => MyRegistration()
+      },
     );
   }
 }
@@ -48,7 +54,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -83,20 +88,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-           
             ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
-            },
-            child: Text('Log in'),
-          ),
-
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => MyRegistration()));
-            },
-            child: Text('Register'),
-          ),
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
+                Navigator.pushNamed(context, '/login');
+              },
+              child: Text('Log in'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => MyRegistration()));
+                Navigator.pushNamed(context, '/register');
+              },
+              child: Text('Register'),
+            ),
           ],
         ),
       ),
