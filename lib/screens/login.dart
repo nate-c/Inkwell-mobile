@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/screens/register.dart';
+
+import '../main.dart';
 
 void main() => runApp(MyLogin());
 
@@ -6,6 +9,17 @@ class MyLogin extends StatefulWidget {
   @override
   MyLoginState createState() {
     return MyLoginState();
+  }
+    Widget build(BuildContext context) {
+    return MaterialApp(
+      color: Colors.white,
+      initialRoute: '/',
+      routes: {
+        // '/': (context) => MyHomePage(title: 'Inkwell'),
+        '/': (context) => MyApp(),
+        '/register': (context) => MyRegistration(),
+      },
+    );
   }
 }
 
@@ -18,16 +32,27 @@ class MyLoginState extends State<MyLogin> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
+      appBar: AppBar( 
+        actions: <Widget> [
+          IconButton(
+            color: Colors.white,
+                onPressed: (){ 
+                    Navigator.pushNamed(context, '/');
+                    }, 
+                    icon: const Icon(Icons.arrow_back)),
+        ],
+      ),
+      backgroundColor: const Color(0xFF011240),
         body: Center(
             key: _formKey,
             child: Form(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  
                   Text(
                     "Inkwell".toUpperCase(),
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 50,
                     ),
                     textAlign: TextAlign.center,
                   ),

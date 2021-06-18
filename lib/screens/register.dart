@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/screens/login.dart';
+
+import '../main.dart';
 
 void main() => runApp(MyRegistration());
 
@@ -6,6 +9,17 @@ class MyRegistration extends StatefulWidget {
   @override
   MyRegistrationState createState() {
     return MyRegistrationState();
+  }
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      color: Colors.white,
+      initialRoute: '/',
+      routes: {
+        // '/': (context) => MyHomePage(title: 'Inkwell'),
+        '/': (context) => MyApp(),
+        '/register': (context) => MyLogin(),
+      },
+    );
   }
 }
 
@@ -19,6 +33,18 @@ class MyRegistrationState extends State<MyRegistration> {
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return new Scaffold(
+      appBar: AppBar( 
+        actions: <Widget> [
+          IconButton(
+            color: Colors.white,
+                onPressed: (){ 
+                    Navigator.pushNamed(context, '/');
+                    }, 
+                    icon: const Icon(Icons.arrow_back)),
+        ],
+      ),
+      backgroundColor: const Color(0xFF011240),
+      
         body: Center(
             child: Form(
       key: _formKey,
@@ -27,12 +53,12 @@ class MyRegistrationState extends State<MyRegistration> {
           Text(
             "Inkwell".toUpperCase(),
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 50,
             ),
             textAlign: TextAlign.center,
           ),
           Text(
-            "Don't have an account? Register",
+            "Have an account? Log in.",
             style: TextStyle(fontSize: 15),
             textAlign: TextAlign.center,
           ),
@@ -46,7 +72,7 @@ class MyRegistrationState extends State<MyRegistration> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
             },
-            child: Text('Log in'.toUpperCase()),
+            child: Text('Register'.toUpperCase()),
           ),
         ],
       ),
