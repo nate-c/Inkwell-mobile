@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/register.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
 
@@ -62,10 +63,12 @@ class MyLoginState extends State<MyLogin> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Text(
+                  InkWell(
+                  child: Text(
                     "Don't have an account? Register.",
                     style: TextStyle(fontSize: 15),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.center),
+                    onTap: () => Navigator.pushNamed(context, '/register'),
                   ),
                   //TODO: Add redirection to registration page
                   _buildFormField('User Name', Icon(null)),

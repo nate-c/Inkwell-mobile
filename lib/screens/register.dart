@@ -64,11 +64,13 @@ class MyRegistrationState extends State<MyRegistration> {
             ),
             textAlign: TextAlign.center,
           ),
-          Text(
-            "Have an account? Log in.",
-            style: TextStyle(fontSize: 15),
-            textAlign: TextAlign.center,
-          ),
+          InkWell(
+            child: Text(
+              "Have an account? Log in.",
+                style: TextStyle(fontSize: 15),
+                textAlign: TextAlign.center),
+                onTap: () => Navigator.pushNamed(context, '/login'),
+            ),
           //TODOS: Add redirection to login page
           // FIX THIS:
           _buildFormField("First Name", Icon(null)),
