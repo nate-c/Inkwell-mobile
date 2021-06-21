@@ -39,6 +39,7 @@ class MyRegistrationState extends State<MyRegistration> {
     // Build a Form widget using the _formKey created above.
     return new Scaffold(
       appBar: AppBar( 
+        backgroundColor: Colors.transparent,
         actions: <Widget> [
           IconButton(
             color: Colors.white,

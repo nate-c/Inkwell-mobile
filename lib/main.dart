@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         bodyColor: Colors.white,
         displayColor: Colors.white,
       ),
-        primarySwatch: Colors.grey,
+  
       ),
       home: MyHomePage(title: 'Inkwell'),
       initialRoute: '/',

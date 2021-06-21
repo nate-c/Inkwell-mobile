@@ -39,9 +39,10 @@ class MyLoginState extends State<MyLogin> {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
       appBar: AppBar( 
+        backgroundColor: Colors.transparent,
         actions: <Widget> [
           IconButton(
-            color: Colors.white,
+            color: Colors.blue,
                 onPressed: (){ 
                     Navigator.pushNamed(context, '/');
                     }, 
