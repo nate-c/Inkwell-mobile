@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Inkwell',
-      
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -23,18 +22,21 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-       textTheme: Theme.of(context).textTheme.apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
-      ),
-  
+        textTheme: Theme.of(context).textTheme.apply(
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
       ),
       home: MyHomePage(title: 'Inkwell'),
       initialRoute: '/',
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
         '/login': (context) => MyLogin(),
-        '/register': (context) => MyRegistration()
+        '/register': (context) => MyRegistration(),
+        // '/home': (context) => MyRegistration(),
+        // '/company': (context) => MyRegistration(),
+        // '/completedTrade': (context) => MyRegistration(),
+        // '/profile': (context) => MyRegistration(),
       },
     );
   }
