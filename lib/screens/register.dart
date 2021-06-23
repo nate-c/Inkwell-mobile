@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/login.dart';
-
+import 'package:inkwell_mobile/constants/uriConstants.dart';
 import '../main.dart';
 
 void main() => runApp(MyRegistration());
@@ -34,10 +34,12 @@ class MyRegistration extends StatefulWidget {
 class MyRegistrationState extends State<MyRegistration> {
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return new Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar( 
         backgroundColor: Colors.transparent,
         actions: <Widget> [
@@ -79,7 +81,8 @@ class MyRegistrationState extends State<MyRegistration> {
           _buildFormField("User Name", Icon(null)),
           _buildFormField("Passcode", Icon(Icons.lock)),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+                  
               // Validate returns true if the form is valid, or false otherwise.
             },
             child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
@@ -94,8 +97,10 @@ class MyRegistrationState extends State<MyRegistration> {
   }
 }
 
+
 @override
 _buildFormField(String formInput, Icon iconName) {
+  
   return Container(
       width: 300,
       margin: new EdgeInsets.all(15),
