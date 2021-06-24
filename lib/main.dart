@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:provider/provider.dart';
-import 'constants/authentication.dart';
+import 'utils/authentication.dart';
 
 void main() {
   runApp(MyApp());

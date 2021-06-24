@@ -2,14 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'uriConstants.dart';
+import '../constants/uriConstants.dart';
 
 
-class Authentication extends UriConstants with ChangeNotifier{
+class Authentication with ChangeNotifier{
+
+  UriConstants uc = new UriConstants();
 
   Future<void> register(String username, String password, String firstname, String lastname) async
   {
-    final Uri uri = Uri.parse(this.registerUri);
+    final Uri uri = Uri.parse(uc.registerUri);
 
     try{
       final response = await http.post(uri, body: json.encode(
@@ -37,7 +39,7 @@ class Authentication extends UriConstants with ChangeNotifier{
 
   Future<void> logIn(String username, String password) async
   {
-    final Uri uri = Uri.parse(this.authUri);
+    final Uri uri = Uri.parse(uc.authUri);
 
     try{
       final response = await http.post(uri, body: json.encode(

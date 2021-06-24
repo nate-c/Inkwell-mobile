@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:inkwell_mobile/constants/authentication.dart';
+import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
-import '/constants/authentication.dart';
+import '../utils/authentication.dart';
 
 void main() => runApp(MyRegistration());
 
