@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
+import 'package:provider/provider.dart';
+import 'constants/authentication.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +12,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Authentication(),
+          )
+      ],
+    child: MaterialApp(
       title: 'Inkwell',
       theme: ThemeData(
         // This is the theme of your application.
@@ -38,6 +46,7 @@ class MyApp extends StatelessWidget {
         // '/completedTrade': (context) => MyRegistration(),
         // '/profile': (context) => MyRegistration(),
       },
+    )
     );
   }
 }

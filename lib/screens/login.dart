@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/register.dart';
+import '/constants/authentication.dart';
+import 'package:provider/provider.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
@@ -11,6 +13,15 @@ class MyLogin extends StatefulWidget {
   MyLoginState createState() {
     return MyLoginState();
   }
+}
+
+Map<String, String> _authData = {
+    'un': '',
+    'pw': '',
+    'firstname': '',
+    'lastname': '',
+
+  };
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,13 +39,51 @@ class MyLogin extends StatefulWidget {
       },
     );
   }
-}
+
 
 // Define a corresponding State class.
 // This class holds data related to the form.
 class MyLoginState extends State<MyLogin> {
   final _formKey = GlobalKey<FormState>();
 
+
+void _showErrorDialog(String msg)
+  {
+    showDialog(
+        context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occured'),
+        content: Text(msg),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: (){
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+Future <void> _submit() async{
+  if (!_formKey.currentState!.validate())
+  {
+    return;
+  }
+  // _formKey.currentState.save();
+  
+  try {
+  await Provider.of<Authentication>(context, listen: false).logIn(
+    _authData['un']!,
+   _authData['pw']!);
+   } catch (error)
+    {
+      var errorMessage = 'Authentication Failed. Please try again later.';
+      _showErrorDialog(errorMessage);
+    }
+   
+}
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -72,11 +121,46 @@ class MyLoginState extends State<MyLogin> {
                         textAlign: TextAlign.center),
                     onTap: () => Navigator.pushNamed(context, '/register'),
                   ),
-                  //TODO: Add redirection to registration page
-                  _buildFormField('User Name', Icon(null)),
-                  _buildFormField('Passcode', Icon(Icons.lock)),
+                  Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Username", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['un'] = value!;
+          }
+        ))),
+
+        Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Password", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  suffixIcon: Icon(Icons.lock),
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['pw'] = value!;
+          }
+        ))),
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async{
+                        _submit();
+                      },
                       child: Text(
                         'Log in'.toUpperCase(),
                         style: TextStyle(color: Colors.white),
@@ -90,22 +174,4 @@ class MyLoginState extends State<MyLogin> {
               ),
             )));
   }
-}
-
-@override
-_buildFormField(String formInput, Icon iconName) {
-  return Container(
-      width: 300,
-      margin: new EdgeInsets.all(15),
-      color: const Color(0xFF071A4A),
-      child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          child: TextFormField(
-            decoration: InputDecoration(
-                hintText: formInput,
-                hintStyle: TextStyle(color: Color(0xFFF2F2F2)),
-                suffixIcon: iconName,
-                border: InputBorder.none),
-            style: TextStyle(color: Colors.white, fontSize: 15),
-          )));
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
-import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:provider/provider.dart';
 import '../main.dart';
+import '/constants/authentication.dart';
 
 void main() => runApp(MyRegistration());
 
@@ -30,10 +32,70 @@ class MyRegistration extends StatefulWidget {
 
 // Define a corresponding State class.
 // This class holds data related to the form.
+
+Map<String, String> _authData = {
+    'un': '',
+    'pw': '',
+    'firstname': '',
+    'lastname': '',
+
+  };
+
 @override
 class MyRegistrationState extends State<MyRegistration> {
   final _formKey = GlobalKey<FormState>();
+  String requestName ='';
 
+specificValidate(){
+  // ignore: unnecessary_statements
+  (value) {
+    int maxlength = 50;
+      if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+          } 
+      if (value.length > maxlength) {
+            var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
+            _showErrorDialog(errorMessage);
+      }
+     
+  };
+}
+
+  void _showErrorDialog(String msg)
+  {
+    showDialog(
+        context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occured'),
+        content: Text(msg),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: (){
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
+Future <void> _submit() async{
+
+  specificValidate();
+
+  if (!_formKey.currentState!.validate())
+  {
+    return;
+  }
+ _formKey.currentState!.save();
+ Provider.of<Authentication>(context, listen: false).register(
+    _authData['un']!,
+   _authData['pw']!, 
+   _authData['firstname']!,
+   _authData['lastname']!);
+   
+}
 
   @override
   Widget build(BuildContext context) {
@@ -74,16 +136,87 @@ class MyRegistrationState extends State<MyRegistration> {
                 textAlign: TextAlign.center),
                 onTap: () => Navigator.pushNamed(context, '/login'),
             ),
-          //TODOS: Add redirection to login page
-          // FIX THIS:
-          _buildFormField("First Name", Icon(null)),
-          _buildFormField("Last Name", Icon(null)),
-          _buildFormField("User Name", Icon(null)),
-          _buildFormField("Passcode", Icon(Icons.lock)),
+      
+          Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "First Name", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['firstname'] = value!;
+          }
+        ))),
+          
+        Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Last Name", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['lastname'] = value!;
+          }
+        ))),
+
+        Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  hintText: "Username", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['un'] = value!;
+          }
+        ))),
+
+        Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: "Password", 
+                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  suffixIcon: Icon(Icons.lock),
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+        onSaved: (value) {
+            _authData['pw'] = value!;
+          }
+        ))),
+      
           ElevatedButton(
             onPressed: () async {
-                  
-              // Validate returns true if the form is valid, or false otherwise.
+              _submit();
             },
             child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
@@ -98,23 +231,3 @@ class MyRegistrationState extends State<MyRegistration> {
 }
 
 
-@override
-_buildFormField(String formInput, Icon iconName) {
-  
-  return Container(
-      width: 300,
-      margin: new EdgeInsets.all(15),
-      color: const Color(0xFF071A4A),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: formInput, 
-          hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
-          suffixIcon: iconName,
-          border: InputBorder.none
-        ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
-        // The validator receives the text that the user has entered.
-      )));
-}
