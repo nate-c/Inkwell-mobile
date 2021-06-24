@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
-
+import 'http_exception.dart';
 
 class Authentication with ChangeNotifier{
 
