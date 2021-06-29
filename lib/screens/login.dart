@@ -18,9 +18,6 @@ class MyLogin extends StatefulWidget {
 Map<String, String> _authData = {
     'un': '',
     'pw': '',
-    'firstname': '',
-    'lastname': '',
-
   };
 
   Widget build(BuildContext context) {
