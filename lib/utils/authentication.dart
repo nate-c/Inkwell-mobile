@@ -14,13 +14,14 @@ class Authentication with ChangeNotifier{
     final Uri uri = Uri.parse(uc.registerUri);
 
     try{
-      final response = await http.post(uri, body: 
+      final response = await http.post(uri, body: json.encode(
           {
             'un' : username,
             'pw' : password,
             'firstname' : firstname,
             'lastname' : lastname,
           }
+      )
       );
       final responseData = json.decode(response.body);
 //      print(responseData);
@@ -41,11 +42,12 @@ class Authentication with ChangeNotifier{
     final Uri uri = Uri.parse(uc.authUri);
 
     try{
-      final response = await http.post(uri, body: 
+      final response = await http.post(uri, body: json.encode(
           {
             'un' : username,
             'pw' : password,
           }
+      )
       );
       final responseData = json.decode(response.body);
       if(responseData['error'] != null)

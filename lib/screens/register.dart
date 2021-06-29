@@ -4,7 +4,7 @@ import 'package:inkwell_mobile/screens/login.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../utils/authentication.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 void main() => runApp(MyRegistration());
 
@@ -88,9 +88,6 @@ specificValidate(){
 
 Future <void> _submit() async{
 
-    var username = _usernameController.text;
-    var password = _passwordController.text;
-    var jwt = await Authentication.register(username, password); 
   specificValidate();
 
   if (!_formKey.currentState!.validate())
