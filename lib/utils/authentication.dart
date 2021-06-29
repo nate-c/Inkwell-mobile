@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
 import 'http_exception.dart';
 
+
 class Authentication with ChangeNotifier{
 
   UriConstants uc = new UriConstants();
@@ -13,15 +14,14 @@ class Authentication with ChangeNotifier{
     final Uri uri = Uri.parse(uc.registerUri);
 
     try{
-      final response = await http.post(uri, body: json.encode(
+      final response = await http.post(uri, body: 
           {
             'un' : username,
             'pw' : password,
             'firstname' : firstname,
             'lastname' : lastname,
-            'returnSecureToken' : true,
           }
-      ));
+      );
       final responseData = json.decode(response.body);
 //      print(responseData);
       if(responseData['error'] != null)
@@ -33,7 +33,7 @@ class Authentication with ChangeNotifier{
     {
       throw error;
     }
-
+  
   }
 
   Future<void> logIn(String username, String password) async
@@ -41,13 +41,12 @@ class Authentication with ChangeNotifier{
     final Uri uri = Uri.parse(uc.authUri);
 
     try{
-      final response = await http.post(uri, body: json.encode(
+      final response = await http.post(uri, body: 
           {
             'un' : username,
             'pw' : password,
-            'returnSecureToken' : true,
           }
-      ));
+      );
       final responseData = json.decode(response.body);
       if(responseData['error'] != null)
       {

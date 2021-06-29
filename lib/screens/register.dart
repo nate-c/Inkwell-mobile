@@ -4,6 +4,7 @@ import 'package:inkwell_mobile/screens/login.dart';
 import 'package:provider/provider.dart';
 import '../main.dart';
 import '../utils/authentication.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() => runApp(MyRegistration());
 
@@ -43,21 +44,26 @@ Map<String, String> _authData = {
 
 @override
 class MyRegistrationState extends State<MyRegistration> {
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
-  String requestName ='';
+
 
 specificValidate(){
   // ignore: unnecessary_statements
   (value) {
     int maxlength = 50;
       if (value == null || value.isEmpty) {
-                return 'Please enter some text';
+            var errorMessage = 'Please enter some text.';
+            _showErrorDialog(errorMessage);
           } 
       if (value.length > maxlength) {
             var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
             _showErrorDialog(errorMessage);
       }
-     
+     return value;
   };
 }
 
@@ -82,6 +88,9 @@ specificValidate(){
 
 Future <void> _submit() async{
 
+    var username = _usernameController.text;
+    var password = _passwordController.text;
+    var jwt = await Authentication.register(username, password); 
   specificValidate();
 
   if (!_formKey.currentState!.validate())
@@ -180,6 +189,7 @@ Future <void> _submit() async{
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _usernameController,
                 decoration: InputDecoration(
                   suffixText: "*",
                   suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
@@ -200,6 +210,7 @@ Future <void> _submit() async{
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _passwordController,
                 decoration: InputDecoration(
                   hintText: "Password", 
                   hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
