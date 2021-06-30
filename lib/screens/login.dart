@@ -81,6 +81,8 @@ Future <void> _submit() async{
     }
    
 }
+
+bool _passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -126,8 +128,8 @@ Future <void> _submit() async{
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Username", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelText: "Username", 
+                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
@@ -143,11 +145,28 @@ Future <void> _submit() async{
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
-                  hintText: "Password", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
-                  suffixIcon: Icon(Icons.lock),
+                  labelText: "Password", 
+                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                      ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                          _passwordVisible = !_passwordVisible;
+                      });
+                      },
+                ),
+          
                   border: InputBorder.none
+                  
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
         onSaved: (value) {

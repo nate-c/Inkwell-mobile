@@ -9,10 +9,12 @@ import '../utils/authentication.dart';
 void main() => runApp(MyRegistration());
 
 class MyRegistration extends StatefulWidget {
+
   @override
   MyRegistrationState createState() {
     return MyRegistrationState();
   }
+  
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
@@ -103,9 +105,12 @@ Future <void> _submit() async{
    
 }
 
+  bool _passwordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
+  
     return new Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar( 
@@ -122,7 +127,8 @@ Future <void> _submit() async{
       backgroundColor: const Color(0xFF011240),
       
         body: Center(
-            child: Form(
+        child: SingleChildScrollView(  
+      child: Form(
       key: _formKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -151,8 +157,8 @@ Future <void> _submit() async{
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "First Name", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelText: "First Name", 
+                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
@@ -169,8 +175,8 @@ Future <void> _submit() async{
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 decoration: InputDecoration(
-                  hintText: "Last Name", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelText: "Last Name", 
+                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
@@ -190,8 +196,10 @@ Future <void> _submit() async{
                 decoration: InputDecoration(
                   suffixText: "*",
                   suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
-                  hintText: "Username", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                  labelText: "Username", 
+                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  hintText: "Enter a Username", 
+                  hintStyle: TextStyle(color: Colors.blue[200]),
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
@@ -208,12 +216,30 @@ Future <void> _submit() async{
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 controller: _passwordController,
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
-                  hintText: "Password", 
-                  hintStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelText: "Password", 
+                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  hintText: "Enter a Password", 
+                  hintStyle: TextStyle(color: Colors.blue[200]), 
                   suffixText: "*",
                   suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
-                  suffixIcon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                      ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                          _passwordVisible = !_passwordVisible;
+                      });
+             },
+            ),
+          
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
@@ -222,6 +248,42 @@ Future <void> _submit() async{
           }
         ))),
       
+       Container(
+            width: 300,
+            margin: new EdgeInsets.all(15),
+            color: const Color(0xFF071A4A),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              child: TextFormField(
+                obscureText: !_passwordVisible,
+                decoration: InputDecoration(
+                  labelText: "Confirm Password", 
+                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                      ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                          _passwordVisible = !_passwordVisible;
+                      });
+             },
+            ),
+          
+                  border: InputBorder.none
+        ),
+        style: TextStyle(color: Colors.white, fontSize: 15),
+      
+          //TODO: write function to check if passwords match
+        
+        ))),
           ElevatedButton(
             onPressed: () async {
               _submit();
@@ -234,8 +296,8 @@ Future <void> _submit() async{
           ),
         ],
       ),
-    )));
+    ))));
   }
 }
 
-
+ 
