@@ -49,33 +49,23 @@ class MyRegistrationState extends State<MyRegistration> {
 
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstnameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _confirmpassController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-
-specificValidate(){
-  // ignore: unnecessary_statements
-  (value) {
-    int maxlength = 50;
-      if (value == null || value.isEmpty) {
-            var errorMessage = 'Please enter some text.';
-            _showErrorDialog(errorMessage);
-          } 
-      if (value.length > maxlength) {
-            var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
-            _showErrorDialog(errorMessage);
-      }
-     return value;
-  };
-}
 
   void _showErrorDialog(String msg)
   {
     showDialog(
         context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: Color(0xFF011240),
         title: Text('An Error Occured'),
+        titleTextStyle: TextStyle(color: Colors.red[300]),
         content: Text(msg),
+        contentTextStyle: TextStyle(color: Colors.white),
         actions: <Widget>[
           TextButton(
             child: Text('Okay'),
@@ -88,22 +78,6 @@ specificValidate(){
     );
   }
 
-Future <void> _submit() async{
-
-  specificValidate();
-
-  if (!_formKey.currentState!.validate())
-  {
-    return;
-  }
- _formKey.currentState!.save();
- Provider.of<Authentication>(context, listen: false).register(
-    _authData['un']!,
-   _authData['pw']!, 
-   _authData['firstname']!,
-   _authData['lastname']!);
-   
-}
 
   bool _passwordVisible = false;
 
@@ -156,6 +130,7 @@ Future <void> _submit() async{
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _firstnameController,
                 decoration: InputDecoration(
                   labelText: "First Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
@@ -174,6 +149,7 @@ Future <void> _submit() async{
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _lastnameController,
                 decoration: InputDecoration(
                   labelText: "Last Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
@@ -256,8 +232,16 @@ Future <void> _submit() async{
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 obscureText: !_passwordVisible,
+                controller: _confirmpassController,
+                validator: (value){
+                              if(_confirmpassController.text.isEmpty)
+                                   return 'Empty';
+                              if(_confirmpassController.text != _passwordController.text)
+                                   return 'Password Does Not Match';
+                            return null;
+                  },
                 decoration: InputDecoration(
-                  labelText: "Confirm Password", 
+                  labelText: "Confirm Password",
                   labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
                   suffixText: "*",
                   suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
@@ -286,7 +270,42 @@ Future <void> _submit() async{
         ))),
           ElevatedButton(
             onPressed: () async {
-              _submit();
+              var username = _usernameController.text;
+              var password = _passwordController.text;
+              var firstname = _firstnameController.text;
+              var lastname = _lastnameController.text;
+
+              int maxlength = 50;
+              if (username.isEmpty) {
+              var errorMessage = 'Please enter some text.';
+              _showErrorDialog(errorMessage);
+            } 
+            else if (password.isEmpty) {
+              var errorMessage = 'Please enter some text.';
+              _showErrorDialog(errorMessage);
+            } 
+            else if (username.length > maxlength) {
+                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
+                  _showErrorDialog(errorMessage);
+            }
+            else if (password.length > maxlength) {
+                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
+                  _showErrorDialog(errorMessage);
+            }
+            else if (_confirmpassController.text != _passwordController.text) {
+                  var errorMessage = 'Password Does Not Match';
+                  _showErrorDialog(errorMessage);
+            }
+            else{
+                  var response = await Authentication().register(username, password, firstname, lastname);
+                  if(response == '201')
+                    _showErrorDialog("Success! Your account was created. Log in now.");
+                  else if(response == '409')
+                    _showErrorDialog("That username is already registered. Please try to sign up using another username or log in if you already have an account.");  
+                  else {
+                    _showErrorDialog("An unknown error occurred.");
+                  }
+                }
             },
             child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(

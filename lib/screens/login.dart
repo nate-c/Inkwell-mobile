@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import '../utils/authentication.dart';
-import 'package:provider/provider.dart';
-// import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 import '../main.dart';
 
@@ -41,6 +41,13 @@ Map<String, String> _authData = {
 // Define a corresponding State class.
 // This class holds data related to the form.
 class MyLoginState extends State<MyLogin> {
+
+// Create storage
+  final storage = new FlutterSecureStorage();
+
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
 
@@ -63,24 +70,7 @@ void _showErrorDialog(String msg)
     );
   }
 
-Future <void> _submit() async{
-  if (!_formKey.currentState!.validate())
-  {
-    return;
-  }
-  // _formKey.currentState.save();
-  
-  try {
-  await Provider.of<Authentication>(context, listen: false).logIn(
-    _authData['un']!,
-   _authData['pw']!);
-   } catch (error)
-    {
-      var errorMessage = 'Authentication Failed. Please try again later.';
-      _showErrorDialog(errorMessage);
-    }
-   
-}
+
 
 bool _passwordVisible = false;
   @override
@@ -173,9 +163,24 @@ bool _passwordVisible = false;
             _authData['pw'] = value!;
           }
         ))),
-                  ElevatedButton(
-                      onPressed: () async{
-                        _submit();
+        ElevatedButton(
+          onPressed: () async{
+            var username = _usernameController.text;
+            var password = _passwordController.text;
+
+            var jwt = await Authentication().logIn(username, password);
+            if(jwt != null) {
+              storage.write(key: "jwt", value: jwt);
+              print(jwt);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => HomePage.fromBase64(jwt)
+              //   )
+              // );
+            } else {
+              _showErrorDialog("An Error Occurred. No account was found matching that username and password");
+            }
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
