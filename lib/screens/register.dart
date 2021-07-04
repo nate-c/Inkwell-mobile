@@ -39,8 +39,8 @@ class MyRegistration extends StatefulWidget {
 Map<String, String> _authData = {
     'un': '',
     'pw': '',
-    'firstname': '',
-    'lastname': '',
+    'first_name': '',
+    'last_name': '',
 
   };
 
@@ -138,7 +138,7 @@ class MyRegistrationState extends State<MyRegistration> {
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
         onSaved: (value) {
-            _authData['firstname'] = value!;
+            _authData['first_name'] = value!;
           }
         ))),
           
@@ -157,7 +157,7 @@ class MyRegistrationState extends State<MyRegistration> {
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
         onSaved: (value) {
-            _authData['lastname'] = value!;
+            _authData['last_name'] = value!;
           }
         ))),
 

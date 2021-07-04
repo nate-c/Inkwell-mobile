@@ -56,8 +56,11 @@ void _showErrorDialog(String msg)
     showDialog(
         context: context,
       builder: (ctx) => AlertDialog(
+        backgroundColor: Color(0xFF011240),
         title: Text('An Error Occured'),
         content: Text(msg),
+        titleTextStyle: TextStyle(color: Colors.red[300]),
+        contentTextStyle: TextStyle(color: Colors.white),
         actions: <Widget>[
           TextButton(
             child: Text('Okay'),
