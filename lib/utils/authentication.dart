@@ -12,14 +12,14 @@ class Authentication with ChangeNotifier{
   {
       Uri uriReg = Uri.parse(UriConstants().registerUri);
  
-      var response = await http.post(uriReg, body: json.encode(
+      var response = await http.post(uriReg, body: 
           {
             'un' : username,
             'pw' : password,
-            'first_name' : firstname,
-            'last_name' : lastname,
+            'firstName' : firstname,
+            'lastName' : lastname,
           }
-      )
+      
       );
       return response.statusCode;
 
@@ -30,16 +30,15 @@ class Authentication with ChangeNotifier{
   {
     Uri uriLog = Uri.parse(UriConstants().authUri);
  
-      var response = await http.post(uriLog, body: json.encode(
+      var response = await http.post(uriLog, body: 
           {
             'un': username,
             'pw': password,
           }
-      )
+  
       );
       
       if(response.statusCode == 200) return response.body;
-      return null;
   }
 }
 

@@ -115,6 +115,7 @@ bool _passwordVisible = false;
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _usernameController,
                 decoration: InputDecoration(
                   labelText: "Username", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
@@ -131,6 +132,7 @@ bool _passwordVisible = false;
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
+                controller: _passwordController,
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
                   labelText: "Password", 
@@ -173,7 +175,7 @@ bool _passwordVisible = false;
               //   )
               // );
             } else {
-              _showErrorDialog("An Error Occurred. No account was found matching that username and password.");
+              _showErrorDialog("No account was found matching that username and password.");
             }
                       },
                       child: Text(
