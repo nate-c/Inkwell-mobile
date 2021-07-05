@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
-import 'package:provider/provider.dart';
 import '../main.dart';
 import '../utils/authentication.dart';
 
@@ -36,13 +35,6 @@ class MyRegistration extends StatefulWidget {
 // Define a corresponding State class.
 // This class holds data related to the form.
 
-Map<String, String> _authData = {
-    'un': '',
-    'pw': '',
-    'first_name': '',
-    'last_name': '',
-
-  };
 
 @override
 class MyRegistrationState extends State<MyRegistration> {
@@ -137,9 +129,7 @@ class MyRegistrationState extends State<MyRegistration> {
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['first_name'] = value!;
-          }
+    
         ))),
           
         Container(
@@ -156,9 +146,7 @@ class MyRegistrationState extends State<MyRegistration> {
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['last_name'] = value!;
-          }
+       
         ))),
 
         Container(
@@ -179,9 +167,7 @@ class MyRegistrationState extends State<MyRegistration> {
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['un'] = value!;
-          }
+        
         ))),
 
         Container(
@@ -219,9 +205,7 @@ class MyRegistrationState extends State<MyRegistration> {
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['pw'] = value!;
-          }
+        
         ))),
       
        Container(

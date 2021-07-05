@@ -15,11 +15,6 @@ class MyLogin extends StatefulWidget {
   }
 }
 
-Map<String, String> _authData = {
-    'un': '',
-    'pw': '',
-  };
-
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
@@ -126,9 +121,7 @@ bool _passwordVisible = false;
                   border: InputBorder.none
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['un'] = value!;
-          }
+        
         ))),
 
         Container(
@@ -162,9 +155,7 @@ bool _passwordVisible = false;
                   
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
-        onSaved: (value) {
-            _authData['pw'] = value!;
-          }
+      
         ))),
         ElevatedButton(
           onPressed: () async{
