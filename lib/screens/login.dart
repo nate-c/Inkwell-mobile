@@ -182,7 +182,7 @@ bool _passwordVisible = false;
               //   )
               // );
             } else {
-              _showErrorDialog("An Error Occurred. No account was found matching that username and password");
+              _showErrorDialog("An Error Occurred. No account was found matching that username and password.");
             }
                       },
                       child: Text(

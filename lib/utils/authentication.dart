@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
-
+import 'dart:convert' show json, base64, ascii;
 
 class Authentication with ChangeNotifier{
 
-  UriConstants uc = new UriConstants();
+  // UriConstants uc = new UriConstants();
   
-  Future register(String username, String password, String firstname, String lastname) async
+  Future <int> register(String username, String password, String firstname, String lastname) async
   {
-    final Uri uriReg = Uri.parse(uc.registerUri);
-      
-      final response = await http.post(uriReg, body: json.encode(
+      Uri uriReg = Uri.parse(UriConstants().registerUri);
+ 
+      var response = await http.post(uriReg, body: json.encode(
           {
             'un' : username,
             'pw' : password,
@@ -26,11 +26,11 @@ class Authentication with ChangeNotifier{
   
   }
   
-  Future<String?> logIn(String username, String password) async
+  Future <String?> logIn(String username, String password) async
   {
-    final Uri uriLog = Uri.parse(uc.authUri);
-      await http.get(uriLog);
-      final response = await http.post(uriLog, body: json.encode(
+    Uri uriLog = Uri.parse(UriConstants().authUri);
+ 
+      var response = await http.post(uriLog, body: json.encode(
           {
             'un': username,
             'pw': password,

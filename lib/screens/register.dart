@@ -298,9 +298,9 @@ class MyRegistrationState extends State<MyRegistration> {
             }
             else{
                   var response = await Authentication().register(username, password, firstname, lastname);
-                  if(response == '201')
+                  if(response == 201)
                     _showErrorDialog("Success! Your account was created. Log in now.");
-                  else if(response == '409')
+                  else if(response == 409)
                     _showErrorDialog("That username is already registered. Please try to sign up using another username or log in if you already have an account.");  
                   else {
                     _showErrorDialog("An unknown error occurred.");
