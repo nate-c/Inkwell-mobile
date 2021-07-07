@@ -1,5 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
+import '../models/User.dart';
 import 'package:http/http.dart' as http;
 
 void main() => runApp(Home());
@@ -30,6 +31,8 @@ class Home extends StatefulWidget {
 
 @override
 class MyHomeState extends State<Home> {
+  // User _user;
+
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
@@ -45,6 +48,28 @@ class MyHomeState extends State<Home> {
         ],
       ),
       backgroundColor: const Color(0xFF011240),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('Home page')
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
+            //     Navigator.pushNamed(context, '/login');
+            //   },
+            //   child: Text('Log in'),
+            // ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Navigator.push(context, MaterialPageRoute(builder: (context) => MyRegistration()));
+            //     Navigator.pushNamed(context, '/register');
+            //   },
+            //   child: Text('Register'),
+            // ),
+          ],
+        ),
+      ),
     );
   }
 }
