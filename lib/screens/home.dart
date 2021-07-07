@@ -51,22 +51,45 @@ class MyHomeState extends State<Home> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('Home page')
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
-            //     Navigator.pushNamed(context, '/login');
-            //   },
-            //   child: Text('Log in'),
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     // Navigator.push(context, MaterialPageRoute(builder: (context) => MyRegistration()));
-            //     Navigator.pushNamed(context, '/register');
-            //   },
-            //   child: Text('Register'),
-            // ),
+            Container(
+              margin: new EdgeInsets.all(15),
+              alignment: Alignment.topCenter,
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    "Current Value".toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                    textAlign: TextAlign.center,
+                  )),
+            ),
+            Text("1800"),
+
+            // child: Text(
+            //   "Current Value".toUpperCase(),
+            //   style: TextStyle(
+            //     fontSize: 30,
+            //   ),
+            //   textAlign: TextAlign.center,
+            // )),
+            Container(
+                width: 300,
+                margin: new EdgeInsets.all(15),
+                color: const Color(0xFF071A4A),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  // child: TextFormField(
+                  //   controller: _usernameController,
+                  //   decoration: InputDecoration(
+                  //       labelText: "Username",
+                  //       labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                  //       border: InputBorder.none),
+                  //   style: TextStyle(color: Colors.white, fontSize: 15),
+                  // ))
+                )),
           ],
         ),
       ),
