@@ -157,15 +157,19 @@ class MyLoginState extends State<MyLogin> {
 
                         var returnPayload =
                             await Authentication().logIn(username, password);
+                        // Map<String, dynamic> returnPayloadObj =
+                        //     jsonDecode(returnPayload.toString());
                         var returnPayloadObj =
                             jsonDecode(returnPayload.toString());
+                        print(returnPayloadObj);
                         if (returnPayload != null) {
                           // var newUser =
                           //     new User.fromJson(returnPayloadObj?.User);
-                          var jwt = returnPayloadObj?.token;
+                          var jwt = returnPayloadObj["token"];
                           storage.write(key: "jwt", value: jwt);
                           storage.write(
-                              key: "user", value: returnPayloadObj?.User);
+                              key: "user",
+                              value: returnPayloadObj["User"].toString());
 
                           print(jwt);
                           Navigator.push(context,
