@@ -35,6 +35,7 @@ class MyHomeState extends State<Home> {
   // final int _amount;
   // final int _investedValue;
   // final String _searchValue;
+  final TextEditingController _searchController = TextEditingController();
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -96,13 +97,20 @@ class MyHomeState extends State<Home> {
             Text("Investment Value"),
             Text("1600"),
             Padding(padding: EdgeInsets.symmetric(horizontal: 1, vertical: 35)),
-            TextFormField(
-              decoration: InputDecoration(
-                  labelText: "Search by company names or tickers.",
-                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
-                  border: InputBorder.none),
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
+            Container(
+                width: 300,
+                margin: new EdgeInsets.all(15),
+                color: const Color(0xFF071A4A),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                    child: TextFormField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                          labelText: "Search by company names or ticker...",
+                          labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                          border: InputBorder.none),
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ))),
             // Container(
             //     width: 300,
             //     margin: new EdgeInsets.all(15),
