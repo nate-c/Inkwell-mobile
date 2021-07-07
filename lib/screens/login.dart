@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import '../utils/authentication.dart';
+import '../models/User.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 
 import '../main.dart';
 
@@ -15,28 +18,26 @@ class MyLogin extends StatefulWidget {
   }
 }
 
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
-            ),
-      ),
-      initialRoute: '/',
-      routes: {
-        // '/': (context) => MyHomePage(title: 'Inkwell'),
-        '/': (context) => MyApp(),
-        '/register': (context) => MyRegistration(),
-      },
-    );
-  }
-
+Widget build(BuildContext context) {
+  return MaterialApp(
+    theme: ThemeData(
+      textTheme: Theme.of(context).textTheme.apply(
+            bodyColor: Colors.white,
+            displayColor: Colors.white,
+          ),
+    ),
+    initialRoute: '/',
+    routes: {
+      // '/': (context) => MyHomePage(title: 'Inkwell'),
+      '/': (context) => MyApp(),
+      '/register': (context) => MyRegistration(),
+    },
+  );
+}
 
 // Define a corresponding State class.
 // This class holds data related to the form.
 class MyLoginState extends State<MyLogin> {
-
 // Create storage
   final storage = new FlutterSecureStorage();
 
@@ -45,37 +46,32 @@ class MyLoginState extends State<MyLogin> {
 
   final _formKey = GlobalKey<FormState>();
 
-
-void _showErrorDialog(String msg)
-  {
+  void _showErrorDialog(String msg) {
     showDialog(
         context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Color(0xFF011240),
-        title: Text('An Error Occured'),
-        content: Text(msg),
-        titleTextStyle: TextStyle(color: Colors.red[300]),
-        contentTextStyle: TextStyle(color: Colors.white),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Okay'),
-            onPressed: (){
-              Navigator.of(ctx).pop();
-            },
-          )
-        ],
-      )
-    );
+        builder: (ctx) => AlertDialog(
+              backgroundColor: Color(0xFF011240),
+              title: Text('An Error Occured'),
+              content: Text(msg),
+              titleTextStyle: TextStyle(color: Colors.red[300]),
+              contentTextStyle: TextStyle(color: Colors.white),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Okay'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
   }
 
-
-
-bool _passwordVisible = false;
+  bool _passwordVisible = false;
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           actions: <Widget>[
@@ -109,74 +105,75 @@ bool _passwordVisible = false;
                     onTap: () => Navigator.pushNamed(context, '/register'),
                   ),
                   Container(
-            width: 300,
-            margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              child: TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: "Username", 
-                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
-                  border: InputBorder.none
-        ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
-        
-        ))),
+                      width: 300,
+                      margin: new EdgeInsets.all(15),
+                      color: const Color(0xFF071A4A),
+                      child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          child: TextFormField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                                labelText: "Username",
+                                labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                                border: InputBorder.none),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ))),
+                  Container(
+                      width: 300,
+                      margin: new EdgeInsets.all(15),
+                      color: const Color(0xFF071A4A),
+                      child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          child: TextFormField(
+                            controller: _passwordController,
+                            obscureText: !_passwordVisible,
+                            decoration: InputDecoration(
+                                labelText: "Password",
+                                labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    // Based on passwordVisible state choose the icon
+                                    _passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  onPressed: () {
+                                    // Update the state i.e. toogle the state of passwordVisible variable
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                ),
+                                border: InputBorder.none),
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                          ))),
+                  ElevatedButton(
+                      onPressed: () async {
+                        var username = _usernameController.text;
+                        var password = _passwordController.text;
 
-        Container(
-            width: 300,
-            margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-              child: TextFormField(
-                controller: _passwordController,
-                obscureText: !_passwordVisible,
-                decoration: InputDecoration(
-                  labelText: "Password", 
-                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      // Based on passwordVisible state choose the icon
-                      _passwordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                      color: Theme.of(context).primaryColorDark,
-                      ),
-                    onPressed: () {
-                      // Update the state i.e. toogle the state of passwordVisible variable
-                      setState(() {
-                          _passwordVisible = !_passwordVisible;
-                      });
-                      },
-                ),
-          
-                  border: InputBorder.none
-                  
-        ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
-      
-        ))),
-        ElevatedButton(
-          onPressed: () async{
-            var username = _usernameController.text;
-            var password = _passwordController.text;
+                        var returnPayload =
+                            await Authentication().logIn(username, password);
+                        var returnPayloadObj =
+                            jsonDecode(returnPayload.toString());
+                        if (returnPayload != null) {
+                          // var newUser =
+                          //     new User.fromJson(returnPayloadObj?.User);
+                          var jwt = returnPayloadObj?.token;
+                          storage.write(key: "jwt", value: jwt);
+                          storage.write(
+                              key: "user", value: returnPayloadObj?.User);
 
-            var jwt = await Authentication().logIn(username, password);
-            if(jwt != null) {
-              storage.write(key: "jwt", value: jwt);
-              print(jwt);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => HomePage.fromBase64(jwt)
-              //   )
-              // );
-            } else {
-              _showErrorDialog("No account was found matching that username and password.");
-            }
+                          print(jwt);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Home()));
+                        } else {
+                          _showErrorDialog(
+                              "No account was found matching that username and password.");
+                        }
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
