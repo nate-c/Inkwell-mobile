@@ -8,7 +8,7 @@ class Authentication with ChangeNotifier{
 
   // UriConstants uc = new UriConstants();
   
-  Future <int> register(String username, String password, String firstname, String lastname) async
+  Future <String> register(String username, String password, String firstname, String lastname) async
   {
       Uri uriReg = Uri.parse(UriConstants().registerUri);
  
@@ -21,7 +21,7 @@ class Authentication with ChangeNotifier{
           }
       
       );
-      return response.statusCode;
+      return response.statusCode.toString();
 
   
   }

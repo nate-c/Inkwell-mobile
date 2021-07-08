@@ -70,6 +70,28 @@ class MyRegistrationState extends State<MyRegistration> {
     );
   }
 
+  void _showSuccessDialog(String msg)
+  {
+    showDialog(
+        context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color(0xFF011240),
+        title: Text('Success'),
+        titleTextStyle: TextStyle(color: Colors.red[300]),
+        content: Text(msg),
+        contentTextStyle: TextStyle(color: Colors.white),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: (){
+              Navigator.of(ctx).pop();
+            },
+          )
+        ],
+      )
+    );
+  }
+
 
   bool _passwordVisible = false;
 
@@ -124,6 +146,8 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 controller: _firstnameController,
                 decoration: InputDecoration(
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
                   labelText: "First Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
@@ -141,6 +165,8 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 controller: _lastnameController,
                 decoration: InputDecoration(
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
                   labelText: "Last Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
@@ -157,6 +183,13 @@ class MyRegistrationState extends State<MyRegistration> {
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 controller: _usernameController,
+                validator: (value) {
+                  if (_usernameController.text.length > 50) {
+                    var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
+                    _showErrorDialog(errorMessage);
+                  }
+                  return null;
+                },
                 decoration: InputDecoration(
                   suffixText: "*",
                   suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
@@ -179,6 +212,15 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 controller: _passwordController,
                 obscureText: !_passwordVisible,
+                validator: (value) {
+                  if (_passwordController.text.length > 50) {
+                    var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
+                    _showErrorDialog(errorMessage);
+                  } else if(_confirmpassController.text != _passwordController.text) {
+                      _showErrorDialog('Password Does Not Match');
+                    }
+                  return null;
+                },
                 decoration: InputDecoration(
                   labelText: "Password", 
                   labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
@@ -218,11 +260,10 @@ class MyRegistrationState extends State<MyRegistration> {
                 obscureText: !_passwordVisible,
                 controller: _confirmpassController,
                 validator: (value){
-                              if(_confirmpassController.text.isEmpty)
-                                   return 'Empty';
-                              if(_confirmpassController.text != _passwordController.text)
-                                   return 'Password Does Not Match';
-                            return null;
+                              if(_confirmpassController.text != _passwordController.text) {
+                                   _showErrorDialog('Password Does Not Match');
+                                  return null;
+                              }
                   },
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
@@ -249,7 +290,6 @@ class MyRegistrationState extends State<MyRegistration> {
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
       
-          //TODO: write function to check if passwords match
         
         ))),
           ElevatedButton(
@@ -258,36 +298,21 @@ class MyRegistrationState extends State<MyRegistration> {
               var password = _passwordController.text;
               var firstname = _firstnameController.text;
               var lastname = _lastnameController.text;
-
-              int maxlength = 50;
-              if (username.isEmpty) {
-              var errorMessage = 'Please enter some text.';
-              _showErrorDialog(errorMessage);
-            } 
-            else if (password.isEmpty) {
-              var errorMessage = 'Please enter some text.';
-              _showErrorDialog(errorMessage);
-            } 
-            else if (username.length > maxlength) {
-                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
-                  _showErrorDialog(errorMessage);
-            }
-            else if (password.length > maxlength) {
-                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
-                  _showErrorDialog(errorMessage);
-            }
-            else if (_confirmpassController.text != _passwordController.text) {
-                  var errorMessage = 'Password Does Not Match';
-                  _showErrorDialog(errorMessage);
-            }
-            else{
-                  var response = await Authentication().register(username, password, firstname, lastname);
-                  if(response == 201)
-                    _showErrorDialog("Success! Your account was created. Log in now.");
-                  else if(response == 409)
+              if (username.isEmpty || password.isEmpty || firstname.isEmpty || lastname.isEmpty) {
+                    var errorMessage = 'Please enter some text.';
+                    _showErrorDialog(errorMessage);
+                  return null;
+                } else {
+                  String res = await Authentication().register(username, password, firstname, lastname);
+                  if(res == "409"){
                     _showErrorDialog("That username is already registered. Please try to sign up using another username or log in if you already have an account.");  
-                  else {
+                    return null;
+                  } else if (res == "201" || res == "200 OK") {
+                    _showSuccessDialog("Success! Your account was created. Log in now.");
+                     Navigator.pushNamed(context, '/login');
+                  } else {
                     _showErrorDialog("An unknown error occurred.");
+                    return null;
                   }
                 }
             },
