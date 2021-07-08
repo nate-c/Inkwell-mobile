@@ -307,8 +307,8 @@ class MyRegistrationState extends State<MyRegistration> {
             },
             child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF002179), 
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), 
+              primary: Color(0xFF0021cc), 
+              padding: EdgeInsets.symmetric(horizontal: 125, vertical: 20), 
             )
           ),
         ],
