@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
             // '/': (context) => MyHomePage(title: 'Inkwell'),
             '/login': (context) => MyLogin(),
             '/register': (context) => MyRegistration(),
+            '/addmoney': (context) => MyAddMoney(),
             '/home': (context) => Home(),
             // '/company': (context) => MyRegistration(),
             // '/completedTrade': (context) => MyRegistration(),
@@ -118,6 +120,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.pushNamed(context, '/register');
               },
               child: Text('Register'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
+                Navigator.pushNamed(context, '/addmoney');
+              },
+              child: Text('Add Money'),
             ),
           ],
         ),

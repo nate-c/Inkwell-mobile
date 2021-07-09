@@ -26,7 +26,7 @@ class MyRegistration extends StatefulWidget {
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
         '/': (context) => MyApp(),
-        '/register': (context) => MyLogin(),
+        '/login': (context) => MyLogin(),
       },
     );
   }
