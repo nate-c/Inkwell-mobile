@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
@@ -10,6 +10,8 @@ void main() => runApp(MyAddMoney());
 
 
 class MyApp extends StatelessWidget {
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,21 @@ class MyAddMoney extends StatefulWidget {
 }
 
 TextEditingController _moneyamtController = TextEditingController();
+
+// Future<int> addmoney(int amountDepositing, int currentBalance, int userId) async{
+//   Uri balance = Uri.parse('http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/accounts/updateAccountBalance');
+//   await http.get(balance,  {
+//     'amount': currentBalance
+//     });
+//   amountDepositing = int.parse(_moneyamtController.text);
+//   var newBalance = currentBalance + amountDepositing; 
+  
+//   var response = await http.post(balance, body: {
+//     "user_id": userId,
+//     "amount": newBalance,
+//     } );
+//     return response.statusCode;
+// }
 
 class _MyAddMoneyState extends State<MyAddMoney> {
 
