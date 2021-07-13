@@ -37,6 +37,9 @@ class MyHomeState extends State<Home> {
   // final String _searchValue;
   final TextEditingController _searchController = TextEditingController();
 
+  @override
+  void initState() {}
+
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
