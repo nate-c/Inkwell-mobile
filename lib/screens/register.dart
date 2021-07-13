@@ -63,6 +63,7 @@ class MyRegistrationState extends State<MyRegistration> {
             child: Text('Okay'),
             onPressed: (){
               Navigator.of(ctx).pop();
+             
             },
           )
         ],
@@ -70,7 +71,49 @@ class MyRegistrationState extends State<MyRegistration> {
     );
   }
 
+  void _showSuccessDialog(String msg)
+  {
+    showDialog(
+        context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color(0xFF011240),
+        title: Text('Success'),
+        titleTextStyle: TextStyle(color: Colors.red[300]),
+        content: Text(msg),
+        contentTextStyle: TextStyle(color: Colors.white),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: (){
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
+      )
+    );
+  }
 
+  bool validatorFn() {
+    var username = _usernameController.text;
+    var password = _passwordController.text;
+    var firstname = _firstnameController.text;
+    var lastname = _lastnameController.text;
+        if (username.isEmpty || password.isEmpty || firstname.isEmpty || lastname.isEmpty) {
+            _showErrorDialog('Please enter some text.');
+            return false;
+        } else if (password.length > 50 || username.length > 50 ) {
+            _showErrorDialog('The maximum length must be 50 characters or less. Please try again.');
+            return false;
+            } else if(_confirmpassController.text != password) {
+                      _showErrorDialog('Password Does Not Match');
+                      return false;
+                    } else {
+                      return true;
+                    }
+        }
+
+  bool isValid() => validatorFn();
+  
   bool _passwordVisible = false;
 
   @override
@@ -124,6 +167,8 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 controller: _firstnameController,
                 decoration: InputDecoration(
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
                   labelText: "First Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
@@ -141,6 +186,8 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 controller: _lastnameController,
                 decoration: InputDecoration(
+                  suffixText: "*",
+                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
                   labelText: "Last Name", 
                   labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
                   border: InputBorder.none
@@ -217,13 +264,6 @@ class MyRegistrationState extends State<MyRegistration> {
               child: TextFormField(
                 obscureText: !_passwordVisible,
                 controller: _confirmpassController,
-                validator: (value){
-                              if(_confirmpassController.text.isEmpty)
-                                   return 'Empty';
-                              if(_confirmpassController.text != _passwordController.text)
-                                   return 'Password Does Not Match';
-                            return null;
-                  },
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
                   labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
@@ -249,7 +289,6 @@ class MyRegistrationState extends State<MyRegistration> {
         ),
         style: TextStyle(color: Colors.white, fontSize: 15),
       
-          //TODO: write function to check if passwords match
         
         ))),
           ElevatedButton(
@@ -258,43 +297,18 @@ class MyRegistrationState extends State<MyRegistration> {
               var password = _passwordController.text;
               var firstname = _firstnameController.text;
               var lastname = _lastnameController.text;
-
-              int maxlength = 50;
-              if (username.isEmpty) {
-              var errorMessage = 'Please enter some text.';
-              _showErrorDialog(errorMessage);
-            } 
-            else if (password.isEmpty) {
-              var errorMessage = 'Please enter some text.';
-              _showErrorDialog(errorMessage);
-            } 
-            else if (username.length > maxlength) {
-                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
-                  _showErrorDialog(errorMessage);
-            }
-            else if (password.length > maxlength) {
-                  var errorMessage = 'The maximum length must be 50 characters or less. Please try again.';
-                  _showErrorDialog(errorMessage);
-            }
-            else if (_confirmpassController.text != _passwordController.text) {
-                  var errorMessage = 'Password Does Not Match';
-                  _showErrorDialog(errorMessage);
-            }
-            else{
-                  var response = await Authentication().register(username, password, firstname, lastname);
-                  if(response == 201)
-                    _showErrorDialog("Success! Your account was created. Log in now.");
-                  else if(response == 409)
-                    _showErrorDialog("That username is already registered. Please try to sign up using another username or log in if you already have an account.");  
-                  else {
-                    _showErrorDialog("An unknown error occurred.");
+              if (isValid()){
+                  await Authentication().register(username, password, firstname, lastname);
+                  _showSuccessDialog("Success! You are ready to log in now.");
+              } else {
+                    return;
                   }
-                }
+
             },
             child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF002179), 
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), 
+              primary: Color(0xFF0021cc), 
+              padding: EdgeInsets.symmetric(horizontal: 125, vertical: 20), 
             )
           ),
         ],

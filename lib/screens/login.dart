@@ -183,9 +183,8 @@ bool _passwordVisible = false;
                         style: TextStyle(color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF002179),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                         primary: Color(0xFF0021cc), 
+                         padding: EdgeInsets.symmetric(horizontal: 135, vertical: 20), 
                       )),
                 ],
               ),
