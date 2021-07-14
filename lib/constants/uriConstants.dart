@@ -17,4 +17,5 @@ class UriConstants {
       'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/trades/executeTrade/';
   final String getTradesUri =
       'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/trades/getTrades/';
+  final String getAddMoneyUri = 'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/accounts/updateAccountBalance';
 }
