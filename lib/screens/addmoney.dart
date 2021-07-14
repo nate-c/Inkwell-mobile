@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 
 
 void main() => runApp(MyAddMoney());
+
 
 
 class MyApp extends StatelessWidget {
@@ -41,10 +43,10 @@ class MyApp extends StatelessWidget {
         );
   }
 }
-
+ 
 class MyAddMoney extends StatefulWidget {
   MyAddMoney({Key? key}) : super(key: key);
-
+ 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -60,31 +62,47 @@ class MyAddMoney extends StatefulWidget {
 }
 
 TextEditingController _moneyamtController = TextEditingController();
+final storage = new FlutterSecureStorage();
 
-var amountDepositing; 
-var currentBalance;
-var userId;
 
-// Future<int> addmoney() async{
-//   Uri balance = Uri.parse(UriConstants().getAddMoneyUri);
-//   var currBal = await http.get(balance);
-//   var returnCurrBal = jsonDecode(currBal.toString());
-//   currentBalance = returnCurrBal['User']['amount'];
-//   print(currentBalance);
-//   amountDepositing = int.parse(_moneyamtController.text);
-//   var newBalance = currentBalance + amountDepositing; 
-//   print(newBalance);
-//   var response = await http.post(balance, body: {
-//     "user_id": userId,
-//     "amount": newBalance,
-//     } );
-//     return response.statusCode;
-// }
 
 class _MyAddMoneyState extends State<MyAddMoney> {
 
-  
+void _showSuccessDialog(String msg)
+  {
+    showDialog(
+        context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Color(0xFF011240),
+        title: Text('Success'),
+        titleTextStyle: TextStyle(color: Colors.red[300]),
+        content: Text(msg),
+        contentTextStyle: TextStyle(color: Colors.white),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Okay'),
+            onPressed: (){
+              Navigator.pushNamed(context, '/');
+            },
+          )
+        ],
+      )
+    );
+  }
+   
 
+Future<String?> addmoney(int? userId, int amount) async{
+  Uri balance = Uri.parse(UriConstants().getAddMoneyUri);
+  var response = await http.post(balance, body: {
+    "user_id": userId,
+    "amount": amount,
+    } );
+    if (response.statusCode == 200) {
+      _showSuccessDialog("\$" + amount.toString() +  " added into your account.");
+      return response.body;
+    }
+
+}
   @override
   Widget build(BuildContext context) {
    
@@ -170,9 +188,11 @@ class _MyAddMoneyState extends State<MyAddMoney> {
 class MoneyConfirmation extends StatelessWidget {
   MoneyConfirmation({Key? key}) : super(key: key);
 
+  
+
   @override
   Widget build(BuildContext context) {
-   
+  
     return Scaffold(
       backgroundColor: const Color(0xFF011240),
       appBar: AppBar(
@@ -212,8 +232,10 @@ class MoneyConfirmation extends StatelessWidget {
         width: 300,
         margin: new EdgeInsets.all(15),
         child: ElevatedButton(
-              onPressed: () {
-                
+              onPressed: () async {
+                var userId = await storage.read(key: "userId");
+                var amount = int.parse(_moneyamtController.text);
+                _MyAddMoneyState().addmoney(int.parse(userId!), amount);
               },
               child: Text('Deposit'.toUpperCase()),
               style: ElevatedButton.styleFrom(
