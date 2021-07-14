@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
+import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:provider/provider.dart';
 
 
@@ -59,18 +61,25 @@ class MyAddMoney extends StatefulWidget {
 
 TextEditingController _moneyamtController = TextEditingController();
 
-Future<int> addmoney(int amountDepositing, int currentBalance, int userId) async{
-  Uri balance = Uri.parse(UriConstants().getAddMoneyUri);
-  await http.get(balance);
-  amountDepositing = int.parse(_moneyamtController.text);
-  var newBalance = currentBalance + amountDepositing; 
-  
-  var response = await http.post(balance, body: {
-    "user_id": userId,
-    "amount": newBalance,
-    } );
-    return response.statusCode;
-}
+var amountDepositing; 
+var currentBalance;
+var userId;
+
+// Future<int> addmoney() async{
+//   Uri balance = Uri.parse(UriConstants().getAddMoneyUri);
+//   var currBal = await http.get(balance);
+//   var returnCurrBal = jsonDecode(currBal.toString());
+//   currentBalance = returnCurrBal['User']['amount'];
+//   print(currentBalance);
+//   amountDepositing = int.parse(_moneyamtController.text);
+//   var newBalance = currentBalance + amountDepositing; 
+//   print(newBalance);
+//   var response = await http.post(balance, body: {
+//     "user_id": userId,
+//     "amount": newBalance,
+//     } );
+//     return response.statusCode;
+// }
 
 class _MyAddMoneyState extends State<MyAddMoney> {
 
@@ -204,7 +213,7 @@ class MoneyConfirmation extends StatelessWidget {
         margin: new EdgeInsets.all(15),
         child: ElevatedButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
+                
               },
               child: Text('Deposit'.toUpperCase()),
               style: ElevatedButton.styleFrom(
