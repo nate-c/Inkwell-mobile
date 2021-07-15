@@ -85,7 +85,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
       "user_id": userId,
       "amount": amount,
     });
-    if (response.statusCode == 200) {
+   if (response.statusCode == 200) {
       _showSuccessDialog(
           "\$" + amount.toString() + " added into your account.");
       return response.body;
@@ -227,14 +227,8 @@ class MoneyConfirmation extends StatelessWidget {
                
                     var userId = await storage.read(key: "user_id");
                     var amount = _moneyamtController.text;
-                    var returnPayload = await _MyAddMoneyState().addmoney(userId!, amount);
-                    var returnPayloadObj = jsonDecode(returnPayload.toString());
-                    storage.write(
-                              key: "user_id",
-                              value: returnPayloadObj["User"]["user_id"]);
-                    storage.write(
-                              key: "amount",
-                              value: returnPayloadObj["User"]["amount"]);
+                    await _MyAddMoneyState().addmoney(userId!, amount);
+                   
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
