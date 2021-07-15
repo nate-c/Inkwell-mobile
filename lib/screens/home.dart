@@ -27,7 +27,7 @@ class Home extends StatefulWidget {
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
         // '/': (context) => MyApp(),
-        '/addmoney': (context) => MyAddMoney(),
+        '/addMoney': (context) => MyAddMoney(),
       },
     );
   }
@@ -111,7 +111,7 @@ class MyHomeState extends State<Home> {
               alignment: Alignment.centerRight,
               color: Colors.white,
               onPressed: () {
-                Navigator.pushNamed(context, '/addmoney');
+                Navigator.pushNamed(context, '/addMoney');
               },
               icon: const Icon(Icons.add)),
         ],
@@ -176,13 +176,13 @@ class MyHomeState extends State<Home> {
                           border: InputBorder.none),
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ))),
-            FloatingActionButton(
-              onPressed: () => {
-                print("moving to next page")
-                // Navigator.push(
-                //     context, MaterialPageRoute(builder: (context) => Add()))
+            FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.pushNamed(context, '/addMoney');
               },
-              child: const Icon(Icons.add),
+              label: const Text('Add Money'),
+              icon: const Icon(Icons.add),
+              backgroundColor: Color(0xFFFF0000),
             ),
             // Container(
             //     width: 300,
