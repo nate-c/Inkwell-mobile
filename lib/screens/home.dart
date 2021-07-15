@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 
+import 'addmoney.dart';
+
 void main() => runApp(Home());
 
 class Home extends StatefulWidget {
@@ -23,7 +25,7 @@ class Home extends StatefulWidget {
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
         // '/': (context) => MyApp(),
-        // '/register': (context) => MyLogin(),
+         '/addmoney': (context) => MyAddMoney(),
       },
     );
   }
@@ -35,6 +37,7 @@ class MyHomeState extends State<Home> {
   // final int _amount;
   // final int _investedValue;
   // final String _searchValue;
+  //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -47,11 +50,12 @@ class MyHomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         actions: <Widget>[
           IconButton(
+            alignment: Alignment.centerRight,
               color: Colors.white,
               onPressed: () {
-                Navigator.pushNamed(context, '/');
+                Navigator.pushNamed(context, '/addmoney');
               },
-              icon: const Icon(Icons.arrow_back)),
+              icon: const Icon(Icons.add)),
         ],
       ),
       backgroundColor: const Color(0xFF011240),
