@@ -7,6 +7,7 @@ import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
+import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:provider/provider.dart';
 
@@ -25,16 +26,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       home: MyAddMoney(),
-      initialRoute: '/',
-      routes: {
-        // '/': (context) => MyHomePage(title: 'Inkwell'),
-        '/login': (context) => MyLogin(),
-        '/register': (context) => MyRegistration(),
-        '/home': (context) => Home(),
-        // '/company': (context) => MyRegistration(),
-        // '/completedTrade': (context) => MyRegistration(),
-        // '/profile': (context) => MyRegistration(),
-      },
+      
     );
   }
 }

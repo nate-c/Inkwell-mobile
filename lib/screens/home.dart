@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
+import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/tickerSearchObject.dart';
 import 'addmoney.dart';
@@ -23,12 +24,7 @@ class Home extends StatefulWidget {
               displayColor: Colors.white,
             ),
       ),
-      initialRoute: '/',
-      routes: {
-        // '/': (context) => MyHomePage(title: 'Inkwell'),
-        // '/': (context) => MyApp(),
-        '/addMoney': (context) => MyAddMoney(),
-      },
+     
     );
   }
 }

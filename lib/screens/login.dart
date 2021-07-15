@@ -5,6 +5,7 @@ import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import '../utils/authentication.dart';
 import '../models/User.dart';
+import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../main.dart';
@@ -26,12 +27,7 @@ Widget build(BuildContext context) {
             displayColor: Colors.white,
           ),
     ),
-    initialRoute: '/',
-    routes: {
-      // '/': (context) => MyHomePage(title: 'Inkwell'),
-      '/': (context) => MyApp(),
-      '/register': (context) => MyRegistration(),
-    },
+    
   );
 }
 
