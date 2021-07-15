@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             // '/': (context) => MyHomePage(title: 'Inkwell'),
             '/login': (context) => MyLogin(),
             '/register': (context) => MyRegistration(),
-            '/addmoney': (context) => MyAddMoney(),
+            '/addMoney': (context) => MyAddMoney(),
             '/home': (context) => Home(),
             // '/company': (context) => MyRegistration(),
             // '/completedTrade': (context) => MyRegistration(),
@@ -121,13 +121,13 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text('Register'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
-                Navigator.pushNamed(context, '/addmoney');
-              },
-              child: Text('Add Money'),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     // Navigator.push(context, MaterialPageRoute(builder: (context) =>MyLogin()));
+            //     Navigator.pushNamed(context, '/addmoney');
+            //   },
+            //   child: Text('Add Money'),
+            // ),
           ],
         ),
       ),
