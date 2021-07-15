@@ -79,9 +79,9 @@ class _MyAddMoneyState extends State<MyAddMoney> {
             ));
   }
 
-  Future<String?> addmoney(int? userId, int amount) async {
-    Uri balance = Uri.parse(UriConstants.getAddMoneyUri);
-    var response = await http.post(balance, body: {
+  Future<String?> addmoney(String userId, String amount) async {
+    Uri addMoney = Uri.parse(UriConstants.getAddMoneyUri);
+    var response = await http.post(addMoney, body: {
       "user_id": userId,
       "amount": amount,
     });
@@ -224,9 +224,17 @@ class MoneyConfirmation extends StatelessWidget {
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
                   onPressed: () async {
-                    var userId = await storage.read(key: "userId");
-                    var amount = int.parse(_moneyamtController.text);
-                    _MyAddMoneyState().addmoney(int.parse(userId!), amount);
+               
+                    var userId = await storage.read(key: "user_id");
+                    var amount = _moneyamtController.text;
+                    var returnPayload = await _MyAddMoneyState().addmoney(userId!, amount);
+                    var returnPayloadObj = jsonDecode(returnPayload.toString());
+                    storage.write(
+                              key: "user_id",
+                              value: returnPayloadObj["User"]["user_id"]);
+                    storage.write(
+                              key: "amount",
+                              value: returnPayloadObj["User"]["amount"]);
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(

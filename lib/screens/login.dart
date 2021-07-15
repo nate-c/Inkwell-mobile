@@ -172,10 +172,10 @@ class MyLoginState extends State<MyLogin> {
                               value: returnPayloadObj["User"]["username"]);
                           storage.write(
                               key: "user_id",
-                              value: returnPayloadObj["User"]["user_id"]);
+                              value: returnPayloadObj["User"]["user_id"].toString());
                           storage.write(
                               key: "amount",
-                              value: returnPayloadObj["User"]["amount"]);
+                              value: returnPayloadObj["User"]["amount"].toString());
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
