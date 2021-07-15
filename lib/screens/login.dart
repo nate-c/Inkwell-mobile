@@ -168,6 +168,15 @@ class MyLoginState extends State<MyLogin> {
                           var jwt = returnPayloadObj["token"];
                           storage.write(key: "jwt", value: jwt);
                           storage.write(
+                              key: "username",
+                              value: returnPayloadObj["User"]["username"]);
+                          storage.write(
+                              key: "user_id",
+                              value: returnPayloadObj["User"]["user_id"]);
+                          storage.write(
+                              key: "amount",
+                              value: returnPayloadObj["User"]["amount"]);
+                          storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
 
