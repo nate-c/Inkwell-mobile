@@ -8,7 +8,7 @@ class Authentication with ChangeNotifier {
 
   Future<int> register(String username, String password, String firstname,
       String lastname) async {
-    Uri uriReg = Uri.parse(UriConstants().registerUri);
+    Uri uriReg = Uri.parse(UriConstants.registerUri);
 
     var response = await http.post(uriReg, body: {
       'un': username,
@@ -20,7 +20,7 @@ class Authentication with ChangeNotifier {
   }
 
   Future<String?> logIn(String username, String password) async {
-    Uri uriLog = Uri.parse(UriConstants().authUri);
+    Uri uriLog = Uri.parse(UriConstants.authUri);
 
     var response = await http.post(uriLog, body: {
       'un': username,

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
+import '../constants/uriConstants.dart';
 
 import 'addmoney.dart';
 
@@ -35,14 +36,28 @@ class Home extends StatefulWidget {
 class MyHomeState extends State<Home> {
   // User _user;
   // final int _amount;
-  // final int _investedValue;
+  final int _investedValue;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
 
   @override
-  void initState() {}
+  void initState() {
+    getUserAccountBalance();
+  }
+  getUserAccountBalance(){
+    
+    Uri uriReg = Uri.parse(UriConstants.);
 
+    var response = await http.post(uriReg, body: {
+      'un': username,
+      'pw': password,
+      'firstName': firstname,
+      'lastName': lastname,
+    });
+    return response.statusCode;
+  }
+  }
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
