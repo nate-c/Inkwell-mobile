@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../models/tickerSearchObject.dart';
 import 'addmoney.dart';
 
 void main() => runApp(Home());
@@ -26,7 +27,7 @@ class Home extends StatefulWidget {
       routes: {
         // '/': (context) => MyHomePage(title: 'Inkwell'),
         // '/': (context) => MyApp(),
-         '/addmoney': (context) => MyAddMoney(),
+        '/addmoney': (context) => MyAddMoney(),
       },
     );
   }
@@ -34,30 +35,72 @@ class Home extends StatefulWidget {
 
 @override
 class MyHomeState extends State<Home> {
-  // User _user;
+  // final User _user;
+  String? _token;
   // final int _amount;
-  final int _investedValue;
+  int? _investedValue;
+  // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
+  final storage = new FlutterSecureStorage();
 
   @override
   void initState() {
-    getUserAccountBalance();
+    // getUserInvestments();
+    setInitialStateVariables();
   }
-  getUserAccountBalance(){
-    
-    Uri uriReg = Uri.parse(UriConstants.);
 
-    var response = await http.post(uriReg, body: {
-      'un': username,
-      'pw': password,
-      'firstName': firstname,
-      'lastName': lastname,
+  getUserInvestments() async {
+    var token = await storage.read(key: 'token');
+    var userName = await storage.read(key: 'username');
+    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
+
+    var response = await http.post(uriReg, headers: {
+      'authorization': token.toString()
+    }, body: {
+      'username': userName,
     });
-    return response.statusCode;
+    if (response.statusCode == 200) {
+      setState(() {
+        _investedValue = 1;
+      });
+    }
   }
+
+  setInitialStateVariables() async {
+    var amount = await storage.read(key: 'amount');
+    var token = await storage.read(key: 'token');
+
+    setState(() {
+      _investedValue = int.parse(amount.toString());
+      _token = token.toString();
+    });
   }
+
+  search() async {
+    // var token = await storage.read(key: 'token');
+    Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
+    // String searchText = _searchController.text;
+
+    var response = await http.post(uriReg, headers: {
+      'authorization': _token.toString()
+    }, body: {
+      'searchString': _searchController.text,
+    });
+    if (response.statusCode == 200) {
+      print(response.body);
+      // var jsonResponse = convert.jsonDecode(response.body);
+      var resultsArray = [];
+      // for(int i = 0; i < response.body.; i++){
+
+      // }
+      //   (for var item in response.data.data){
+      //     TickerSearchObject t = new TickerSearchObject(item.ticker, item.name);
+      //   }
+    }
+  }
+
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
@@ -65,7 +108,7 @@ class MyHomeState extends State<Home> {
         backgroundColor: Colors.transparent,
         actions: <Widget>[
           IconButton(
-            alignment: Alignment.centerRight,
+              alignment: Alignment.centerRight,
               color: Colors.white,
               onPressed: () {
                 Navigator.pushNamed(context, '/addmoney');
