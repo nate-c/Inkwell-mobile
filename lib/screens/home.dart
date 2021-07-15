@@ -176,6 +176,14 @@ class MyHomeState extends State<Home> {
                           border: InputBorder.none),
                       style: TextStyle(color: Colors.white, fontSize: 15),
                     ))),
+            FloatingActionButton(
+              onPressed: () => {
+                print("moving to next page")
+                // Navigator.push(
+                //     context, MaterialPageRoute(builder: (context) => Add()))
+              },
+              child: const Icon(Icons.add),
+            ),
             // Container(
             //     width: 300,
             //     margin: new EdgeInsets.all(15),
