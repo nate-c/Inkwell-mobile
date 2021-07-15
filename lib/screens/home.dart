@@ -1,5 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
@@ -20,8 +21,8 @@ class Home extends StatefulWidget {
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
+              bodyColor: ColorConstants.bodyText,
+              displayColor: ColorConstants.bodyText,
             ),
       ),
      
@@ -101,18 +102,18 @@ class MyHomeState extends State<Home> {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: ColorConstants.appBarBackground,
         actions: <Widget>[
           IconButton(
               alignment: Alignment.centerRight,
-              color: Colors.white,
+              color: ColorConstants.bodyText,
               onPressed: () {
                 Navigator.pushNamed(context, '/addMoney');
               },
               icon: const Icon(Icons.add)),
         ],
       ),
-      backgroundColor: const Color(0xFF011240),
+      backgroundColor: ColorConstants.background,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +144,7 @@ class MyHomeState extends State<Home> {
             Container(
                 width: 300,
                 margin: new EdgeInsets.all(15),
-                color: const Color(0xFF071A4A),
+                color: ColorConstants.textFieldBox,
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                   // child: TextFormField(
@@ -161,16 +162,16 @@ class MyHomeState extends State<Home> {
             Container(
                 width: 300,
                 margin: new EdgeInsets.all(15),
-                color: const Color(0xFF071A4A),
+                color: ColorConstants.textFieldBox,
                 child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     child: TextFormField(
                       controller: _searchController,
                       decoration: InputDecoration(
                           labelText: "Search by company names or ticker...",
-                          labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                          labelStyle: TextStyle(color: ColorConstants.textInTextField),
                           border: InputBorder.none),
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
                     ))),
             FloatingActionButton.extended(
               onPressed: () {
@@ -178,7 +179,7 @@ class MyHomeState extends State<Home> {
               },
               label: const Text('Add Money'),
               icon: const Icon(Icons.add),
-              backgroundColor: Color(0xFFFF0000),
+              backgroundColor: ColorConstants.button,
             ),
             // Container(
             //     width: 300,

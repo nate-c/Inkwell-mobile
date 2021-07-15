@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
@@ -21,8 +22,8 @@ class MyApp extends StatelessWidget {
       title: 'Deposit Money to Inkwell',
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
+              bodyColor: ColorConstants.bodyText,
+              displayColor: ColorConstants.bodyText,
             ),
       ),
       home: MyAddMoney(),
@@ -57,9 +58,9 @@ class _MyAddMoneyState extends State<MyAddMoney> {
         builder: (ctx) => AlertDialog(
               backgroundColor: Color(0xFF011240),
               title: Text('Success'),
-              titleTextStyle: TextStyle(color: Colors.red[300]),
+              titleTextStyle: TextStyle(color: ColorConstants.greenLink),
               content: Text(msg),
-              contentTextStyle: TextStyle(color: Colors.white),
+              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
                   child: Text('Okay'),
@@ -87,11 +88,11 @@ class _MyAddMoneyState extends State<MyAddMoney> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF011240),
+        backgroundColor: ColorConstants.background,
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          backgroundColor: Colors.transparent,
+          backgroundColor: ColorConstants.appBarBackground,
           title: Text('Deposit Money to Inkwell'),
         ),
         body: Center(
@@ -104,7 +105,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 width: 300,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 margin: new EdgeInsets.all(15),
-                color: const Color(0xFF071A4A),
+                color: ColorConstants.textFieldBox,
                 child: TextFormField(
                     style: TextStyle(
                       fontSize: 30.0,
@@ -115,11 +116,11 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
                       border: InputBorder.none,
                       prefixText: "\$ ",
-                      prefixStyle: TextStyle(color: Colors.white, fontSize: 24),
+                      prefixStyle: TextStyle(color: ColorConstants.bodyText, fontSize: 24),
                       hintText: "0.00",
-                      hintStyle: TextStyle(color: Colors.white70, fontSize: 24),
+                      hintStyle: TextStyle(color: ColorConstants.textInTextField, fontSize: 24),
                       labelText: "Enter Money Amount",
-                      labelStyle: TextStyle(color: Colors.white, fontSize: 21),
+                      labelStyle: TextStyle(color: ColorConstants.bodyText, fontSize: 21),
                     )),
               ),
               Column(
@@ -131,14 +132,14 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                     width: 300,
                     child: Text(
                       'From [Insert Bank]'.toUpperCase(),
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
                     ),
                   ),
                   InkWell(
                     child: Text(
                       'Change Bank'.toUpperCase(),
                       style: TextStyle(
-                          color: const Color(0xFF05F240), fontSize: 15),
+                          color: ColorConstants.greenLink, fontSize: 15),
                     ),
                     onTap: () {
                       //Insert way to change bank
@@ -158,7 +159,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                   },
                   child: Text('Confirm'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF002179),
+                    primary: ColorConstants.button,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   ),
                 ),
@@ -176,11 +177,11 @@ class MoneyConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF011240),
+        backgroundColor: ColorConstants.background,
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-          backgroundColor: Colors.transparent,
+          backgroundColor: ColorConstants.appBarBackground,
           title: Text('Summary'),
         ),
         body: Center(
@@ -206,7 +207,7 @@ class MoneyConfirmation extends StatelessWidget {
                     width: 300,
                     child: Text(
                       'From [Insert Bank] to Inkwell account'.toUpperCase(),
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color:ColorConstants.bodyText, fontSize: 15),
                     ),
                   ),
                 ],
@@ -224,7 +225,7 @@ class MoneyConfirmation extends StatelessWidget {
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF002179),
+                    primary: ColorConstants.button,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                   ),
                 ),

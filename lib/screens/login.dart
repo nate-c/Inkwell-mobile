@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import '../utils/authentication.dart';
@@ -23,8 +24,8 @@ Widget build(BuildContext context) {
   return MaterialApp(
     theme: ThemeData(
       textTheme: Theme.of(context).textTheme.apply(
-            bodyColor: Colors.white,
-            displayColor: Colors.white,
+            bodyColor: ColorConstants.bodyText,
+            displayColor: ColorConstants.bodyText,
           ),
     ),
     
@@ -46,11 +47,11 @@ class MyLoginState extends State<MyLogin> {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              backgroundColor: Color(0xFF011240),
+              backgroundColor: ColorConstants.background,
               title: Text('An Error Occured'),
               content: Text(msg),
-              titleTextStyle: TextStyle(color: Colors.red[300]),
-              contentTextStyle: TextStyle(color: Colors.white),
+              titleTextStyle: TextStyle(color: ColorConstants.errorText),
+              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
                   child: Text('Okay'),
@@ -69,17 +70,12 @@ class MyLoginState extends State<MyLogin> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: ColorConstants.appBarBackground,
           actions: <Widget>[
-            IconButton(
-                color: Colors.blue,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/');
-                },
-                icon: const Icon(Icons.arrow_back)),
+            
           ],
         ),
-        backgroundColor: const Color(0xFF011240),
+        backgroundColor: ColorConstants.background,
         body: Center(
             key: _formKey,
             child: Form(
@@ -103,7 +99,7 @@ class MyLoginState extends State<MyLogin> {
                   Container(
                       width: 300,
                       margin: new EdgeInsets.all(15),
-                      color: const Color(0xFF071A4A),
+                      color: ColorConstants.textFieldBox,
                       child: Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -111,9 +107,9 @@ class MyLoginState extends State<MyLogin> {
                             controller: _usernameController,
                             decoration: InputDecoration(
                                 labelText: "Username",
-                                labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                                labelStyle: TextStyle(color: ColorConstants.textInTextField),
                                 border: InputBorder.none),
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
                           ))),
                   Container(
                       width: 300,
@@ -127,7 +123,7 @@ class MyLoginState extends State<MyLogin> {
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                                 labelText: "Password",
-                                labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
+                                labelStyle: TextStyle(color: ColorConstants.textInTextField),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     // Based on passwordVisible state choose the icon
@@ -144,7 +140,7 @@ class MyLoginState extends State<MyLogin> {
                                   },
                                 ),
                                 border: InputBorder.none),
-                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
                           ))),
                   ElevatedButton(
                       onPressed: () async {
@@ -186,10 +182,10 @@ class MyLoginState extends State<MyLogin> {
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: ColorConstants.bodyText),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF002179),
+                        primary: ColorConstants.button,
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       )),

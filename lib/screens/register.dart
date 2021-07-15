@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import '../main.dart';
@@ -18,8 +19,8 @@ class MyRegistration extends StatefulWidget {
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
-        bodyColor: Colors.white,
-        displayColor: Colors.white,
+        bodyColor: ColorConstants.bodyText,
+        displayColor: ColorConstants.bodyText,
         ),
       ),
       initialRoute: '/',
@@ -53,11 +54,11 @@ class MyRegistrationState extends State<MyRegistration> {
     showDialog(
         context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: Color(0xFF011240),
+        backgroundColor: ColorConstants.background,
         title: Text('An Error Occured'),
-        titleTextStyle: TextStyle(color: Colors.red[300]),
+        titleTextStyle: TextStyle(color: ColorConstants.errorText),
         content: Text(msg),
-        contentTextStyle: TextStyle(color: Colors.white),
+        contentTextStyle: TextStyle(color: ColorConstants.bodyText),
         actions: <Widget>[
           TextButton(
             child: Text('Okay'),
@@ -80,17 +81,11 @@ class MyRegistrationState extends State<MyRegistration> {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar( 
-        backgroundColor: Colors.transparent,
+        backgroundColor: ColorConstants.appBarBackground,
         actions: <Widget> [
-          IconButton(
-            color: Colors.white,
-                onPressed: (){ 
-                    Navigator.pushNamed(context, '/');
-                    }, 
-                    icon: const Icon(Icons.arrow_back)),
-        ],
+       ],
       ),
-      backgroundColor: const Color(0xFF011240),
+      backgroundColor: ColorConstants.background,
       
         body: Center(
         child: SingleChildScrollView(  
@@ -118,62 +113,62 @@ class MyRegistrationState extends State<MyRegistration> {
           Container(
             width: 300,
             margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
+            color: ColorConstants.textFieldBox,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 controller: _firstnameController,
                 decoration: InputDecoration(
                   labelText: "First Name", 
-                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelStyle: TextStyle(color: ColorConstants.textInTextField), 
                   border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
+        style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
     
         ))),
           
         Container(
             width: 300,
             margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
+            color: ColorConstants.textFieldBox,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 controller: _lastnameController,
                 decoration: InputDecoration(
                   labelText: "Last Name", 
-                  labelStyle: TextStyle(color: Color(0xFFF2F2F2)), 
+                  labelStyle: TextStyle(color: ColorConstants.textInTextField), 
                   border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
+        style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
        
         ))),
 
         Container(
             width: 300,
             margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
+            color: ColorConstants.textFieldBox,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
                 controller: _usernameController,
                 decoration: InputDecoration(
                   suffixText: "*",
-                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  suffixStyle: TextStyle(color: ColorConstants.errorText),
                   labelText: "Username", 
-                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  labelStyle:  TextStyle(color: ColorConstants.textInTextField),
                   hintText: "Enter a Username", 
-                  hintStyle: TextStyle(color: Colors.blue[200]),
+                  hintStyle: TextStyle(color: ColorConstants.hintText),
                   border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
+        style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
         
         ))),
 
         Container(
             width: 300,
             margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
+            color: ColorConstants.textFieldBox,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
@@ -181,11 +176,11 @@ class MyRegistrationState extends State<MyRegistration> {
                 obscureText: !_passwordVisible,
                 decoration: InputDecoration(
                   labelText: "Password", 
-                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  labelStyle:  TextStyle(color: ColorConstants.bodyText),
                   hintText: "Enter a Password", 
-                  hintStyle: TextStyle(color: Colors.blue[200]), 
+                  hintStyle: TextStyle(color: ColorConstants.hintText), 
                   suffixText: "*",
-                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  suffixStyle: TextStyle(color: ColorConstants.errorText),
                   suffixIcon: IconButton(
                     icon: Icon(
                       // Based on passwordVisible state choose the icon
@@ -204,14 +199,14 @@ class MyRegistrationState extends State<MyRegistration> {
           
                   border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
+        style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
         
         ))),
       
        Container(
             width: 300,
             margin: new EdgeInsets.all(15),
-            color: const Color(0xFF071A4A),
+            color: ColorConstants.textFieldBox,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               child: TextFormField(
@@ -226,9 +221,9 @@ class MyRegistrationState extends State<MyRegistration> {
                   },
                 decoration: InputDecoration(
                   labelText: "Confirm Password",
-                  labelStyle:  TextStyle(color: Color(0xFFF2F2F2)),
+                  labelStyle:  TextStyle(color: ColorConstants.textInTextField),
                   suffixText: "*",
-                  suffixStyle: TextStyle(color: Color(0xFFF13D3C)),
+                  suffixStyle: TextStyle(color: ColorConstants.errorText),
                   suffixIcon: IconButton(
                     icon: Icon(
                       // Based on passwordVisible state choose the icon
@@ -247,7 +242,7 @@ class MyRegistrationState extends State<MyRegistration> {
           
                   border: InputBorder.none
         ),
-        style: TextStyle(color: Colors.white, fontSize: 15),
+        style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
       
           //TODO: write function to check if passwords match
         
@@ -291,9 +286,9 @@ class MyRegistrationState extends State<MyRegistration> {
                   }
                 }
             },
-            child: Text('Register'.toUpperCase(), style: TextStyle(color: Colors.white),),
+            child: Text('Register'.toUpperCase(), style: TextStyle(color: ColorConstants.bodyText),),
             style: ElevatedButton.styleFrom(
-              primary: Color(0xFF002179), 
+              primary: ColorConstants.button, 
               padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20), 
             )
           ),
