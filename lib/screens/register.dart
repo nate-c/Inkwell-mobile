@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../main.dart';
 import '../utils/authentication.dart';
 
@@ -271,13 +272,14 @@ class MyRegistrationState extends State<MyRegistration> {
                     var password = _passwordController.text;
                     var firstname = _firstnameController.text;
                     var lastname = _lastnameController.text;
+                    
+                    var response = await Authentication().register(username, password, firstname, lastname);
                     if (isValid()) {
-                      await Authentication()
-                          .register(username, password, firstname, lastname);
                       _showSuccessDialog(
                           "Success! You are ready to log in now.");
                     } else {
-                      return;
+                      Error().errorHandling(response);
+                      
                     }
                   },
                   child: Text(
