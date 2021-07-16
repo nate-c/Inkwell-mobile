@@ -28,7 +28,6 @@ Widget build(BuildContext context) {
             displayColor: ColorConstants.bodyText,
           ),
     ),
-    
   );
 }
 
@@ -71,9 +70,7 @@ class MyLoginState extends State<MyLogin> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: ColorConstants.appBarBackground,
-          actions: <Widget>[
-            
-          ],
+          actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,
         body: Center(
@@ -107,9 +104,11 @@ class MyLoginState extends State<MyLogin> {
                             controller: _usernameController,
                             decoration: InputDecoration(
                                 labelText: "Username",
-                                labelStyle: TextStyle(color: ColorConstants.textInTextField),
+                                labelStyle: TextStyle(
+                                    color: ColorConstants.textInTextField),
                                 border: InputBorder.none),
-                            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+                            style: TextStyle(
+                                color: ColorConstants.bodyText, fontSize: 15),
                           ))),
                   Container(
                       width: 300,
@@ -123,7 +122,8 @@ class MyLoginState extends State<MyLogin> {
                             obscureText: !_passwordVisible,
                             decoration: InputDecoration(
                                 labelText: "Password",
-                                labelStyle: TextStyle(color: ColorConstants.textInTextField),
+                                labelStyle: TextStyle(
+                                    color: ColorConstants.textInTextField),
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     // Based on passwordVisible state choose the icon
@@ -140,7 +140,8 @@ class MyLoginState extends State<MyLogin> {
                                   },
                                 ),
                                 border: InputBorder.none),
-                            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+                            style: TextStyle(
+                                color: ColorConstants.bodyText, fontSize: 15),
                           ))),
                   ElevatedButton(
                       onPressed: () async {
@@ -164,10 +165,12 @@ class MyLoginState extends State<MyLogin> {
                               value: returnPayloadObj["User"]["username"]);
                           storage.write(
                               key: "user_id",
-                              value: returnPayloadObj["User"]["user_id"].toString());
+                              value: returnPayloadObj["User"]["user_id"]
+                                  .toString());
                           storage.write(
                               key: "amount",
-                              value: returnPayloadObj["User"]["amount"].toString());
+                              value: returnPayloadObj["User"]["amount"]
+                                  .toString());
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
