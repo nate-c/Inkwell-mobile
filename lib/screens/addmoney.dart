@@ -52,37 +52,17 @@ TextEditingController _moneyamtController = TextEditingController();
 final storage = new FlutterSecureStorage();
 
 class _MyAddMoneyState extends State<MyAddMoney> {
-  void _showSuccessDialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              backgroundColor: Color(0xFF011240),
-              title: Text('Success'),
-              titleTextStyle: TextStyle(color: ColorConstants.greenLink),
-              content: Text(msg),
-              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/');
-                  },
-                )
-              ],
-            ));
-  }
+  
 
-  Future<String?> addmoney(String userId, String amount) async {
+  // ignore: non_constant_identifier_names
+  Future<int?> addmoney(int userId, int amount) async {
     Uri addMoney = Uri.parse(UriConstants.getAddMoneyUri);
     var response = await http.post(addMoney, body: {
-      "user_id": userId,
-      "amount": amount,
+      "user_id": userId.toString(),
+      "amount": amount.toString(),
     });
-   if (response.statusCode == 200) {
-      _showSuccessDialog(
-          "\$" + amount.toString() + " added into your account.");
-      return response.body;
-    }
+   
+      return response.statusCode;
   }
 
   @override
@@ -176,6 +156,25 @@ class MoneyConfirmation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showSuccessDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              backgroundColor: Color(0xFF011240),
+              title: Text('Success'),
+              titleTextStyle: TextStyle(color: ColorConstants.greenLink),
+              content: Text(msg),
+              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Okay'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                )
+              ],
+            ));
+  }
     return Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
@@ -217,10 +216,15 @@ class MoneyConfirmation extends StatelessWidget {
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
                   onPressed: () async {
-               
-                    var userId = await storage.read(key: "user_id");
-                    var amount = _moneyamtController.text;
-                    await _MyAddMoneyState().addmoney(userId!, amount);
+                    String? user = await storage.read(key: 'user_id');
+                    int userId = int.parse(user!);
+                    int amount = int.parse(_moneyamtController.text);
+                    var response = await _MyAddMoneyState().addmoney(userId, amount);
+                    if (response == 200) {
+                    _showSuccessDialog("\$" + amount.toString() + " added into your account.");
+                    print(response);
+                    
+                  }
                    
                   },
                   child: Text('Deposit'.toUpperCase()),
