@@ -103,7 +103,26 @@ class MyHomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarBackground,
+        
         actions: <Widget>[
+          Drawer(
+            child: ListView(
+              children: <Widget>[
+                ListTile(
+                  title: Text("Add Money"),
+                  onTap: () {
+                     Navigator.pushNamed(context, '/addMoney');
+                  },
+                ),
+                ListTile(
+                  title: Text("My Profile"),
+                  onTap: () {
+                     Navigator.pushNamed(context, '/myprofile');
+                  },
+                ),
+              ],
+            ),
+          ),
           IconButton(
               alignment: Alignment.centerRight,
               color: ColorConstants.bodyText,

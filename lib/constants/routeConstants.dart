@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/login.dart';
+import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart'; 
 
 class RoutesConstants extends StatelessWidget {
@@ -14,6 +15,7 @@ class RoutesConstants extends StatelessWidget {
     '/register': (context) => MyRegistration(),
      '/login': (context) => MyLogin(),
      '/moneyConfirmation' : (context) => MoneyConfirmation(),
+     '/myprofile' : (context) => MyProfile(),
   });
 
   }
