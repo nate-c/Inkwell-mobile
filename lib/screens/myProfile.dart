@@ -51,7 +51,7 @@ class MyProfileState extends State<MyProfile> {
   getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
+    Uri uriReg = Uri.parse(UriConstants().getUserInvestments);
 
     var response = await http.post(uriReg, headers: {
       'authorization': token.toString()
@@ -77,7 +77,7 @@ class MyProfileState extends State<MyProfile> {
 
   search() async {
     // var token = await storage.read(key: 'token');
-    Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
+    Uri uriReg = Uri.parse(UriConstants().getFilteredTickersUri);
     // String searchText = _searchController.text;
 
     var response = await http.post(uriReg, headers: {

@@ -162,7 +162,7 @@ class MyLoginState extends State<MyLogin> {
                           storage.write(key: "jwt", value: jwt);
                           storage.write(
                               key: "username",
-                              value: returnPayloadObj["User"]["username"]);
+                              value: returnPayloadObj["User"]["username"].toString());
                           storage.write(
                               key: "user_id",
                               value: returnPayloadObj["User"]["user_id"]

@@ -57,7 +57,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
 
   // ignore: non_constant_identifier_names
   Future<int?> addmoney(int userId, int amount) async {
-    Uri addMoney = Uri.parse(UriConstants.getAddMoneyUri);
+    Uri addMoney = Uri.parse(UriConstants().getAddMoneyUri);
     var response = await http.post(addMoney, body: {
       "user_id": userId.toString(),
       "amount": amount.toString(),

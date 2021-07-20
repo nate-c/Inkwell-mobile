@@ -51,7 +51,7 @@ class MyHomeState extends State<Home> {
   getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
+    Uri uriReg = Uri.parse(UriConstants().getUserInvestments);
 
     var response = await http.post(uriReg, headers: {
       'authorization': token.toString()
@@ -77,7 +77,7 @@ class MyHomeState extends State<Home> {
 
   search() async {
     // var token = await storage.read(key: 'token');
-    Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
+    Uri uriReg = Uri.parse(UriConstants().getFilteredTickersUri);
     // String searchText = _searchController.text;
 
     var response = await http.post(uriReg, headers: {
@@ -105,24 +105,7 @@ class MyHomeState extends State<Home> {
         backgroundColor: ColorConstants.appBarBackground,
         
         actions: <Widget>[
-          Drawer(
-            child: ListView(
-              children: <Widget>[
-                ListTile(
-                  title: Text("Add Money"),
-                  onTap: () {
-                     Navigator.pushNamed(context, '/addMoney');
-                  },
-                ),
-                ListTile(
-                  title: Text("My Profile"),
-                  onTap: () {
-                     Navigator.pushNamed(context, '/myprofile');
-                  },
-                ),
-              ],
-            ),
-          ),
+          
           IconButton(
               alignment: Alignment.centerRight,
               color: ColorConstants.bodyText,
@@ -130,6 +113,14 @@ class MyHomeState extends State<Home> {
                 Navigator.pushNamed(context, '/addMoney');
               },
               icon: const Icon(Icons.add)),
+
+              IconButton(
+              alignment: Alignment.centerRight,
+              color: ColorConstants.bodyText,
+              onPressed: () {
+                Navigator.pushNamed(context, '/myprofile');
+              },
+              icon: const Icon(Icons.person),)
         ],
       ),
       backgroundColor: ColorConstants.background,
