@@ -10,6 +10,7 @@ import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyAddMoney());
@@ -220,10 +221,9 @@ class MoneyConfirmation extends StatelessWidget {
                     int userId = int.parse(user!);
                     int amount = int.parse(_moneyamtController.text);
                     var response = await _MyAddMoneyState().addmoney(userId, amount);
+                    Error().errorHandling(response!);
                     if (response == 200) {
                     _showSuccessDialog("\$" + amount.toString() + " added into your account.");
-                    print(response);
-                    
                   }
                    
                   },
