@@ -64,12 +64,12 @@ class _MyAddMoneyState extends State<MyAddMoney> {
   // ignore: non_constant_identifier_names
   Future addmoney(int userId, int amount) async {
     Uri addMoney = Uri.parse(UriConstants.addMoneyUri);
-    var response = await http.post(addMoney, body: {
+    Response response = await http.post(addMoney, body: {
       "user_id": userId.toString(),
       "amount": amount.toString(),
     });
    
-      return response.statusCode;
+      return response;
   }
 
   @override
@@ -224,14 +224,15 @@ class MoneyConfirmation extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     String? user = await storage.read(key: 'user_id');
-                    int userId = int.parse(user!);
-                    int amount = int.parse(_moneyamtController.text);
-                    var response = await _MyAddMoneyState().addmoney(userId, amount);
-                    ResponseHandler().handleError(response);
-                    if (response == 200) {
+                    var userId = int.parse(user!);
+                    var amount = int.parse(_moneyamtController.text);
+                    Response response = await _MyAddMoneyState().addmoney(userId, amount);
+                   
+                    if (response.statusCode == 200) {
                     _showSuccessDialog("\$" + amount.toString() + " added into your account.");
+                    Navigator.pushNamed(context, RoutesConstants.homeRoute);
                   }
-                  Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                   ResponseHandler().handleError(response);
                    
                   },
                   child: Text('Deposit'.toUpperCase()),

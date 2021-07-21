@@ -4,9 +4,9 @@ import 'package:http/http.dart';
 
 class ResponseHandler {
 
-  handleError(int response) async {
+  handleError(Response response) async {
    
-   var statusNum = response; 
+   var statusNum = response.statusCode; 
 
    switch(statusNum){
      case 200: {print(response);}
