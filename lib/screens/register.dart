@@ -97,7 +97,10 @@ class MyRegistrationState extends State<MyRegistration> {
       _showErrorDialog('Please enter some text.');
       return false;
     }
-    if (password.length > 60 || username.length > 50 || firstname.length > 50 || lastname.length > 50) {
+    if (password.length > 60 ||
+        username.length > 50 ||
+        firstname.length > 50 ||
+        lastname.length > 50) {
       _showErrorDialog(
           'The maximum length must be 50 characters or less. Please try again.');
       return false;
@@ -143,7 +146,8 @@ class MyRegistrationState extends State<MyRegistration> {
                 child: Text("Have an account? Log in.",
                     style: TextStyle(fontSize: 15),
                     textAlign: TextAlign.center),
-                onTap: () => Navigator.pushNamed(context, RoutesConstants.loginRoute),
+                onTap: () =>
+                    Navigator.pushNamed(context, RoutesConstants.loginRoute),
               ),
               Container(
                   width: 300,
@@ -272,14 +276,14 @@ class MyRegistrationState extends State<MyRegistration> {
                     var password = _passwordController.text;
                     var firstname = _firstnameController.text;
                     var lastname = _lastnameController.text;
-                    
-                    var response = await Authentication().register(username, password, firstname, lastname);
+
+                    var response = await Authentication()
+                        .register(username, password, firstname, lastname);
                     if (isValid()) {
                       _showSuccessDialog(
                           "Success! You are ready to log in now.");
                     } else {
                       ResponseHandler().handleError(response);
-                      
                     }
                   },
                   child: Text(

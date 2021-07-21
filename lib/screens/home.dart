@@ -26,10 +26,10 @@ class Home extends StatefulWidget {
               displayColor: ColorConstants.bodyText,
             ),
       ),
-     initialRoute: RoutesConstants.homeRoute,
-     routes: {
+      initialRoute: RoutesConstants.homeRoute,
+      routes: {
         RoutesConstants.addMoneyRoute: (context) => MyAddMoney(),
-     },
+      },
     );
   }
 }
@@ -55,7 +55,7 @@ class MyHomeState extends State<Home> {
   getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
+    Uri uriReg = Uri.parse(UriConstants.getUserInvestmentsUri);
 
     var response = await http.post(uriReg, headers: {
       'authorization': token.toString()
@@ -107,9 +107,7 @@ class MyHomeState extends State<Home> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarBackground,
-        
         actions: <Widget>[
-          
           IconButton(
               alignment: Alignment.centerRight,
               color: ColorConstants.bodyText,
@@ -118,13 +116,13 @@ class MyHomeState extends State<Home> {
               },
               icon: const Icon(Icons.add)),
 
-              // IconButton(
-              // alignment: Alignment.centerRight,
-              // color: ColorConstants.bodyText,
-              // onPressed: () {
-              //   Navigator.pushNamed(context, '/myprofile');
-              // },
-              // icon: const Icon(Icons.person),)
+          // IconButton(
+          // alignment: Alignment.centerRight,
+          // color: ColorConstants.bodyText,
+          // onPressed: () {
+          //   Navigator.pushNamed(context, '/myprofile');
+          // },
+          // icon: const Icon(Icons.person),)
         ],
       ),
       backgroundColor: ColorConstants.background,
@@ -183,9 +181,11 @@ class MyHomeState extends State<Home> {
                       controller: _searchController,
                       decoration: InputDecoration(
                           labelText: "Search by company names or ticker...",
-                          labelStyle: TextStyle(color: ColorConstants.textInTextField),
+                          labelStyle:
+                              TextStyle(color: ColorConstants.textInTextField),
                           border: InputBorder.none),
-                      style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+                      style: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 15),
                     ))),
             FloatingActionButton.extended(
               onPressed: () {
