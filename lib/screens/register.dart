@@ -56,7 +56,7 @@ class MyRegistrationState extends State<MyRegistration> {
               contentTextStyle: TextStyle(color: Colors.white),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Go to Login Page'),
+                  child: Text('Okay'),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
@@ -76,7 +76,7 @@ class MyRegistrationState extends State<MyRegistration> {
               contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Okay'),
+                  child: Text('Go to Login Page'),
                   onPressed: () {
                     Navigator.pushNamed(context, RoutesConstants.loginRoute);
                   },
@@ -273,7 +273,7 @@ class MyRegistrationState extends State<MyRegistration> {
                     var firstname = _firstnameController.text;
                     var lastname = _lastnameController.text;
                     
-                    Response response = await Authentication().register(username, password, firstname, lastname);
+                    var response = await Authentication().register(username, password, firstname, lastname);
                     if (isValid()) {
                       _showSuccessDialog(
                           "Success! You are ready to log in now.");

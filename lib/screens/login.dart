@@ -159,13 +159,12 @@ class MyLoginState extends State<MyLogin> {
                             jsonDecode(returnPayload.toString());
                         print(returnPayloadObj);
                         if (returnPayload != null) {
-                          // var newUser =
-                          //     new User.fromJson(returnPayloadObj?.User);
+                          Navigator.pushNamed(context, RoutesConstants.homeRoute);
                           var jwt = returnPayloadObj["token"];
                           storage.write(key: "jwt", value: jwt);
                           storage.write(
                               key: "username",
-                              value: returnPayloadObj["User"]["username"].toString());
+                              value: returnPayloadObj["User"]["username"]);
                           storage.write(
                               key: "user_id",
                               value: returnPayloadObj["User"]["user_id"]
@@ -177,7 +176,7 @@ class MyLoginState extends State<MyLogin> {
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
-                              Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                              
                         } else {
                           _showErrorDialog(
                               "No account was found matching that username and password.");

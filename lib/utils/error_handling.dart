@@ -4,12 +4,12 @@ import 'package:http/http.dart';
 
 class ResponseHandler {
 
-  handleError(Response response) async {
+  handleError(int response) async {
    
-   var statusNum = response.statusCode; 
+   var statusNum = response; 
 
    switch(statusNum){
-     case 200: {print(response.body);}
+     case 200: {print(response);}
      break;
 
      case 500: {print ("Internal System Error");}

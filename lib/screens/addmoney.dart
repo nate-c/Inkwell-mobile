@@ -225,7 +225,7 @@ class MoneyConfirmation extends StatelessWidget {
                     String? user = await storage.read(key: 'user_id');
                     int userId = int.parse(user!);
                     int amount = int.parse(_moneyamtController.text);
-                    Response response = await _MyAddMoneyState().addmoney(userId, amount);
+                    var response = await _MyAddMoneyState().addmoney(userId, amount);
                     ResponseHandler().handleError(response);
                     if (response.statusCode == 200) {
                     _showSuccessDialog("\$" + amount.toString() + " added into your account.");
