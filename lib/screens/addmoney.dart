@@ -31,10 +31,9 @@ class MyApp extends StatelessWidget {
       ),
       home: MyAddMoney(),
       routes: {
-        RoutesConstants.homeRoute: (context) =>  Home(),
+        RoutesConstants.homeRoute: (context) => Home(),
         RoutesConstants.moneyConfirmRoute: (context) => MoneyConfirmation(),
       },
-      
     );
   }
 }
@@ -59,17 +58,21 @@ TextEditingController _moneyamtController = new TextEditingController();
 final storage = new FlutterSecureStorage();
 
 class _MyAddMoneyState extends State<MyAddMoney> {
-  
-
   // ignore: non_constant_identifier_names
   Future addmoney(int userId, int amount) async {
-    Uri addMoney = Uri.parse(UriConstants.addMoneyUri);
-    Response response = await http.post(addMoney, body: {
-      "user_id": userId.toString(),
-      "amount": amount.toString(),
+    print(userId);
+    print(amount);
+    Uri addMoneyUri = Uri.parse(UriConstants.addMoneyUri);
+    var token = await storage.read(key: 'token');
+
+    Response response = await http.post(addMoneyUri, headers: {
+      'Authorization': token.toString()
+    }, body: {
+      "user_id": userId,
+      "amount": amount,
     });
-   
-      return response;
+
+    return response;
   }
 
   @override
@@ -94,23 +97,26 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 color: ColorConstants.textFieldBox,
                 child: TextFormField(
-                  controller: _moneyamtController,
+                    controller: _moneyamtController,
                     style: TextStyle(
                       fontSize: 30.0,
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
+                      FilteringTextInputFormatter.digitsOnly
                     ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
                       border: InputBorder.none,
                       prefixText: "\$ ",
-                      prefixStyle: TextStyle(color: ColorConstants.bodyText, fontSize: 24),
+                      prefixStyle: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 24),
                       hintText: "0.00",
-                      hintStyle: TextStyle(color: ColorConstants.textInTextField, fontSize: 24),
+                      hintStyle: TextStyle(
+                          color: ColorConstants.textInTextField, fontSize: 24),
                       labelText: "Enter Money Amount",
-                      labelStyle: TextStyle(color: ColorConstants.bodyText, fontSize: 21),
+                      labelStyle: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 21),
                     )),
               ),
               Column(
@@ -122,7 +128,8 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                     width: 300,
                     child: Text(
                       'From [Insert Bank]'.toUpperCase(),
-                      style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+                      style: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 15),
                     ),
                   ),
                   InkWell(
@@ -142,7 +149,8 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, RoutesConstants.moneyConfirmRoute);
+                    Navigator.pushNamed(
+                        context, RoutesConstants.moneyConfirmRoute);
                   },
                   child: Text('Confirm'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
@@ -164,24 +172,25 @@ class MoneyConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void _showSuccessDialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              backgroundColor: Color(0xFF011240),
-              title: Text('Success'),
-              titleTextStyle: TextStyle(color: ColorConstants.greenLink),
-              content: Text(msg),
-              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, RoutesConstants.homeRoute);
-                  },
-                )
-              ],
-            ));
-  }
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                backgroundColor: Color(0xFF011240),
+                title: Text('Success'),
+                titleTextStyle: TextStyle(color: ColorConstants.greenLink),
+                content: Text(msg),
+                contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Okay'),
+                    onPressed: () {
+                      Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                    },
+                  )
+                ],
+              ));
+    }
+
     return Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
@@ -213,7 +222,8 @@ class MoneyConfirmation extends StatelessWidget {
                     width: 300,
                     child: Text(
                       'From [Insert Bank] to Inkwell account'.toUpperCase(),
-                      style: TextStyle(color:ColorConstants.bodyText, fontSize: 15),
+                      style: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 15),
                     ),
                   ),
                 ],
@@ -226,14 +236,16 @@ class MoneyConfirmation extends StatelessWidget {
                     String? user = await storage.read(key: 'user_id');
                     var userId = int.parse(user!);
                     var amount = int.parse(_moneyamtController.text);
-                    Response response = await _MyAddMoneyState().addmoney(userId, amount);
-                   
+                    Response response =
+                        await _MyAddMoneyState().addmoney(userId, amount);
+
                     if (response.statusCode == 200) {
-                    _showSuccessDialog("\$" + amount.toString() + " added into your account.");
-                    Navigator.pushNamed(context, RoutesConstants.homeRoute);
-                  }
-                   ResponseHandler().handleError(response);
-                   
+                      _showSuccessDialog("\$" +
+                          amount.toString() +
+                          " added into your account.");
+                      Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                    }
+                    ResponseHandler().handleError(response);
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
