@@ -94,6 +94,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 color: ColorConstants.textFieldBox,
                 child: TextFormField(
+                  controller: _moneyamtController,
                     style: TextStyle(
                       fontSize: 30.0,
                     ),
@@ -227,7 +228,7 @@ class MoneyConfirmation extends StatelessWidget {
                     int amount = int.parse(_moneyamtController.text);
                     var response = await _MyAddMoneyState().addmoney(userId, amount);
                     ResponseHandler().handleError(response);
-                    if (response.statusCode == 200) {
+                    if (response == 200) {
                     _showSuccessDialog("\$" + amount.toString() + " added into your account.");
                   }
                   Navigator.pushNamed(context, RoutesConstants.homeRoute);

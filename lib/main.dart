@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/login.dart';
+import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:provider/provider.dart';
@@ -41,10 +42,12 @@ class MyApp extends StatelessWidget {
           ),
           home: MyHomePage(title: 'Inkwell'),
           routes: {
-          
+            RoutesConstants.homeRoute: (context) => Home(),
+            RoutesConstants.addMoneyRoute: (context) => MyAddMoney(),
             RoutesConstants.loginRoute: (context) => MyLogin(),
             RoutesConstants.registerRoute: (context) => MyRegistration(),
-
+            RoutesConstants.moneyConfirmRoute: (context) => MoneyConfirmation(),
+            RoutesConstants.myProfileRoute: (context) => MyProfile(),
           },
         ));
   }
