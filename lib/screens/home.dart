@@ -1,4 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -25,7 +27,9 @@ class Home extends StatefulWidget {
               displayColor: ColorConstants.bodyText,
             ),
       ),
-     
+     routes: {
+        RoutesConstants.addMoneyRoute: (context) => MyAddMoney(),
+     },
     );
   }
 }
@@ -51,7 +55,7 @@ class MyHomeState extends State<Home> {
   getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants().getUserInvestments);
+    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
 
     var response = await http.post(uriReg, headers: {
       'authorization': token.toString()
@@ -77,7 +81,7 @@ class MyHomeState extends State<Home> {
 
   search() async {
     // var token = await storage.read(key: 'token');
-    Uri uriReg = Uri.parse(UriConstants().getFilteredTickersUri);
+    Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
     // String searchText = _searchController.text;
 
     var response = await http.post(uriReg, headers: {
@@ -110,17 +114,17 @@ class MyHomeState extends State<Home> {
               alignment: Alignment.centerRight,
               color: ColorConstants.bodyText,
               onPressed: () {
-                Navigator.pushNamed(context, '/addMoney');
+                Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
               },
               icon: const Icon(Icons.add)),
 
-              IconButton(
-              alignment: Alignment.centerRight,
-              color: ColorConstants.bodyText,
-              onPressed: () {
-                Navigator.pushNamed(context, '/myprofile');
-              },
-              icon: const Icon(Icons.person),)
+              // IconButton(
+              // alignment: Alignment.centerRight,
+              // color: ColorConstants.bodyText,
+              // onPressed: () {
+              //   Navigator.pushNamed(context, '/myprofile');
+              // },
+              // icon: const Icon(Icons.person),)
         ],
       ),
       backgroundColor: ColorConstants.background,
@@ -185,7 +189,7 @@ class MyHomeState extends State<Home> {
                     ))),
             FloatingActionButton.extended(
               onPressed: () {
-                Navigator.pushNamed(context, '/addMoney');
+                Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
               },
               label: const Text('Add Money'),
               icon: const Icon(Icons.add),

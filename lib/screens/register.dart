@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
@@ -24,9 +26,7 @@ class MyRegistration extends StatefulWidget {
       ),
       initialRoute: '/',
       routes: {
-        // '/': (context) => MyHomePage(title: 'Inkwell'),
-        '/': (context) => MyApp(),
-        '/login': (context) => MyLogin(),
+        RoutesConstants.loginRoute: (context) => MyLogin(),
       },
     );
   }
@@ -56,7 +56,7 @@ class MyRegistrationState extends State<MyRegistration> {
               contentTextStyle: TextStyle(color: Colors.white),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Okay'),
+                  child: Text('Go to Login Page'),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
@@ -70,15 +70,15 @@ class MyRegistrationState extends State<MyRegistration> {
         context: context,
         builder: (ctx) => AlertDialog(
               backgroundColor: ColorConstants.background,
-              title: Text('An Error Occured'),
-              titleTextStyle: TextStyle(color: ColorConstants.errorText),
+              title: Text('Success'),
+              titleTextStyle: TextStyle(color: ColorConstants.greenLink),
               content: Text(msg),
               contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
                   child: Text('Okay'),
                   onPressed: () {
-                    Navigator.of(ctx).pop();
+                    Navigator.pushNamed(context, RoutesConstants.loginRoute);
                   },
                 )
               ],
@@ -97,7 +97,7 @@ class MyRegistrationState extends State<MyRegistration> {
       _showErrorDialog('Please enter some text.');
       return false;
     }
-    if (password.length > 50 || username.length > 50) {
+    if (password.length > 60 || username.length > 50 || firstname.length > 50 || lastname.length > 50) {
       _showErrorDialog(
           'The maximum length must be 50 characters or less. Please try again.');
       return false;
@@ -143,7 +143,7 @@ class MyRegistrationState extends State<MyRegistration> {
                 child: Text("Have an account? Log in.",
                     style: TextStyle(fontSize: 15),
                     textAlign: TextAlign.center),
-                onTap: () => Navigator.pushNamed(context, '/login'),
+                onTap: () => Navigator.pushNamed(context, RoutesConstants.loginRoute),
               ),
               Container(
                   width: 300,
@@ -273,12 +273,12 @@ class MyRegistrationState extends State<MyRegistration> {
                     var firstname = _firstnameController.text;
                     var lastname = _lastnameController.text;
                     
-                    var response = await Authentication().register(username, password, firstname, lastname);
+                    Response response = await Authentication().register(username, password, firstname, lastname);
                     if (isValid()) {
                       _showSuccessDialog(
                           "Success! You are ready to log in now.");
                     } else {
-                      Error().errorHandling(response);
+                      ResponseHandler().handleError(response);
                       
                     }
                   },

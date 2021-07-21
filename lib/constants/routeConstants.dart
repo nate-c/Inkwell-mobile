@@ -5,18 +5,12 @@ import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart'; 
 
-class RoutesConstants extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-  return MaterialApp (
-  routes: {
-    '/' : (context) => Home(),
-    '/addMoney': (context) => MyAddMoney(),
-    '/register': (context) => MyRegistration(),
-     '/login': (context) => MyLogin(),
-     '/moneyConfirmation' : (context) => MoneyConfirmation(),
-     '/myprofile' : (context) => MyProfile(),
-  });
-
+class RoutesConstants {
+  static final String homeRoute = '/';
+  static final String addMoneyRoute = '/addMoney';
+  static final String registerRoute = '/register';
+  static final String loginRoute = '/login';
+  static final String moneyConfirmRoute = '/moneyConfirmation';
+  static final String myProfileRoute = '/myprofile';
   }
-}
+

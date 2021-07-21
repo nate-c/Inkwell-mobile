@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:flutter/services.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/register.dart';
@@ -28,6 +31,10 @@ class MyApp extends StatelessWidget {
             ),
       ),
       home: MyAddMoney(),
+      routes: {
+        RoutesConstants.homeRoute: (context) =>  Home(),
+        RoutesConstants.moneyConfirmRoute: (context) => MoneyConfirmation(),
+      },
       
     );
   }
@@ -49,15 +56,15 @@ class MyAddMoney extends StatefulWidget {
   _MyAddMoneyState createState() => _MyAddMoneyState();
 }
 
-TextEditingController _moneyamtController = TextEditingController();
+TextEditingController _moneyamtController = new TextEditingController();
 final storage = new FlutterSecureStorage();
 
 class _MyAddMoneyState extends State<MyAddMoney> {
   
 
   // ignore: non_constant_identifier_names
-  Future<int?> addmoney(int userId, int amount) async {
-    Uri addMoney = Uri.parse(UriConstants().getAddMoneyUri);
+  Future addmoney(int userId, int amount) async {
+    Uri addMoney = Uri.parse(UriConstants.addMoneyUri);
     var response = await http.post(addMoney, body: {
       "user_id": userId.toString(),
       "amount": amount.toString(),
@@ -92,7 +99,9 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                       fontSize: 30.0,
                     ),
                     keyboardType: TextInputType.number,
-                    controller: _moneyamtController,
+                    inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
                       border: InputBorder.none,
@@ -133,10 +142,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MoneyConfirmation()));
+                    Navigator.pushNamed(context, RoutesConstants.moneyConfirmRoute);
                   },
                   child: Text('Confirm'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
@@ -170,7 +176,7 @@ class MoneyConfirmation extends StatelessWidget {
                 TextButton(
                   child: Text('Okay'),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/');
+                    Navigator.pushNamed(context, RoutesConstants.homeRoute);
                   },
                 )
               ],
@@ -220,11 +226,12 @@ class MoneyConfirmation extends StatelessWidget {
                     String? user = await storage.read(key: 'user_id');
                     int userId = int.parse(user!);
                     int amount = int.parse(_moneyamtController.text);
-                    var response = await _MyAddMoneyState().addmoney(userId, amount);
-                    Error().errorHandling(response!);
-                    if (response == 200) {
+                    Response response = await _MyAddMoneyState().addmoney(userId, amount);
+                    ResponseHandler().handleError(response);
+                    if (response.statusCode == 200) {
                     _showSuccessDialog("\$" + amount.toString() + " added into your account.");
                   }
+                  Navigator.pushNamed(context, RoutesConstants.homeRoute);
                    
                   },
                   child: Text('Deposit'.toUpperCase()),

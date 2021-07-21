@@ -91,7 +91,7 @@ class MyLoginState extends State<MyLogin> {
                     child: Text("Don't have an account? Register.",
                         style: TextStyle(fontSize: 15),
                         textAlign: TextAlign.center),
-                    onTap: () => Navigator.pushNamed(context, '/register'),
+                    onTap: () => Navigator.pushNamed(context, RoutesConstants.registerRoute),
                   ),
                   Container(
                       width: 300,
@@ -176,8 +176,7 @@ class MyLoginState extends State<MyLogin> {
                               value: returnPayloadObj["User"].toString());
 
                           print(jwt);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Home()));
+                          Navigator.pushNamed(context, RoutesConstants.homeRoute);
                         } else {
                           _showErrorDialog(
                               "No account was found matching that username and password.");

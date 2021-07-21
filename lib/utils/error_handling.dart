@@ -2,23 +2,27 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
-class Error {
+class ResponseHandler {
 
-  errorHandling(int response) async {
+  handleError(Response response) async {
    
-    if (response == 500){
-      return "Internal System Error";
-    }
-    if (response == 401){
-      return "Invalid Token Error";
-    }
-    if (response == 403){
-      return "Unauthorized Access";
-    }
-    if (response == 200){
-      return "Success";
-    }
-    return response;
+   var statusNum = response.statusCode; 
+
+   switch(statusNum){
+     case 200: {print(response.body);}
+     break;
+
+     case 500: {print ("Internal System Error");}
+     break; 
+
+     case 401: {print ("Invalid Token Error");}
+     break;
+
+     case 403: {print("Unauthorized Access");}
+    
+    }return response;
   }
+// handleSuccess(){}
+
 
 }
