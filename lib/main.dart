@@ -9,6 +9,7 @@ import 'constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'utils/authentication.dart';
 
+//WEEK 7 RELEASE
 void main() {
   runApp(MyApp());
 }
@@ -90,37 +91,46 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child:Column( mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget> [
-
-            Text("Welcome To".toUpperCase(), style: TextStyle(fontSize: 34),),
-            Text("Inkwell".toUpperCase(), style: TextStyle(fontSize:50, fontWeight: FontWeight.w800)),
-            SizedBox(height: 150,),
-            ElevatedButton(
-              onPressed: () {
-              
-                Navigator.pushNamed(context, RoutesConstants.registerRoute);
-              },
-              child: Text('Register'.toUpperCase(), style: TextStyle(fontSize: 18),),
-              style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.button,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 70, vertical: 10),
-                      )
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Welcome To".toUpperCase(),
+              style: TextStyle(fontSize: 34),
+            ),
+            Text("Inkwell".toUpperCase(),
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w800)),
+            SizedBox(
+              height: 150,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, RoutesConstants.loginRoute);
-              },
-              child: Text('Log in'.toUpperCase(), style: TextStyle(fontSize: 18),),
-              style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.background,
-                        side : BorderSide(width: 1.0, color: ColorConstants.bodyText,),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 80, vertical: 10),
-                      )
-            ),
-            
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesConstants.registerRoute);
+                },
+                child: Text(
+                  'Register'.toUpperCase(),
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: ColorConstants.button,
+                  padding: EdgeInsets.symmetric(horizontal: 70, vertical: 10),
+                )),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesConstants.loginRoute);
+                },
+                child: Text(
+                  'Log in'.toUpperCase(),
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: ColorConstants.background,
+                  side: BorderSide(
+                    width: 1.0,
+                    color: ColorConstants.bodyText,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 10),
+                )),
           ],
         ),
       ),
