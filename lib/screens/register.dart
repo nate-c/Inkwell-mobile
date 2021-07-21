@@ -272,10 +272,12 @@ class MyRegistrationState extends State<MyRegistration> {
                     var firstname = _firstnameController.text;
                     var lastname = _lastnameController.text;
                     if (isValid()) {
-                      await Authentication()
+                      var statusCode = await Authentication()
                           .register(username, password, firstname, lastname);
-                      _showSuccessDialog(
-                          "Success! You are ready to log in now.");
+                      if (statusCode == 200) {
+                        _showSuccessDialog(
+                            "Success! You are ready to log in now.");
+                      }
                     } else {
                       return;
                     }
