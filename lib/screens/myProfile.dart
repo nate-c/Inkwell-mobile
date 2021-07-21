@@ -25,7 +25,6 @@ class MyProfile extends StatefulWidget {
               displayColor: ColorConstants.bodyText,
             ),
       ),
-     
     );
   }
 }
@@ -51,7 +50,7 @@ class MyProfileState extends State<MyProfile> {
   getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestments);
+    Uri uriReg = Uri.parse(UriConstants.getUserInvestmentsUri);
 
     var response = await http.post(uriReg, headers: {
       'authorization': token.toString()
@@ -157,18 +156,15 @@ class MyProfileState extends State<MyProfile> {
                   // ))
                 )),
             Padding(padding: EdgeInsets.symmetric(horizontal: 1, vertical: 35)),
-           DropdownButton(
-              isExpanded: true,
-              dropdownColor: ColorConstants.textFieldBox,
+            DropdownButton(
+                isExpanded: true,
+                dropdownColor: ColorConstants.textFieldBox,
                 items: [
                   new DropdownMenuItem(child: new Text("Apple")),
                   new DropdownMenuItem(child: new Text("Tesla")),
                 ],
                 hint: new Text("Stock"),
-                onChanged: null
-            ),
-          
-           
+                onChanged: null),
           ],
         ),
       ),
