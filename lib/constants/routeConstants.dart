@@ -6,7 +6,7 @@ import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart'; 
 
 class RoutesConstants {
-  static final String homeRoute = '/';
+  static final String homeRoute = '/home';
   static final String addMoneyRoute = '/addMoney';
   static final String registerRoute = '/register';
   static final String loginRoute = '/login';

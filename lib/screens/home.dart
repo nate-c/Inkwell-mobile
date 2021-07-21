@@ -1,5 +1,4 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
@@ -27,6 +26,7 @@ class Home extends StatefulWidget {
               displayColor: ColorConstants.bodyText,
             ),
       ),
+     initialRoute: RoutesConstants.homeRoute,
      routes: {
         RoutesConstants.addMoneyRoute: (context) => MyAddMoney(),
      },

@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
                 ),
           ),
           home: MyHomePage(title: 'Inkwell'),
-          initialRoute: '/',
           routes: {
           
             RoutesConstants.loginRoute: (context) => MyLogin(),
@@ -91,33 +90,34 @@ class _MyHomePageState extends State<MyHomePage> {
         child:Column( mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget> [
 
-            Text("Welcome To".toUpperCase(), style: TextStyle(fontSize: 24),),
-            Text("Inkwell".toUpperCase(), style: TextStyle(fontSize:40, fontWeight: FontWeight.w800)),
-            SizedBox(height: 100,),
-            ElevatedButton(
-              onPressed: () {
-               
-                Navigator.pushNamed(context, RoutesConstants.loginRoute);
-              },
-              child: Text('Log in'.toUpperCase()),
-              style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.button,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                      )
-            ),
+            Text("Welcome To".toUpperCase(), style: TextStyle(fontSize: 34),),
+            Text("Inkwell".toUpperCase(), style: TextStyle(fontSize:50, fontWeight: FontWeight.w800)),
+            SizedBox(height: 150,),
             ElevatedButton(
               onPressed: () {
               
                 Navigator.pushNamed(context, RoutesConstants.registerRoute);
               },
-              child: Text('Register'.toUpperCase()),
+              child: Text('Register'.toUpperCase(), style: TextStyle(fontSize: 18),),
               style: ElevatedButton.styleFrom(
                         primary: ColorConstants.button,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            EdgeInsets.symmetric(horizontal: 70, vertical: 10),
                       )
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RoutesConstants.loginRoute);
+              },
+              child: Text('Log in'.toUpperCase(), style: TextStyle(fontSize: 18),),
+              style: ElevatedButton.styleFrom(
+                        primary: ColorConstants.background,
+                        side : BorderSide(width: 1.0, color: ColorConstants.bodyText,),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 80, vertical: 10),
+                      )
+            ),
+            
           ],
         ),
       ),

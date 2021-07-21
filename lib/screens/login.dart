@@ -28,6 +28,9 @@ Widget build(BuildContext context) {
             displayColor: ColorConstants.bodyText,
           ),
     ),
+    routes: {
+      RoutesConstants.homeRoute: (context) => Home(),
+    },
   );
 }
 
@@ -174,13 +177,12 @@ class MyLoginState extends State<MyLogin> {
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
-
-                          print(jwt);
-                          Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                              Navigator.pushNamed(context, RoutesConstants.homeRoute);
                         } else {
                           _showErrorDialog(
                               "No account was found matching that username and password.");
                         }
+                        
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
