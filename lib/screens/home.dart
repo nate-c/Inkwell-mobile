@@ -130,7 +130,7 @@ class MyHomeState extends State<Home> {
         backgroundColor: ColorConstants.background,
         body: Container(
             color: Colors.blue,
-            height: 100,
+            // height: 100,
             margin: EdgeInsets.all(15), //originally 24
             // padding: EdgeInsets.only(top: 0),
             alignment: Alignment.center,
@@ -147,7 +147,50 @@ class MyHomeState extends State<Home> {
                       ),
                       Text("JJJ")
                     ],
-                  )
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "1500",
+                      ),
+                      Text("JJJ")
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        "1500",
+                      ),
+                      Text("JJJ")
+                    ],
+                  ),
+                  Container(
+                      // width: 300,
+                      margin: new EdgeInsets.all(15),
+                      color: ColorConstants.textFieldBox,
+                      child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          child: TextFormField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                                labelText:
+                                    "Search by company names or ticker...",
+                                labelStyle: TextStyle(
+                                    color: ColorConstants.textInTextField),
+                                border: InputBorder.none),
+                            style: TextStyle(
+                                color: ColorConstants.bodyText, fontSize: 15),
+                          ))),
+                  FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, RoutesConstants.addMoneyRoute);
+                    },
+                    label: const Text('Add Money'),
+                    icon: const Icon(Icons.add),
+                    backgroundColor: ColorConstants.button,
+                  ),
                 ])))
 
         // body:
