@@ -104,7 +104,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]'))
+                      FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
                     ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
