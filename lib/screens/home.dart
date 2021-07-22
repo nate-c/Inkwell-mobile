@@ -1,5 +1,7 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -104,116 +106,117 @@ class MyHomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: ColorConstants.appBarBackground,
-        actions: <Widget>[
-          IconButton(
-              alignment: Alignment.centerRight,
-              color: ColorConstants.bodyText,
-              onPressed: () {
-                Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
-              },
-              icon: const Icon(Icons.add)),
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: ColorConstants.appBarBackground,
+          actions: <Widget>[
+            IconButton(
+                alignment: Alignment.centerRight,
+                color: ColorConstants.bodyText,
+                onPressed: () {
+                  Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
+                },
+                icon: const Icon(Icons.add)),
 
-          // IconButton(
-          // alignment: Alignment.centerRight,
-          // color: ColorConstants.bodyText,
-          // onPressed: () {
-          //   Navigator.pushNamed(context, '/myprofile');
-          // },
-          // icon: const Icon(Icons.person),)
-        ],
-      ),
-      backgroundColor: ColorConstants.background,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: new EdgeInsets.all(15),
-              alignment: Alignment.topCenter,
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    "Current Value".toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                  )),
-            ),
-            Text("1800"),
-
-            // child: Text(
-            //   "Current Value".toUpperCase(),
-            //   style: TextStyle(
-            //     fontSize: 30,
-            //   ),
-            //   textAlign: TextAlign.center,
-            // )),
-            Container(
-                width: 300,
-                margin: new EdgeInsets.all(15),
-                color: ColorConstants.textFieldBox,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  // child: TextFormField(
-                  //   controller: _usernameController,
-                  //   decoration: InputDecoration(
-                  //       labelText: "Username",
-                  //       labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
-                  //       border: InputBorder.none),
-                  //   style: TextStyle(color: Colors.white, fontSize: 15),
-                  // ))
-                )),
-            Text("Investment Value"),
-            Text("1600"),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 1, vertical: 35)),
-            Container(
-                width: 300,
-                margin: new EdgeInsets.all(15),
-                color: ColorConstants.textFieldBox,
-                child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                    child: TextFormField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                          labelText: "Search by company names or ticker...",
-                          labelStyle:
-                              TextStyle(color: ColorConstants.textInTextField),
-                          border: InputBorder.none),
-                      style: TextStyle(
-                          color: ColorConstants.bodyText, fontSize: 15),
-                    ))),
-            FloatingActionButton.extended(
-              onPressed: () {
-                Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
-              },
-              label: const Text('Add Money'),
-              icon: const Icon(Icons.add),
-              backgroundColor: ColorConstants.button,
-            ),
-            // Container(
-            //     width: 300,
-            //     margin: new EdgeInsets.all(15),
-            //     color: const Color(0xFF071A4A),
-            //     child: Padding(
-            //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            //       // child: TextFormField(
-            //       //   controller: _usernameController,
-            //       //   decoration: InputDecoration(
-            //       //       labelText: "Username",
-            //       //       labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
-            //       //       border: InputBorder.none),
-            //       //   style: TextStyle(color: Colors.white, fontSize: 15),
-            //       // ))
-            //     )
-            //     )
+            // IconButton(
+            // alignment: Alignment.centerRight,
+            // color: ColorConstants.bodyText,
+            // onPressed: () {
+            //   Navigator.pushNamed(context, '/myprofile');
+            // },
+            // icon: const Icon(Icons.person),)
           ],
         ),
-      ),
-    );
+        backgroundColor: ColorConstants.background,
+        body: Container(
+            color: Colors.blue,
+            height: 100,
+            margin: EdgeInsets.all(15), //originally 24
+            // padding: EdgeInsets.only(top: 0),
+            alignment: Alignment.center,
+            child: Center(
+                // widthFactor: 100,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                  Row(
+                    children: [
+                      Text(
+                        "1500",
+                      ),
+                      Text("JJJ")
+                    ],
+                  )
+                ])))
+
+        // body:
+        // Container(
+        //   width: 100,
+        //   height: 100,
+        //   margin: EdgeInsets.all(15), //originally 24
+        //   // padding: EdgeInsets.only(top: 0),
+        //   alignment: Alignment.center,
+        //   // transform: Transform.rotate(...),
+        //   child: Column(
+        //     // child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: <Widget>[
+        //       Container(
+        //         margin: new EdgeInsets.all(15),
+        //         alignment: Alignment.topCenter,
+        //         child: Align(
+        //             alignment: Alignment.topCenter,
+        //             child: Text(
+        //               "Current Value".toUpperCase(),
+        //               style: TextStyle(
+        //                 fontSize: 20,
+        //               ),
+        //               textAlign: TextAlign.center,
+        //             )),
+        //       ),
+        //       Text("1800"),
+        //       Container(
+        //           // width: 300,
+        //           margin: new EdgeInsets.all(15),
+        //           color: ColorConstants.textFieldBox,
+        //           child: Padding(
+        //             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        //           )),
+        //       Text("Investment Value"),
+        //       Text("1600"),
+        //       Padding(
+        //           padding: EdgeInsets.symmetric(horizontal: 1, vertical: 35)),
+        //       Container(
+        //           // width: 300,
+        //           margin: new EdgeInsets.all(15),
+        //           color: ColorConstants.textFieldBox,
+        //           child: Padding(
+        //               padding:
+        //                   EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+        //               child: TextFormField(
+        //                 controller: _searchController,
+        //                 decoration: InputDecoration(
+        //                     labelText: "Search by company names or ticker...",
+        //                     labelStyle: TextStyle(
+        //                         color: ColorConstants.textInTextField),
+        //                     border: InputBorder.none),
+        //                 style: TextStyle(
+        //                     color: ColorConstants.bodyText, fontSize: 15),
+        //               ))),
+        //       FloatingActionButton.extended(
+        //         onPressed: () {
+        //           Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
+        //         },
+        //         label: const Text('Add Money'),
+        //         icon: const Icon(Icons.add),
+        //         backgroundColor: ColorConstants.button,
+        //       ),
+        //     ],
+        //     // ),
+        //   ),
+        // )
+        );
   }
 }
