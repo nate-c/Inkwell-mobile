@@ -59,7 +59,7 @@ final storage = new FlutterSecureStorage();
 
 class _MyAddMoneyState extends State<MyAddMoney> {
   // ignore: non_constant_identifier_names
-  Future addmoney(int userId, int amount) async {
+  Future addmoney(int userId, double amount) async {
     print(userId);
     print(amount);
     Uri addMoneyUri = Uri.parse(UriConstants.addMoneyUri);
@@ -68,12 +68,13 @@ class _MyAddMoneyState extends State<MyAddMoney> {
     Response response = await http.post(addMoneyUri, headers: {
       'Authorization': token.toString()
     }, body: {
-      "user_id": userId,
-      "amount": amount,
+      "user_id": userId.toString(),
+      "amount": amount.toString(),
     });
 
     return response;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
+                      FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]'))
                     ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -235,7 +236,7 @@ class MoneyConfirmation extends StatelessWidget {
                   onPressed: () async {
                     String? user = await storage.read(key: 'user_id');
                     var userId = int.parse(user!);
-                    var amount = int.parse(_moneyamtController.text);
+                    var amount = double.parse(_moneyamtController.text);
                     Response response =
                         await _MyAddMoneyState().addmoney(userId, amount);
 
