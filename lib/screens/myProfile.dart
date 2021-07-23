@@ -1,4 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -115,59 +117,50 @@ class MyProfileState extends State<MyProfile> {
       backgroundColor: ColorConstants.background,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: new EdgeInsets.all(15),
-              alignment: Alignment.topCenter,
-              child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Text(
-                    "Current Value".toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                    textAlign: TextAlign.center,
-                  )),
+        children: <Widget> [
+          Text('Current Value'.toUpperCase(), style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget> [  
+                Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
+                Text('1800 ', style: TextStyle(fontSize: 35)),
+                Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
+              ]
             ),
-            Text("1800"),
-
-            // child: Text(
-            //   "Current Value".toUpperCase(),
-            //   style: TextStyle(
-            //     fontSize: 30,
-            //   ),
-            //   textAlign: TextAlign.center,
-            // )),
-            Container(
-                width: 300,
-                margin: new EdgeInsets.all(15),
-                color: ColorConstants.textFieldBox,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  // child: TextFormField(
-                  //   controller: _usernameController,
-                  //   decoration: InputDecoration(
-                  //       labelText: "Username",
-                  //       labelStyle: TextStyle(color: Color(0xFFF2F2F2)),
-                  //       border: InputBorder.none),
-                  //   style: TextStyle(color: Colors.white, fontSize: 15),
-                  // ))
-                )),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 1, vertical: 35)),
-            DropdownButton(
-                isExpanded: true,
-                dropdownColor: ColorConstants.textFieldBox,
-                items: [
-                  new DropdownMenuItem(child: new Text("Apple")),
-                  new DropdownMenuItem(child: new Text("Tesla")),
-                ],
-                hint: new Text("Stock"),
-                onChanged: null),
-          ],
+             SizedBox(height: 100),
+          
+          Container(
+            width: 300,
+            height: 50,
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.centerLeft,
+            color: ColorConstants.textFieldBox,
+            child: Text('Stocks', style: TextStyle(fontSize: 20),),
+          ),
+          Container( //TODO: find out how to do the dropdowns
+            width: 300,
+            height: 50,
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.centerLeft,
+            color: ColorConstants.textFieldBox,
+            child: Text('Sectors', style: TextStyle(fontSize: 20),),
+          ),
+          Container(
+            width: 300,
+            height: 50,
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.centerLeft,
+            color: ColorConstants.textFieldBox,
+            child: Text('Recurring', style: TextStyle(fontSize: 20),),
+          ),
+          ]
         ),
-      ),
+        )
     );
   }
 }
