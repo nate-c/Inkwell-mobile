@@ -114,9 +114,9 @@ class MyHomeState extends State<Home> {
                 alignment: Alignment.centerRight,
                 color: ColorConstants.bodyText,
                 onPressed: () {
-                  Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
+                  Navigator.pushNamed(context, RoutesConstants.myProfileRoute);
                 },
-                icon: const Icon(Icons.add)),
+                icon: const Icon(Icons.person)),
 
             // IconButton(
             // alignment: Alignment.centerRight,

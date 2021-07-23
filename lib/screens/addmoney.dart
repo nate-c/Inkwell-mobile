@@ -63,7 +63,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
     print(userId);
     print(amount);
     Uri addMoneyUri = Uri.parse(UriConstants.addMoneyUri);
-    var token = await storage.read(key: 'token');
+    var token = await storage.read(key: 'jwt');
 
     Response response = await http.post(addMoneyUri, headers: {
       'Authorization': token.toString()
@@ -104,7 +104,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                     ),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.deny(RegExp('[a-zA-Z]'))
+                      FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
                     ],
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(vertical: 10),
