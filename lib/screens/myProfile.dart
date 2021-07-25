@@ -43,6 +43,7 @@ class MyProfileState extends State<MyProfile> {
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
 
+
   @override
   void initState() {
     // getUserInvestments();
@@ -99,6 +100,7 @@ class MyProfileState extends State<MyProfile> {
     }
   }
 
+
   Widget build(BuildContext context) {
     return new Scaffold(
       resizeToAvoidBottomInset: false,
@@ -128,7 +130,7 @@ class MyProfileState extends State<MyProfile> {
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [  
                 Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
-                Text('1800 ', style: TextStyle(fontSize: 35)),
+                Text(_investedValue.toString(), style: TextStyle(fontSize: 35)),
                 Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
               ]
             ),
