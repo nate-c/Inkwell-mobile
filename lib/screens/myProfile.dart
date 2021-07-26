@@ -117,24 +117,38 @@ class MyProfileState extends State<MyProfile> {
         ],
       ),
       backgroundColor: ColorConstants.background,
-      body: Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
-          Text('Current Value'.toUpperCase(), style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300)),
+          Text('Current Value'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [  
-                Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
+                Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)), //TODO: change invested value to current value after API is done
                 Text(_investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
-                // Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
+                Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
               ]
             ),
-             SizedBox(height: 100),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget> [
+                Text('Invested Value: '.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),  
+                Text('\$', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
+                Text(_investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 20)),
+               
+              ]
+            ),
+             SizedBox(height: 100), //TODO: remove when chart widget is complete
           
           Container(
             width: 300,
@@ -152,7 +166,7 @@ class MyProfileState extends State<MyProfile> {
             color: ColorConstants.textFieldBox,
             child: Text('Sectors', style: TextStyle(fontSize: 20),),
           ),
-          Container(
+          Container(  
             width: 300,
             height: 50,
             padding: EdgeInsets.all(10),
@@ -163,6 +177,7 @@ class MyProfileState extends State<MyProfile> {
           ]
         ),
         )
+      )
     );
   }
 }

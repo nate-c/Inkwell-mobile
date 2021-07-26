@@ -181,8 +181,8 @@ class MyLoginState extends State<MyLogin> {
                           _showErrorDialog(
                               "No account was found matching that username and password.");
                         }
-                        username = '';
-                        password = '';
+                        _usernameController.clear();
+                        _passwordController.clear();
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
