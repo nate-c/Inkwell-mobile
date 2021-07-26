@@ -215,7 +215,7 @@ class MoneyConfirmation extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  Text('\$ ' + _moneyamtController.text,
+                  Text('\$ ' + _moneyamtController.text.replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
                   SizedBox(height: 10),
@@ -247,6 +247,7 @@ class MoneyConfirmation extends StatelessWidget {
                       Navigator.pushNamed(context, RoutesConstants.homeRoute);
                     }
                     ResponseHandler().handleError(response);
+                    
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(

@@ -176,12 +176,13 @@ class MyLoginState extends State<MyLogin> {
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
-                              
+                        
                         } else {
                           _showErrorDialog(
                               "No account was found matching that username and password.");
                         }
-                        
+                        username = '';
+                        password = '';
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
