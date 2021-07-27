@@ -9,6 +9,7 @@ import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/tickerSearchObject.dart';
+import 'package:expandable/expandable.dart';
 import 'addmoney.dart';
 
 void main() => runApp(MyProfile());
@@ -150,30 +151,50 @@ class MyProfileState extends State<MyProfile> {
             ),
              SizedBox(height: 100), //TODO: remove when chart widget is complete
           
-          Container(
-            width: 300,
-            height: 50,
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.centerLeft,
-            color: ColorConstants.textFieldBox,
-            child: Text('Stocks', style: TextStyle(fontSize: 20),),
+          ExpandableTheme(
+          data: ExpandableThemeData(
+            iconColor: ColorConstants.bodyText,
+            collapseIcon: Icons.expand_less_rounded,
+            expandIcon: Icons.expand_more_rounded,
+            useInkWell: true,
+            tapHeaderToExpand: true,
+          
           ),
-          Container( //TODO: find out how to do the dropdowns
-            width: 300,
-            height: 50,
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.centerLeft,
-            color: ColorConstants.textFieldBox,
-            child: Text('Sectors', style: TextStyle(fontSize: 20),),
+              child: Container(
+              color: ColorConstants.textFieldBox,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.bottomLeft,
+                child: ExpandablePanel(
+                  header: Text('Stocks', style: TextStyle(fontSize: 20),),
+                  collapsed: Text('',),
+                  expanded: Text('AAPL\nApple\n\nTSLA\nTesla', softWrap: true, style: TextStyle(fontSize: 18),),
+                  
+                )
+              )
+              ),
+          SizedBox(height: 20), 
+          ExpandableTheme(
+          data: ExpandableThemeData(
+            iconColor: ColorConstants.bodyText,
+            collapseIcon: Icons.expand_less_rounded,
+            expandIcon: Icons.expand_more_rounded,
+            useInkWell: true,
+            tapHeaderToExpand: true,
+            
           ),
-          Container(  
-            width: 300,
-            height: 50,
-            padding: EdgeInsets.all(10),
-            alignment: Alignment.centerLeft,
-            color: ColorConstants.textFieldBox,
-            child: Text('Recurring', style: TextStyle(fontSize: 20),),
-          ),
+              child: Container(
+              color: ColorConstants.textFieldBox,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.bottomLeft,
+                child: ExpandablePanel(
+                  header: Text('Sectors', style: TextStyle(fontSize: 20),),
+                  collapsed: Text('',),
+                  expanded: Text('Information Technology\nIndustrials', softWrap: true, style: TextStyle(fontSize: 18),),
+                
+                )
+              )
+              ),
+
           ]
         ),
         )
