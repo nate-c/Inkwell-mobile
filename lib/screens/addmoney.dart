@@ -247,7 +247,7 @@ class MoneyConfirmation extends StatelessWidget {
                       Navigator.pushNamed(context, RoutesConstants.homeRoute);
                     }
                     ResponseHandler().handleError(response);
-                    
+                    _moneyamtController.clear();
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
