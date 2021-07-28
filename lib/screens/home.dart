@@ -88,10 +88,20 @@ class MyHomeState extends State<Home> {
     setState(() {});
   }
 
-  Widget getTextWidgets() {
-    // Widget getTextWidgets(List<String> strings) {
-    return new Row(
-        children: _searchResults.map((item) => new Text(item)).toList());
+  List<Widget> getTextWidgets() {
+    List<Widget> searchResults = [];
+    for (int i = 0; i < _searchResults.length; i++) {
+      var newWidget = Row(
+        children: [
+          Text(
+            _searchResults[i],
+            key: new Key(_searchResults[i]),
+          )
+        ],
+      );
+      searchResults.add(newWidget);
+    }
+    return searchResults;
   }
 
   void search() async {
@@ -237,7 +247,11 @@ class MyHomeState extends State<Home> {
                   //       ],
                   //     ))
                   // ,
-                  Container(height: 300, child: getTextWidgets()),
+                  Container(
+                      height: 300,
+                      child: Column(
+                        children: [...getTextWidgets()],
+                      )),
                   Container(
                     height: 50,
                   ),
