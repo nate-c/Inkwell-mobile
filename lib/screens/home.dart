@@ -55,11 +55,11 @@ class MyHomeState extends State<Home> {
   final storage = new FlutterSecureStorage();
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     // getUserInvestments();
-    await setInitialStateVariables();
-    getAccountInfo();
+    setInitialStateVariables();
+    // getAccountInfo();
   }
 
   getUserInvestments() async {
@@ -87,6 +87,7 @@ class MyHomeState extends State<Home> {
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
     setState(() {});
+    getAccountInfo();
   }
 
   void getAccountInfo() async {
