@@ -1,5 +1,7 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:ui';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -45,7 +47,7 @@ class MyHomeState extends State<Home> {
   int _portfolioValue = 0;
 
   // Array<String> _searchResults;
-  List<String> _searchResults = ['results'].toList();
+  List<String> _searchResults = [];
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
@@ -80,11 +82,9 @@ class MyHomeState extends State<Home> {
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
     _availableToInvest = int.parse(amount.toString());
-    _investedValue = 9;
+    _investedValue = 0;
     _portfolioValue = _investedValue + _availableToInvest;
-    _searchResults = ['aapl', 'tsla', 'msft'];
     _token = token.toString();
-    // _searchResults = ['test1', 'test2'].toList();
     setState(() {});
   }
 
@@ -129,17 +129,17 @@ class MyHomeState extends State<Home> {
     });
     if (response.statusCode == 200) {
       print(response.body);
-      // var jsonResponse = convert.jsonDecode(response.body);
-      var resultsArray = ['test1', 'test2'];
-      setState(() {
-        _searchResults = resultsArray.toList();
-      });
-      // for(int i = 0; i < response.body.; i++){
+      var searchResultsArray = jsonDecode(response.body.toString())["data"];
+      List<String> updatedSearchResults = [];
+      for (int i = 0; i < searchResultsArray.length; i++) {
+        String viewString = searchResultsArray[i]["symbol"] +
+            ' : ' +
+            searchResultsArray[i]["name"];
+        updatedSearchResults.add(viewString);
+      }
+      _searchResults = updatedSearchResults;
 
-      // }
-      //   (for var item in response.data.data){
-      //     TickerSearchObject t = new TickerSearchObject(item.ticker, item.name);
-      //   }
+      setState(() {});
     }
   }
 
@@ -249,6 +249,9 @@ class MyHomeState extends State<Home> {
                               EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                           child: TextFormField(
                             controller: _searchController,
+                            onEditingComplete: () async {
+                              search();
+                            },
                             decoration: InputDecoration(
                                 labelText:
                                     "Search by company names or ticker...",
