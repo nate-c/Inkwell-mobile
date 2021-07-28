@@ -93,9 +93,11 @@ class MyHomeState extends State<Home> {
     for (int i = 0; i < _searchResults.length; i++) {
       var newWidget = Row(
         children: [
-          Text(
-            _searchResults[i],
-            key: new Key(_searchResults[i]),
+          Center(
+            child: Text(
+              _searchResults[i],
+              key: new Key(_searchResults[i]),
+            ),
           )
         ],
       );
@@ -214,14 +216,18 @@ class MyHomeState extends State<Home> {
                     ],
                   ),
                   FloatingActionButton.extended(
+                    heroTag: new Hero(
+                      tag: 'view details',
+                      child: Text(''),
+                    ),
                     onPressed: () {
                       print('navigate to account details page');
                       // Navigator.pushNamed(
                       //     context, RoutesConstants.addMoneyRoute);
                     },
                     // shape: ShapeBorder.lerp(1, 1, 1),
-                    label: const Text('View Account Details'),
-                    backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                    label: const Text('View Details'),
+                    backgroundColor: Color.fromARGB(0, 255, 0, 0),
                   ),
                   // Container(
                   //     // width: 300,
@@ -250,6 +256,8 @@ class MyHomeState extends State<Home> {
                   Container(
                       height: 300,
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [...getTextWidgets()],
                       )),
                   Container(
