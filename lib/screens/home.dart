@@ -10,6 +10,7 @@ import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/tickerSearchObject.dart';
+import '../constants/colorConstants.dart';
 import 'addmoney.dart';
 
 void main() => runApp(Home());
@@ -42,6 +43,8 @@ class MyHomeState extends State<Home> {
   String? _token;
   // final int _amount;
   int? _investedValue;
+  // Array<String> _searchResults;
+  List<String> _searchResults = [];
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
@@ -50,19 +53,20 @@ class MyHomeState extends State<Home> {
 
   @override
   void initState() {
+    super.initState();
     // getUserInvestments();
     setInitialStateVariables();
   }
 
   getUserInvestments() async {
-    var token = await storage.read(key: 'token');
+    var token = await storage.read(key: 'jwt');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestmentsUri);
+    Uri uri = Uri.parse(UriConstants.getUserInvestmentsUri);
 
-    var response = await http.post(uriReg, headers: {
+    var response = await http.post(uri, headers: {
       'authorization': token.toString()
     }, body: {
-      'username': userName,
+      'username': userName.toString(),
     });
     if (response.statusCode == 200) {
       setState(() {
@@ -78,10 +82,17 @@ class MyHomeState extends State<Home> {
     setState(() {
       _investedValue = int.parse(amount.toString());
       _token = token.toString();
+      _searchResults = [];
     });
   }
 
-  search() async {
+  Widget getTextWidgets() {
+    // Widget getTextWidgets(List<String> strings) {
+    return new Row(
+        children: _searchResults.map((item) => new Text(item)).toList());
+  }
+
+  void search() async {
     // var token = await storage.read(key: 'token');
     Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
     // String searchText = _searchController.text;
@@ -94,7 +105,10 @@ class MyHomeState extends State<Home> {
     if (response.statusCode == 200) {
       print(response.body);
       // var jsonResponse = convert.jsonDecode(response.body);
-      var resultsArray = [];
+      var resultsArray = ['test1', 'test2'];
+      setState(() {
+        _searchResults = resultsArray.toList();
+      });
       // for(int i = 0; i < response.body.; i++){
 
       // }
@@ -129,7 +143,7 @@ class MyHomeState extends State<Home> {
         ),
         backgroundColor: ColorConstants.background,
         body: Container(
-            color: Colors.blue,
+            // color: Colors.blue,
             // height: 100,
             margin: EdgeInsets.all(15), //originally 24
             // padding: EdgeInsets.only(top: 0),
@@ -143,7 +157,7 @@ class MyHomeState extends State<Home> {
                   Row(
                     children: [
                       Text(
-                        "1500",
+                        "Available To Invest - ",
                       ),
                       Text("JJJ")
                     ],
@@ -151,7 +165,7 @@ class MyHomeState extends State<Home> {
                   Row(
                     children: [
                       Text(
-                        "1500",
+                        "Already Invested - ",
                       ),
                       Text("JJJ")
                     ],
@@ -159,7 +173,7 @@ class MyHomeState extends State<Home> {
                   Row(
                     children: [
                       Text(
-                        "1500",
+                        "Portfolio Value - ",
                       ),
                       Text("JJJ")
                     ],
@@ -168,29 +182,46 @@ class MyHomeState extends State<Home> {
                       // width: 300,
                       margin: new EdgeInsets.all(15),
                       color: ColorConstants.textFieldBox,
-                      child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          child: TextFormField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                                labelText:
-                                    "Search by company names or ticker...",
-                                labelStyle: TextStyle(
-                                    color: ColorConstants.textInTextField),
-                                border: InputBorder.none),
-                            style: TextStyle(
-                                color: ColorConstants.bodyText, fontSize: 15),
-                          ))),
-                  FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, RoutesConstants.addMoneyRoute);
-                    },
-                    label: const Text('Add Money'),
-                    icon: const Icon(Icons.add),
-                    backgroundColor: ColorConstants.button,
-                  ),
+                      child: Row(
+                        children: [
+                          // Padding(
+                          //     padding: EdgeInsets.symmetric(
+                          //         horizontal: 10, vertical: 2),
+                          //     child: TextFormField(
+                          //       controller: _searchController,
+                          //       decoration: InputDecoration(
+                          //           labelText:
+                          //               "Search by company names or ticker...",
+                          //           labelStyle: TextStyle(
+                          //               color: ColorConstants.textInTextField),
+                          //           border: InputBorder.none),
+                          //       style: TextStyle(
+                          //           color: ColorConstants.bodyText,
+                          //           fontSize: 15),
+                          //     )),
+                        ],
+                      )),
+                  Container(
+                    margin: new EdgeInsets.all(15),
+                    color: ColorConstants.textFieldBox,
+                  )
+                  // FloatingActionButton.extended(
+                  //   onPressed: () {
+                  //     search();
+                  //   },
+                  //   label: const Text('Search'),
+                  //   backgroundColor: ColorConstants.button,
+                  // ),
+                  // getTextWidgets(),
+                  // FloatingActionButton.extended(
+                  //   onPressed: () {
+                  //     Navigator.pushNamed(
+                  //         context, RoutesConstants.addMoneyRoute);
+                  //   },
+                  //   label: const Text('Add Money'),
+                  //   icon: const Icon(Icons.add),
+                  //   backgroundColor: ColorConstants.button,
+                  // ),
                 ])))
 
         // body:
