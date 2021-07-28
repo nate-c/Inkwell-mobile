@@ -229,32 +229,26 @@ class MyHomeState extends State<Home> {
                     label: const Text('View Details'),
                     backgroundColor: Color.fromARGB(0, 255, 0, 0),
                   ),
-                  // Container(
-                  //     // width: 300,
-                  //     margin: new EdgeInsets.all(15),
-                  //     color: ColorConstants.textFieldBox,
-                  //     child: Row(
-                  //       children: [
-                  //         Padding(
-                  //             padding: EdgeInsets.symmetric(
-                  //                 horizontal: 10, vertical: 2),
-                  //             child: TextFormField(
-                  //               controller: _searchController,
-                  //               decoration: InputDecoration(
-                  //                   labelText:
-                  //                       "Search by company names or ticker...",
-                  //                   labelStyle: TextStyle(
-                  //                       color: ColorConstants.textInTextField),
-                  //                   border: InputBorder.none),
-                  //               style: TextStyle(
-                  //                   color: ColorConstants.bodyText,
-                  //                   fontSize: 15),
-                  //             )),
-                  //       ],
-                  //     ))
-                  // ,
                   Container(
-                      height: 300,
+                      width: 300,
+                      margin: new EdgeInsets.all(15),
+                      color: ColorConstants.textFieldBox,
+                      child: Padding(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          child: TextFormField(
+                            controller: _searchController,
+                            decoration: InputDecoration(
+                                labelText:
+                                    "Search by company names or ticker...",
+                                labelStyle: TextStyle(
+                                    color: ColorConstants.textInTextField),
+                                border: InputBorder.none),
+                            style: TextStyle(
+                                color: ColorConstants.bodyText, fontSize: 15),
+                          ))),
+                  Container(
+                      height: 200,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
