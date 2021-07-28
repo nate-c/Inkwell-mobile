@@ -143,6 +143,10 @@ class MyHomeState extends State<Home> {
     }
   }
 
+  void hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
+  }
+
   Widget build(BuildContext context) {
     return new Scaffold(
         resizeToAvoidBottomInset: false,
@@ -251,6 +255,7 @@ class MyHomeState extends State<Home> {
                             controller: _searchController,
                             onEditingComplete: () async {
                               search();
+                              hideKeyboard(context);
                             },
                             decoration: InputDecoration(
                                 labelText:
