@@ -199,6 +199,17 @@ class MyHomeState extends State<Home> {
                           )),
                     ],
                   ),
+
+                  FloatingActionButton.extended(
+                    onPressed: () {
+                      print('navigate to account details page');
+                      // Navigator.pushNamed(
+                      //     context, RoutesConstants.addMoneyRoute);
+                    },
+                    // shape: ShapeBorder.lerp(1, 1, 1),
+                    label: const Text('View Account Details'),
+                    backgroundColor: Color.fromARGB(0, 0, 0, 0),
+                  ),
                   // Container(
                   //     // width: 300,
                   //     margin: new EdgeInsets.all(15),
