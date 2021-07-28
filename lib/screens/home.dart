@@ -1,5 +1,6 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import 'dart:html';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -143,7 +144,7 @@ class MyHomeState extends State<Home> {
         ),
         backgroundColor: ColorConstants.background,
         body: Container(
-            // color: Colors.blue,
+            color: ColorConstants.background,
             // height: 100,
             margin: EdgeInsets.all(15), //originally 24
             // padding: EdgeInsets.only(top: 0),
@@ -156,26 +157,49 @@ class MyHomeState extends State<Home> {
                     children: [
                   Row(
                     children: [
-                      Text(
-                        "Available To Invest - ",
-                      ),
-                      Text("JJJ")
+                      Padding(
+                          padding:
+                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          child: Text(
+                            "Available To Invest - ",
+                          )),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            "JJJ",
+                          )),
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        "Already Invested - ",
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                        child: Text(
+                          "Already Invested - ",
+                        ),
                       ),
-                      Text("JJJ")
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            "JJJ",
+                          )),
                     ],
                   ),
                   Row(
                     children: [
-                      Text(
-                        "Portfolio Value - ",
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                        child: Text(
+                          "Portfolio Value - ",
+                        ),
                       ),
-                      Text("JJJ")
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                            "JJJ",
+                          )),
                     ],
                   ),
                   Container(
