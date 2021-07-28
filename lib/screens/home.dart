@@ -40,7 +40,10 @@ class MyHomeState extends State<Home> {
   // final User _user;
   String? _token;
   // final int _amount;
-  int? _investedValue;
+  int _investedValue = 0;
+  int _availableToInvest = 0;
+  int _portfolioValue = 0;
+
   // Array<String> _searchResults;
   List<String> _searchResults = [];
   // []TickerSearchObject _results;
@@ -75,10 +78,15 @@ class MyHomeState extends State<Home> {
 
   setInitialStateVariables() async {
     var amount = await storage.read(key: 'amount');
-    var token = await storage.read(key: 'token');
-
+    var token = await storage.read(key: 'jwt');
+    int availableToInvest = int.parse(amount.toString());
+    int investedValue = 0;
+    int portfolioValue = investedValue + availableToInvest;
     setState(() {
-      _investedValue = int.parse(amount.toString());
+      _investedValue = investedValue;
+      // int.parse(amount.toString());
+      _availableToInvest = availableToInvest;
+      _portfolioValue = portfolioValue;
       _token = token.toString();
       _searchResults = [];
     });
@@ -163,7 +171,7 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "JJJ",
+                            _availableToInvest.toString(),
                           )),
                     ],
                   ),
@@ -179,7 +187,7 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "JJJ",
+                            _investedValue.toString(),
                           )),
                     ],
                   ),
@@ -195,7 +203,7 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "JJJ",
+                            _portfolioValue.toString(),
                           )),
                     ],
                   ),
