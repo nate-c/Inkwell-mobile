@@ -91,7 +91,12 @@ class MyHomeState extends State<Home> {
   List<Widget> getTextWidgets() {
     List<Widget> searchResults = [];
     if (_searchResults.length > 0) {
-      searchResults.add(Text("Search Results"));
+      searchResults.add(
+        Center(
+            child: Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Text("Search Results:"))),
+      );
     }
     for (int i = 0; i < _searchResults.length; i++) {
       var newWidget = Row(
