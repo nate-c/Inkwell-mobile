@@ -1,8 +1,5 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'dart:html';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -202,33 +199,43 @@ class MyHomeState extends State<Home> {
                           )),
                     ],
                   ),
-                  Container(
-                      // width: 300,
-                      margin: new EdgeInsets.all(15),
-                      color: ColorConstants.textFieldBox,
-                      child: Row(
-                        children: [
-                          // Padding(
-                          //     padding: EdgeInsets.symmetric(
-                          //         horizontal: 10, vertical: 2),
-                          //     child: TextFormField(
-                          //       controller: _searchController,
-                          //       decoration: InputDecoration(
-                          //           labelText:
-                          //               "Search by company names or ticker...",
-                          //           labelStyle: TextStyle(
-                          //               color: ColorConstants.textInTextField),
-                          //           border: InputBorder.none),
-                          //       style: TextStyle(
-                          //           color: ColorConstants.bodyText,
-                          //           fontSize: 15),
-                          //     )),
-                        ],
-                      )),
+                  // Container(
+                  //     // width: 300,
+                  //     margin: new EdgeInsets.all(15),
+                  //     color: ColorConstants.textFieldBox,
+                  //     child: Row(
+                  //       children: [
+                  //         Padding(
+                  //             padding: EdgeInsets.symmetric(
+                  //                 horizontal: 10, vertical: 2),
+                  //             child: TextFormField(
+                  //               controller: _searchController,
+                  //               decoration: InputDecoration(
+                  //                   labelText:
+                  //                       "Search by company names or ticker...",
+                  //                   labelStyle: TextStyle(
+                  //                       color: ColorConstants.textInTextField),
+                  //                   border: InputBorder.none),
+                  //               style: TextStyle(
+                  //                   color: ColorConstants.bodyText,
+                  //                   fontSize: 15),
+                  //             )),
+                  //       ],
+                  //     ))
+                  // ,
                   Container(
                     margin: new EdgeInsets.all(15),
                     color: ColorConstants.textFieldBox,
-                  )
+                  ),
+                  FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, RoutesConstants.addMoneyRoute);
+                    },
+                    label: const Text('Add Money'),
+                    icon: const Icon(Icons.add),
+                    backgroundColor: ColorConstants.button,
+                  ),
                   // FloatingActionButton.extended(
                   //   onPressed: () {
                   //     search();
