@@ -90,6 +90,9 @@ class MyHomeState extends State<Home> {
 
   List<Widget> getTextWidgets() {
     List<Widget> searchResults = [];
+    if (_searchResults.length > 0) {
+      searchResults.add(Text("Search Results"));
+    }
     for (int i = 0; i < _searchResults.length; i++) {
       var newWidget = Row(
         mainAxisAlignment: MainAxisAlignment.center,
