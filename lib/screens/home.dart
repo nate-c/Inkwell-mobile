@@ -45,7 +45,7 @@ class MyHomeState extends State<Home> {
   int _portfolioValue = 0;
 
   // Array<String> _searchResults;
-  List<String> _searchResults = [];
+  List<String> _searchResults = ['results'].toList();
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
@@ -79,17 +79,13 @@ class MyHomeState extends State<Home> {
   setInitialStateVariables() async {
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    int availableToInvest = int.parse(amount.toString());
-    int investedValue = 0;
-    int portfolioValue = investedValue + availableToInvest;
-    setState(() {
-      _investedValue = investedValue;
-      // int.parse(amount.toString());
-      _availableToInvest = availableToInvest;
-      _portfolioValue = portfolioValue;
-      _token = token.toString();
-      _searchResults = [];
-    });
+    _availableToInvest = int.parse(amount.toString());
+    _investedValue = 9;
+    _portfolioValue = _investedValue + _availableToInvest;
+    _searchResults = ['aapl', 'tsla', 'msft'];
+    _token = token.toString();
+    // _searchResults = ['test1', 'test2'].toList();
+    setState(() {});
   }
 
   Widget getTextWidgets() {
@@ -207,7 +203,6 @@ class MyHomeState extends State<Home> {
                           )),
                     ],
                   ),
-
                   FloatingActionButton.extended(
                     onPressed: () {
                       print('navigate to account details page');
@@ -242,6 +237,10 @@ class MyHomeState extends State<Home> {
                   //       ],
                   //     ))
                   // ,
+                  Container(height: 300, child: getTextWidgets()),
+                  Container(
+                    height: 50,
+                  ),
                   Container(
                     margin: new EdgeInsets.all(15),
                     color: ColorConstants.textFieldBox,
