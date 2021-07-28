@@ -92,12 +92,15 @@ class MyHomeState extends State<Home> {
     List<Widget> searchResults = [];
     for (int i = 0; i < _searchResults.length; i++) {
       var newWidget = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child: Text(
-              _searchResults[i],
-              key: new Key(_searchResults[i]),
-            ),
+            child: Padding(
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Text(
+                  _searchResults[i],
+                  key: new Key(_searchResults[i]),
+                )),
           )
         ],
       );
