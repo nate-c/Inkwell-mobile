@@ -156,6 +156,7 @@ class MyProfileState extends State<MyProfile> {
           ExpandableTheme(
           data: ExpandableThemeData(
             iconColor: ColorConstants.expandArrows,
+            iconSize: 30,
             collapseIcon: CupertinoIcons.chevron_up_circle,
             expandIcon: CupertinoIcons.chevron_down_circle,
             useInkWell: true,
@@ -178,6 +179,7 @@ class MyProfileState extends State<MyProfile> {
           ExpandableTheme(
           data: ExpandableThemeData(
             iconColor: ColorConstants.expandArrows,
+            iconSize: 30,
             collapseIcon: CupertinoIcons.chevron_up_circle,
             expandIcon: CupertinoIcons.chevron_down_circle,
             useInkWell: true,
