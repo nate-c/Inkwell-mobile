@@ -244,7 +244,7 @@ class MoneyConfirmation extends StatelessWidget {
                       _showSuccessDialog("\$" +
                           amount.toString() +
                           " added into your account.");
-                      Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                  
                     }
                     ResponseHandler().handleError(response);
                     _moneyamtController.clear();
