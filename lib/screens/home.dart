@@ -55,10 +55,11 @@ class MyHomeState extends State<Home> {
   final storage = new FlutterSecureStorage();
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
     // getUserInvestments();
-    setInitialStateVariables();
+    await setInitialStateVariables();
+    getAccountInfo();
   }
 
   getUserInvestments() async {
@@ -86,6 +87,25 @@ class MyHomeState extends State<Home> {
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
     setState(() {});
+  }
+
+  void getAccountInfo() async {
+    Uri uriReg = Uri.parse(UriConstants.getAccountBalanceUri);
+    var user_id = await storage.read(key: 'user_id');
+    var response = await http.post(uriReg, headers: {
+      'authorization': _token.toString()
+    }, body: {
+      'user_id': user_id.toString(),
+    });
+    if (response.statusCode == 200) {
+      print(response.body);
+      var responseData = jsonDecode(response.body.toString())["data"];
+      storage.write(
+          key: "account_id", value: responseData["data"]["account_id"]);
+      _availableToInvest =
+          int.parse(responseData["data"]["account_id"].toString());
+      setState(() {});
+    }
   }
 
   List<Widget> getTextWidgets() {
