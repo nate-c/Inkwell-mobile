@@ -35,7 +35,9 @@ class UriConstants {
   static final String getFilteredTickersUri =
       'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/search/getMatchingTickers/';
   static final String addMoneyUri =
-      'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/accounts/updateAccountBalance';
+      'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/accounts/updateAccountBalance/';
+  static final String getAccountBalanceUri =
+      'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/accounts/getAccountData/';
   static final String executeTradeUri =
       'http://inkwellservices-env.eba-k5w7dcu7.us-east-2.elasticbeanstalk.com/trades/executeTrade/';
   static final String getTradesUri =
