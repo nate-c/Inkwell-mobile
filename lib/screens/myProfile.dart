@@ -1,4 +1,5 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -46,28 +47,74 @@ class MyProfileState extends State<MyProfile> {
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
 
+  List<String> _investments = [];
+  var totalInvestmentValue = '';
 
-  @override
-  void initState() {
-    // getUserInvestments();
-    setInitialStateVariables();
-  }
-
-  getUserInvestments() async {
+  void getUserInvestments() async {
     var token = await storage.read(key: 'token');
     var userName = await storage.read(key: 'username');
-    Uri uriReg = Uri.parse(UriConstants.getUserInvestmentsUri);
+    Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
 
-    var response = await http.post(uriReg, headers: {
+    var response = await http.post(uriInv, headers: {
       'authorization': token.toString()
     }, body: {
       'username': userName,
     });
     if (response.statusCode == 200) {
-      setState(() {
-        _investedValue = 1;
-      });
+      print(response.body);
+      var investmentResultsArray = jsonDecode(response.body.toString())["account"];
+      List<String> updatedInvestments = [];
+      for (int i = 0; i < investmentResultsArray.length; i++) {
+        String viewString = investmentResultsArray[i]["ticker"] +
+            ' \n ' +
+            investmentResultsArray[i]["shares"] +
+            ' \n' + investmentResultsArray[i]["average_price"];
+        updatedInvestments.add(viewString);
+      }
+
+      _investments = updatedInvestments;
+      
     }
+    setState(() {
+      getUserInvestments();
+    });
+  }
+
+  List<Widget> getInvestmentsWidget(){
+    List<Widget> investments = [];
+      if (_investments.length > 0){ 
+      investments.add(
+          Center(
+          child: ExpandableTheme(
+          data: ExpandableThemeData(
+            iconColor: ColorConstants.expandArrows,
+            iconSize: 30,
+            collapseIcon: CupertinoIcons.chevron_up_circle,
+            expandIcon: CupertinoIcons.chevron_down_circle,
+            useInkWell: true,
+            tapHeaderToExpand: true,
+            
+          ),
+          child: Text('Investments'),
+              ),
+            )
+          );
+        for (int i = 0; i < _investments.length; i++){
+          var newWidget = Container(
+              color: ColorConstants.expandable,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.bottomLeft,
+                child: ExpandablePanel(
+                  header: Text('Stocks', style: TextStyle(fontSize: 25),),
+                  collapsed: Text(_investments[0], style: TextStyle(fontWeight: FontWeight.w300)),
+                  expanded: Text(_investments[i], key: new Key(_investments[i]) , softWrap: true, style: TextStyle(fontSize: 18),), 
+                )
+              );
+              investments.add(newWidget);
+            }
+      }
+      return investments;
+    
   }
 
   setInitialStateVariables() async {
@@ -78,34 +125,21 @@ class MyProfileState extends State<MyProfile> {
       _investedValue = int.parse(amount.toString());
       _token = token.toString();
     });
+    
   }
 
-  search() async {
-    // var token = await storage.read(key: 'token');
-    Uri uriReg = Uri.parse(UriConstants.getFilteredTickersUri);
-    // String searchText = _searchController.text;
-
-    var response = await http.post(uriReg, headers: {
-      'authorization': _token.toString()
-    }, body: {
-      'searchString': _searchController.text,
-    });
-    if (response.statusCode == 200) {
-      print(response.body);
-      // var jsonResponse = convert.jsonDecode(response.body);
-      var resultsArray = [];
-      // for(int i = 0; i < response.body.; i++){
-
-      // }
-      //   (for var item in response.data.data){
-      //     TickerSearchObject t = new TickerSearchObject(item.ticker, item.name);
-      //   }
+initState(){
+      super.initState();
+      getUserInvestments();
     }
-  }
 
 
   Widget build(BuildContext context) {
+
+    Future.delayed(Duration.zero, () => getUserInvestments());
+    
     return new Scaffold(
+    
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarBackground,
@@ -152,30 +186,10 @@ class MyProfileState extends State<MyProfile> {
               ]
             ),
              SizedBox(height: 100), //TODO: remove when chart widget is complete
-          
-          ExpandableTheme(
-          data: ExpandableThemeData(
-            iconColor: ColorConstants.expandArrows,
-            iconSize: 30,
-            collapseIcon: CupertinoIcons.chevron_up_circle,
-            expandIcon: CupertinoIcons.chevron_down_circle,
-            useInkWell: true,
-            tapHeaderToExpand: true,
-            
+          Column(
+          children: [...getInvestmentsWidget()],
           ),
-              child: Container(
-              color: ColorConstants.expandable,
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.bottomLeft,
-                child: ExpandablePanel(
-                  header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                  collapsed: Text('AAPL...', style: TextStyle(fontWeight: FontWeight.w300)),
-                  expanded: Text('AAPL\nApple\n\nTSLA\nTesla', softWrap: true, style: TextStyle(fontSize: 18),),
-                  
-                )
-              )
-              ),
-          SizedBox(height: 20), 
+
           ExpandableTheme(
           data: ExpandableThemeData(
             iconColor: ColorConstants.expandArrows,
