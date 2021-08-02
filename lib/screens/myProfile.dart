@@ -73,6 +73,7 @@ class MyProfileState extends State<MyProfile> {
       }
 
       _investments = updatedInvestments;
+      print(updatedInvestments);
       
     }
     setState(() {
@@ -82,39 +83,37 @@ class MyProfileState extends State<MyProfile> {
 
   List<Widget> getInvestmentsWidget(){
     List<Widget> investments = [];
+    getUserInvestments();
       if (_investments.length > 0){ 
-      investments.add(
-          Center(
-          child: ExpandableTheme(
-          data: ExpandableThemeData(
-            iconColor: ColorConstants.expandArrows,
-            iconSize: 30,
-            collapseIcon: CupertinoIcons.chevron_up_circle,
-            expandIcon: CupertinoIcons.chevron_down_circle,
-            useInkWell: true,
-            tapHeaderToExpand: true,
-            
-          ),
-          child: Text('Investments'),
-              ),
-            )
-          );
         for (int i = 0; i < _investments.length; i++){
-          var newWidget = Container(
-              color: ColorConstants.expandable,
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.bottomLeft,
-                child: ExpandablePanel(
-                  header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                  collapsed: Text(_investments[0], style: TextStyle(fontWeight: FontWeight.w300)),
-                  expanded: Text(_investments[i], key: new Key(_investments[i]) , softWrap: true, style: TextStyle(fontSize: 18),), 
+        investments.add(
+            ExpandableTheme(
+            data: ExpandableThemeData(
+              iconColor: ColorConstants.expandArrows,
+              iconSize: 30,
+              collapseIcon: CupertinoIcons.chevron_up_circle,
+              expandIcon: CupertinoIcons.chevron_down_circle,
+              useInkWell: true,
+              tapHeaderToExpand: true,
+              
+            ),
+            child: Container(
+                color: ColorConstants.expandable,
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.bottomLeft,
+                  child: ExpandablePanel(
+                    header: Text('Stocks', style: TextStyle(fontSize: 25),),
+                    collapsed: Text(_investments[0], style: TextStyle(fontWeight: FontWeight.w300)),
+                    expanded: Text(_investments[i], key: new Key(_investments[i]) , softWrap: true, style: TextStyle(fontSize: 18),), 
+                  )
                 )
-              );
-              investments.add(newWidget);
-            }
-      }
-      return investments;
-    
+                )
+            );
+          }
+        } else{ 
+            Container();
+        }
+        return investments;
   }
 
   setInitialStateVariables() async {
