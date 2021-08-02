@@ -62,7 +62,7 @@ class MyProfileState extends State<MyProfile> {
     });
     if (response.statusCode == 200) {
       print(response.body);
-      var investmentResultsArray = jsonDecode(response.body.toString())["account"];
+      var investmentResultsArray = jsonDecode(response.body.toString())["account_id"];
       List<String> updatedInvestments = [];
       for (int i = 0; i < investmentResultsArray.length; i++) {
         String viewString = investmentResultsArray[i]["ticker"] +
@@ -76,14 +76,11 @@ class MyProfileState extends State<MyProfile> {
       print(updatedInvestments);
       
     }
-    setState(() {
-      getUserInvestments();
-    });
+  
   }
 
   List<Widget> getInvestmentsWidget(){
     List<Widget> investments = [];
-    getUserInvestments();
       if (_investments.length > 0){ 
         for (int i = 0; i < _investments.length; i++){
         investments.add(
@@ -127,8 +124,10 @@ class MyProfileState extends State<MyProfile> {
     
   }
 
-initState(){
+@override
+void initState(){
       super.initState();
+      setInitialStateVariables();
       getUserInvestments();
     }
 
