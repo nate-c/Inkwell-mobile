@@ -50,19 +50,17 @@ class MyProfileState extends State<MyProfile> {
   List<String> _investments = [];
   var totalInvestmentValue = '';
 
-  void getUserInvestments() async {
+   getUserInvestments() async {
     var token = await storage.read(key: 'token');
-    var userName = await storage.read(key: 'username');
+    // var userName = await storage.read(key: 'username');
     Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
 
-    var response = await http.post(uriInv, headers: {
+    var response = await http.get(uriInv, headers: {
       'authorization': token.toString()
-    }, body: {
-      'username': userName,
     });
     if (response.statusCode == 200) {
       print(response.body);
-      var investmentResultsArray = jsonDecode(response.body.toString())["account_id"];
+      var investmentResultsArray = jsonDecode(response.body.toString())["account"];
       List<String> updatedInvestments = [];
       for (int i = 0; i < investmentResultsArray.length; i++) {
         String viewString = investmentResultsArray[i]["ticker"] +
@@ -73,10 +71,10 @@ class MyProfileState extends State<MyProfile> {
       }
 
       _investments = updatedInvestments;
-      print(updatedInvestments);
+      print(_investments);
       
     }
-  
+    return _investments;
   }
 
   List<Widget> getInvestmentsWidget(){
