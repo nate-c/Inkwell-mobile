@@ -80,9 +80,10 @@ class MyHomeState extends State<Home> {
   }
 
   setInitialStateVariables() async {
-    var amount = await storage.read(key: 'amount');
+    // var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    _availableToInvest = int.parse(amount.toString());
+    _availableToInvest = 0;
+    // int.parse(amount.toString());
     _investedValue = 0;
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
@@ -99,13 +100,18 @@ class MyHomeState extends State<Home> {
       'user_id': user_id.toString(),
     });
     if (response.statusCode == 200) {
-      print(response.body);
-      var responseData = jsonDecode(response.body.toString())["data"];
-      storage.write(
-          key: "account_id", value: responseData["data"]["account_id"]);
-      _availableToInvest =
-          int.parse(responseData["data"]["account_id"].toString());
-      setState(() {});
+      // print(response.body);
+      // print(response.body["data"]);
+      // var responseData = await jsonDecode(response.body.toString())["data"];
+      // int data = responseData["account_id"];
+      // print(data);
+      // print(responseData['account_id']);
+      // Int accountId = json
+      // storage.write(
+      //     key: "account_id", value: responseData["data"]["account_id"]);
+      // _availableToInvest =
+      //     int.parse(responseData["data"]["account_id"].toString());
+      // setState(() {});
     }
   }
 
@@ -126,10 +132,13 @@ class MyHomeState extends State<Home> {
           Center(
             child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Text(
-                  _searchResults[i],
-                  key: new Key(_searchResults[i]),
-                )),
+                child: Container(
+                    //   color: Colors.white,
+                    color: new Color.fromARGB(0, 0, 0, 0),
+                    child: Text(
+                      _searchResults[i],
+                      key: new Key(_searchResults[i]),
+                    ))),
           )
         ],
       );
@@ -173,6 +182,7 @@ class MyHomeState extends State<Home> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: ColorConstants.appBarBackground,
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
                 alignment: Alignment.centerRight,
