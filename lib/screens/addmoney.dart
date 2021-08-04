@@ -16,7 +16,7 @@ import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyAddMoney());
-
+TextEditingController _moneyamtController = new TextEditingController();
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -54,7 +54,7 @@ class MyAddMoney extends StatefulWidget {
   _MyAddMoneyState createState() => _MyAddMoneyState();
 }
 
-TextEditingController _moneyamtController = new TextEditingController();
+
 final storage = new FlutterSecureStorage();
 
 class _MyAddMoneyState extends State<MyAddMoney> {
@@ -241,13 +241,10 @@ class MoneyConfirmation extends StatelessWidget {
                         await _MyAddMoneyState().addmoney(userId, amount);
 
                     if (response.statusCode == 200) {
-                      _showSuccessDialog("\$" +
-                          amount.toString() +
-                          " added into your account.");
-                  
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmationPopUp()));
                     }
                     ResponseHandler().handleError(response);
-                    _moneyamtController.clear();
+                  
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
@@ -261,4 +258,36 @@ class MoneyConfirmation extends StatelessWidget {
         ) // This trailing comma makes auto-formatting nicer for build methods.
         );
   }
+}
+
+class ConfirmationPopUp extends StatelessWidget{
+  var amount = _moneyamtController.text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: ColorConstants.background,
+      body: Center(child:
+        Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget> [
+        Text("Congratulations!".toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 30),),
+        SizedBox(height: 20,),
+        Text ("\$" + amount.toString() +
+                          " has been added into your account.".toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 25),),
+        SizedBox(height: 100,),
+        FloatingActionButton.extended(
+          backgroundColor: ColorConstants.button,
+          label: Text('Return to Home'.toUpperCase()),
+          onPressed: (){
+            Navigator.pushNamed(context, RoutesConstants.homeRoute);
+            _moneyamtController.clear();
+          },
+        ),
+
+        ],),)
+      ,);
+    
+    }
 }
