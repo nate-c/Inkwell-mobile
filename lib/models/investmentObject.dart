@@ -1,13 +1,45 @@
 class InvestmentObject {
  
-  int shares;
-  String ticker;
-  int averagePrice;
-  int currentPrice;
+ late int shares;
+ late String ticker;
+ late int averagePrice;
+ late int currentPrice;
 
-  InvestmentObject(this.shares, this.ticker, this.averagePrice, this.currentPrice);
+ int get _shares {
+    return shares;
+}
 
-  InvestmentObject.fromJson(Map<String, dynamic> json)
+void set _shares (int shares) {
+    this.shares = shares;
+}
+
+ String get _ticker {
+    return ticker;
+}
+
+void set _ticker (String ticker) {
+    this.ticker = ticker;
+} 
+
+int get average_price {
+    return averagePrice;
+}
+
+void set average_price (int averagePrice) {
+    this.averagePrice = averagePrice;
+} 
+
+int get current_price {
+  return currentPrice;
+}
+
+void set current_price (int currentPrice) {
+    this.currentPrice = currentPrice;
+} 
+
+InvestmentObject() : super();
+
+InvestmentObject.fromJson(Map<String, dynamic> json)
       : shares = json['shares'],
         ticker = json['ticker'],
         averagePrice = json['average_price'],

@@ -4,7 +4,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/models/investmentObject.dart';
 import '../models/User.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +41,7 @@ class MyProfile extends StatefulWidget {
 class MyProfileState extends State<MyProfile> {
   // final User _user;
   String? _token;
+
   // final int _amount;
   int? _investedValue;
   // []TickerSearchObject _results;
@@ -47,68 +50,57 @@ class MyProfileState extends State<MyProfile> {
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
 
-  List<String> _investments = [];
+  InvestmentObject inv = new InvestmentObject();
+
   var totalInvestmentValue = '';
+  List<String> _investments = [];
+  // InvestmentObject i = new InvestmentObject(_shares, _ticker, _averagePrice, _currentPrice);
 
    getUserInvestments() async {
     var token = await storage.read(key: 'token');
     // var userName = await storage.read(key: 'username');
     Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
-
-    var response = await http.get(uriInv, headers: {
+    var response = await http.post(uriInv, headers: {
       'authorization': token.toString()
+    }, body: {
+        'shares': inv.shares,
+        'ticker': inv.ticker,
+        'average_price': inv.averagePrice,
+        'current_price': inv.currentPrice,
     });
     if (response.statusCode == 200) {
       print(response.body);
       var investmentResultsArray = jsonDecode(response.body.toString())["account"];
       List<String> updatedInvestments = [];
       for (int i = 0; i < investmentResultsArray.length; i++) {
-        String viewString = investmentResultsArray[i]["ticker"] +
-            ' \n ' +
-            investmentResultsArray[i]["shares"] +
-            ' \n' + investmentResultsArray[i]["average_price"];
+      String viewString = investmentResultsArray[i][inv.ticker] +
+           ' \n ' +
+            investmentResultsArray[i][inv.shares] +
+            ' \n' + investmentResultsArray[i][inv.averagePrice];
         updatedInvestments.add(viewString);
       }
 
-      _investments = updatedInvestments;
       print(_investments);
       
     }
     return _investments;
-  }
-
-  List<Widget> getInvestmentsWidget(){
+    }
+   
+Iterable <Widget> getInvestmentsWidget(){
     List<Widget> investments = [];
       if (_investments.length > 0){ 
         for (int i = 0; i < _investments.length; i++){
         investments.add(
-            ExpandableTheme(
-            data: ExpandableThemeData(
-              iconColor: ColorConstants.expandArrows,
-              iconSize: 30,
-              collapseIcon: CupertinoIcons.chevron_up_circle,
-              expandIcon: CupertinoIcons.chevron_down_circle,
-              useInkWell: true,
-              tapHeaderToExpand: true,
-              
-            ),
-            child: Container(
-                color: ColorConstants.expandable,
-                padding: EdgeInsets.all(10),
-                alignment: Alignment.bottomLeft,
-                  child: ExpandablePanel(
+            ExpandablePanel(
                     header: Text('Stocks', style: TextStyle(fontSize: 25),),
                     collapsed: Text(_investments[0], style: TextStyle(fontWeight: FontWeight.w300)),
                     expanded: Text(_investments[i], key: new Key(_investments[i]) , softWrap: true, style: TextStyle(fontSize: 18),), 
-                  )
-                )
-                )
-            );
+                  ));
           }
         } else{ 
             Container();
         }
-        return investments;
+      return getInvestmentsWidget();
   }
 
   setInitialStateVariables() async {
@@ -127,6 +119,7 @@ void initState(){
       super.initState();
       setInitialStateVariables();
       getUserInvestments();
+     
     }
 
 
@@ -182,8 +175,30 @@ void initState(){
               ]
             ),
              SizedBox(height: 100), //TODO: remove when chart widget is complete
-          Column(
-          children: [...getInvestmentsWidget()],
+          // Column(
+          // children: [...getInvestmentsWidget()],
+          // ),
+          ExpandableTheme(
+          data: ExpandableThemeData(
+            iconColor: ColorConstants.expandArrows,
+            iconSize: 30,
+            collapseIcon: CupertinoIcons.chevron_up_circle,
+            expandIcon: CupertinoIcons.chevron_down_circle,
+            useInkWell: true,
+            tapHeaderToExpand: true,
+            
+          ),
+              child: Container(
+              color: ColorConstants.expandable,
+              padding: EdgeInsets.all(10),
+              alignment: Alignment.bottomLeft,
+                child: Column(
+                  children: <Widget> [
+                    ...getInvestmentsWidget()
+                  ],
+
+              )
+            )
           ),
 
           ExpandableTheme(
