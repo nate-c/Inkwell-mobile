@@ -54,6 +54,7 @@ class MyProfileState extends State<MyProfile> {
 
   var totalInvestmentValue = '';
   List<String> _investments = [];
+  List<String> updatedInvestments = [];
   // InvestmentObject i = new InvestmentObject(_shares, _ticker, _averagePrice, _currentPrice);
 
    getUserInvestments() async {
@@ -63,29 +64,18 @@ class MyProfileState extends State<MyProfile> {
     var response = await http.post(uriInv, headers: {
       'authorization': token.toString()
     }, body: {
-        'shares': inv.shares,
+        'shares': inv.shares.toString(),
         'ticker': inv.ticker,
-        'average_price': inv.averagePrice,
-        'current_price': inv.currentPrice,
+        'average_price': inv.averagePrice.toString(),
+        'current_price': inv.currentPrice.toString(),
     });
     if (response.statusCode == 200) {
       print(response.body);
-      var investmentResultsArray = jsonDecode(response.body.toString())["account"];
-      List<String> updatedInvestments = [];
-      for (int i = 0; i < investmentResultsArray.length; i++) {
-      String viewString = investmentResultsArray[i][inv.ticker] +
-           ' \n ' +
-            investmentResultsArray[i][inv.shares] +
-            ' \n' + investmentResultsArray[i][inv.averagePrice];
-        updatedInvestments.add(viewString);
-      }
-
-      print(_investments);
-      
     }
     return _investments;
     }
    
+  
 Iterable <Widget> getInvestmentsWidget(){
     List<Widget> investments = [];
       if (_investments.length > 0){ 
@@ -116,13 +106,12 @@ Iterable <Widget> getInvestmentsWidget(){
 
 @override
 void initState(){
-      super.initState();
       setInitialStateVariables();
       getUserInvestments();
-     
+      super.initState();
     }
 
-
+@override
   Widget build(BuildContext context) {
 
     Future.delayed(Duration.zero, () => getUserInvestments());
