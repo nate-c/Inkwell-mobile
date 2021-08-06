@@ -5,7 +5,6 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
-import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -40,16 +39,16 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
 
 List <InvestmentObject> _investments = [];
 
-class API { 
-  
+class API {
+  static final storage = new FlutterSecureStorage();
+ 
    static Future<void> getUserInvestments() async {
    
     var token = await storage.read(key: 'token');
     // var userName = await storage.read(key: 'username');
     Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
     var response = await http.get(uriInv, headers: {
-      'Authorization': token.toString(),
-      "Accept": "application/json"
+      'authorization': token.toString(),
     });
     print(response.body);
     if (response.statusCode == 200) {
