@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -36,9 +37,11 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
       };
 }
 
+
+List <InvestmentObject> _investments = [];
+
 class API { 
-  static List <InvestmentObject> _investments = [];
-   
+  
    static Future<void> getUserInvestments() async {
    
     var token = await storage.read(key: 'token');
@@ -57,18 +60,21 @@ class API {
     }
    
 
-static List <Widget> getInvestmentsWidget(){
-    List<Widget> investments = [];
+}
+
+class GetInvestmentsWidget extends StatelessWidget{
+    @override
+  Widget build(BuildContext context) {
+  
       if (_investments.length > 0){ 
         for (int i = 0; i < _investments.length; i++){
-        investments.add(
             ExpandablePanel(
                     header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                    collapsed: Text(_investments[0].toString(), style: TextStyle(fontWeight: FontWeight.w300)),
-                    expanded: Text(_investments[i].toString(), key: new Key(_investments[i].toString()) , softWrap: true, style: TextStyle(fontSize: 18),), 
-                  ));
+                    collapsed: Text(_investments[0].toString(), style: TextStyle(fontWeight: FontWeight.w300, color: ColorConstants.bodyText)),
+                    expanded: Text(_investments[i].toString(), key: new Key(_investments[i].toString()) , softWrap: true, style: TextStyle(fontSize: 18, color: ColorConstants.bodyText),), 
+                  );
           }
         } 
-      return getInvestmentsWidget();
+ 
+    }
   }
-}

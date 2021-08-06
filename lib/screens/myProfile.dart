@@ -140,14 +140,11 @@ void initState(){
               color: ColorConstants.expandable,
               padding: EdgeInsets.all(10),
               alignment: Alignment.bottomLeft,
-                child: Column(
-                  children: [
-                    ...API.getInvestmentsWidget()
-                  ],
+                child: GetInvestmentsWidget(),
 
               )
-            )
-          ),
+            ),
+          
 
           ExpandableTheme(
           data: ExpandableThemeData(
