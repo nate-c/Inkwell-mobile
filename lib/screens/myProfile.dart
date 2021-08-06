@@ -96,7 +96,7 @@ void initState(){
         child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget> [
           Text('Current Value'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
@@ -136,14 +136,9 @@ void initState(){
             tapHeaderToExpand: true,
             
           ),
-              child: Container(
-              color: ColorConstants.expandable,
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.bottomLeft,
-                child: GetInvestmentsWidget(),
+              child: GetInvestmentsWidget(),
 
-              )
-            ),
+              ),
           
 
           ExpandableTheme(
