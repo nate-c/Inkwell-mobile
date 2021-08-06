@@ -1,43 +1,25 @@
+
+import 'dart:convert';
+
+import 'package:expandable/expandable.dart';
+import 'package:flutter/material.dart';
+import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:inkwell_mobile/screens/addmoney.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+
+@JsonSerializable(explicitToJson: true)
+
 class InvestmentObject {
  
- late int shares;
- late String ticker;
- late int averagePrice;
- late int currentPrice;
+ int shares;
+ String ticker;
+ int averagePrice;
+ int currentPrice;
 
- int get _shares {
-    return shares;
-}
+InvestmentObject(this.shares, this.ticker, this.averagePrice, this.currentPrice);
 
-void set _shares (int shares) {
-    this.shares = shares;
-}
-
- String get _ticker {
-    return ticker;
-}
-
-void set _ticker (String ticker) {
-    this.ticker = ticker;
-} 
-
-int get average_price {
-    return averagePrice;
-}
-
-void set average_price (int averagePrice) {
-    this.averagePrice = averagePrice;
-} 
-
-int get current_price {
-  return currentPrice;
-}
-
-void set current_price (int currentPrice) {
-    this.currentPrice = currentPrice;
-} 
-
-InvestmentObject() : super();
 
 InvestmentObject.fromJson(Map<String, dynamic> json)
       : shares = json['shares'],
@@ -52,4 +34,41 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
         'current_price': currentPrice,
         
       };
+}
+
+class API { 
+  static List <InvestmentObject> _investments = [];
+   
+   static Future<void> getUserInvestments() async {
+   
+    var token = await storage.read(key: 'token');
+    // var userName = await storage.read(key: 'username');
+    Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
+    var response = await http.get(uriInv, headers: {
+      'authorization': token.toString()
+    });
+    if (response.statusCode == 200) {
+      _investments = (json.decode(response.body) as List)
+          .map((i) => InvestmentObject.fromJson(i))
+          .toList();
+    } else {
+      throw Exception('Failed to load investments');
+    }
+    }
+   
+
+static List <Widget> getInvestmentsWidget(){
+    List<Widget> investments = [];
+      if (_investments.length > 0){ 
+        for (int i = 0; i < _investments.length; i++){
+        investments.add(
+            ExpandablePanel(
+                    header: Text('Stocks', style: TextStyle(fontSize: 25),),
+                    collapsed: Text(_investments[0].toString(), style: TextStyle(fontWeight: FontWeight.w300)),
+                    expanded: Text(_investments[i].toString(), key: new Key(_investments[i].toString()) , softWrap: true, style: TextStyle(fontSize: 18),), 
+                  ));
+          }
+        } 
+      return getInvestmentsWidget();
+  }
 }

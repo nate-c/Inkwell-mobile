@@ -49,49 +49,10 @@ class MyProfileState extends State<MyProfile> {
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
-
-  InvestmentObject inv = new InvestmentObject();
-
+ 
   var totalInvestmentValue = '';
-  List<String> _investments = [];
-  List<String> updatedInvestments = [];
-  // InvestmentObject i = new InvestmentObject(_shares, _ticker, _averagePrice, _currentPrice);
+  List<InvestmentObject> _investments = [];
 
-   getUserInvestments() async {
-    var token = await storage.read(key: 'token');
-    // var userName = await storage.read(key: 'username');
-    Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
-    var response = await http.post(uriInv, headers: {
-      'authorization': token.toString()
-    }, body: {
-        'shares': inv.shares.toString(),
-        'ticker': inv.ticker,
-        'average_price': inv.averagePrice.toString(),
-        'current_price': inv.currentPrice.toString(),
-    });
-    if (response.statusCode == 200) {
-      print(response.body);
-    }
-    return _investments;
-    }
-   
-  
-Iterable <Widget> getInvestmentsWidget(){
-    List<Widget> investments = [];
-      if (_investments.length > 0){ 
-        for (int i = 0; i < _investments.length; i++){
-        investments.add(
-            ExpandablePanel(
-                    header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                    collapsed: Text(_investments[0], style: TextStyle(fontWeight: FontWeight.w300)),
-                    expanded: Text(_investments[i], key: new Key(_investments[i]) , softWrap: true, style: TextStyle(fontSize: 18),), 
-                  ));
-          }
-        } else{ 
-            Container();
-        }
-      return getInvestmentsWidget();
-  }
 
   setInitialStateVariables() async {
     var amount = await storage.read(key: 'amount');
@@ -107,15 +68,13 @@ Iterable <Widget> getInvestmentsWidget(){
 @override
 void initState(){
       setInitialStateVariables();
-      getUserInvestments();
+      API.getUserInvestments();
       super.initState();
     }
 
 @override
   Widget build(BuildContext context) {
 
-    Future.delayed(Duration.zero, () => getUserInvestments());
-    
     return new Scaffold(
     
       resizeToAvoidBottomInset: false,
@@ -182,8 +141,8 @@ void initState(){
               padding: EdgeInsets.all(10),
               alignment: Alignment.bottomLeft,
                 child: Column(
-                  children: <Widget> [
-                    ...getInvestmentsWidget()
+                  children: [
+                    ...API.getInvestmentsWidget()
                   ],
 
               )
