@@ -90,7 +90,7 @@ class MoneyConfirmation extends StatelessWidget {
                     String? user = await storage.read(key: 'user_id');
                     var userId = int.parse(user!);
                     var amount = double.parse(MyAddMoney.moneyamtController.text);
-                    Response response =
+                    var response =
                         await MyAddMoneyState().addmoney(userId, amount);
 
                     if (response.statusCode == 200) {

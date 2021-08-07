@@ -44,11 +44,12 @@ class API {
  
    static Future<void> getUserInvestments() async {
    
-    var token = await storage.read(key: 'token');
-    // var userName = await storage.read(key: 'username');
+    var token = await storage.read(key: 'jwt');
+    var userName = await storage.read(key: 'username');
     Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
-    var response = await http.get(uriInv, headers: {
-      'authorization': token.toString(),
+    http.Response response = await http.get(uriInv, headers: {
+      'Authorization': token.toString(),
+      "Accept": "application/json"
     });
     print(response.body);
     if (response.statusCode == 200) {
