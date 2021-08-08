@@ -73,6 +73,7 @@ class MyLoginState extends State<MyLogin> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: ColorConstants.appBarBackground,
+          automaticallyImplyLeading: false,
           actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,

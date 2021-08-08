@@ -80,14 +80,24 @@ void initState(){
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarBackground,
+        automaticallyImplyLeading: false,
         actions: <Widget>[
-          IconButton(
-              alignment: Alignment.centerRight,
-              color: ColorConstants.bodyText,
-              onPressed: () {
-                Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
-              },
-              icon: const Icon(Icons.add)),
+
+              PopupMenuButton<int>(
+              color: ColorConstants.expandable,
+              icon: Icon(Icons.menu),
+              itemBuilder: (context) => [
+                PopupMenuItem<int>(value: 0, child: Text("Home", style: TextStyle(color: ColorConstants.bodyText),)),
+                PopupMenuItem<int>(
+                    value: 1, child: Text("View Portfolio", style: TextStyle(color: ColorConstants.bodyText),)),
+                PopupMenuItem<int>(
+                    value: 2,
+                    child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
+                      
+                    ),
+              ],
+              onSelected: (item) => SelectedItem(context, item),
+            ),
         ],
       ),
       backgroundColor: ColorConstants.background,
