@@ -43,26 +43,25 @@ class MyProfileState extends State<MyProfile> {
   String? _token;
 
   // final int _amount;
-  int? _investedValue;
+  static int? investedValue;
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
  
-  var totalInvestmentValue = '';
- 
+  
   setInitialStateVariables() async {
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'token');
 
     setState(() {
-      _investedValue = int.parse(amount.toString());
+      investedValue = int.parse(amount.toString());
       _token = token.toString();
     });
     
   }
-  
+
 @override
 void initState(){
       setInitialStateVariables();
@@ -114,7 +113,7 @@ void initState(){
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [  
                 Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)), //TODO: change invested value to current value after API is done
-                Text(_investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
+                Text(API.totalInvestmentValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
                 Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
               ]
             ),
@@ -126,7 +125,7 @@ void initState(){
             children: <Widget> [
                 Text('Invested Value: '.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),  
                 Text('\$', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
-                Text(_investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 20)),
+                Text(investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 20)),
                
               ]
             ),
@@ -150,8 +149,8 @@ void initState(){
               padding: EdgeInsets.all(10),
               alignment: Alignment.bottomLeft,
                 child: ExpandablePanel(
-                  header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                  collapsed: Text(API.list, style: TextStyle(fontWeight: FontWeight.w300), maxLines: 1,),
+                  header: Text('Stocks', style: TextStyle(fontSize: 25,)),
+                  collapsed: Text('', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 0), maxLines: 1,),
                   expanded: Text(API.list, softWrap: true, style: TextStyle(fontSize: 18),),
                 
                 )

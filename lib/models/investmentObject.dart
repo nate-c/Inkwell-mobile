@@ -1,10 +1,12 @@
 
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -27,6 +29,7 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
         averagePrice = json['account']['average_price'],
         currentPrice = json['account']['current_price'];
 
+
   Map<String, dynamic> toJson() => {
         'shares': shares,
         'ticker': ticker,
@@ -34,6 +37,7 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
         'current_price': currentPrice,
         
       };
+ 
 }
 
 
@@ -42,6 +46,9 @@ List _investments = [];
 class API {
   static final storage = new FlutterSecureStorage();
   static String list = '';
+  
+  static var totalInvestmentValue = 0;
+ 
   static Future getUserInvestments() async {
    
     var token = await storage.read(key: 'jwt');
@@ -58,13 +65,15 @@ class API {
       for (int i = 0; i < _investments.length; i++){
       list = _investments[i]['ticker'] + '\n' + 'Shares: ' + _investments[i]['shares'].toString() 
       + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString();
-      return list;
+      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s.shares * (s.current_price - s.average_price)).reduce((accumulator, currentValue) => accumulator + currentValue)) as int);
+      return list; 
+      //TODO: add current price when in the database
       }
     } else {
       throw Exception('Failed to load investments');
     }
     }
-   
+    
 
 }
 
