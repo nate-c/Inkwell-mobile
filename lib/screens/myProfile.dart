@@ -51,9 +51,7 @@ class MyProfileState extends State<MyProfile> {
   final storage = new FlutterSecureStorage();
  
   var totalInvestmentValue = '';
-  List<InvestmentObject> _investments = [];
-
-
+ 
   setInitialStateVariables() async {
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'token');
@@ -64,7 +62,7 @@ class MyProfileState extends State<MyProfile> {
     });
     
   }
-
+  
 @override
 void initState(){
       setInitialStateVariables();
@@ -136,20 +134,6 @@ void initState(){
           // Column(
           // children: [...getInvestmentsWidget()],
           // ),
-          ExpandableTheme(
-          data: ExpandableThemeData(
-            iconColor: ColorConstants.expandArrows,
-            iconSize: 30,
-            collapseIcon: CupertinoIcons.chevron_up_circle,
-            expandIcon: CupertinoIcons.chevron_down_circle,
-            useInkWell: true,
-            tapHeaderToExpand: true,
-            
-          ),
-              child: GetInvestmentsWidget(),
-
-              ),
-          
 
           ExpandableTheme(
           data: ExpandableThemeData(
@@ -166,9 +150,9 @@ void initState(){
               padding: EdgeInsets.all(10),
               alignment: Alignment.bottomLeft,
                 child: ExpandablePanel(
-                  header: Text('Sectors', style: TextStyle(fontSize: 25),),
-                  collapsed: Text('Information Technology...', style: TextStyle(fontWeight: FontWeight.w300)),
-                  expanded: Text('Information Technology\nIndustrials', softWrap: true, style: TextStyle(fontSize: 18),),
+                  header: Text('Stocks', style: TextStyle(fontSize: 25),),
+                  collapsed: Text(API.list, style: TextStyle(fontWeight: FontWeight.w300), maxLines: 1,),
+                  expanded: Text(API.list, softWrap: true, style: TextStyle(fontSize: 18),),
                 
                 )
               )

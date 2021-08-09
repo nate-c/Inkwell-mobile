@@ -22,10 +22,10 @@ InvestmentObject(this.shares, this.ticker, this.averagePrice, this.currentPrice)
 
 
 InvestmentObject.fromJson(Map<String, dynamic> json)
-      : shares = json['shares'],
-        ticker = json['ticker'],
-        averagePrice = json['average_price'],
-        currentPrice = json['current_price'];
+      : shares = json['account']['shares'],
+        ticker = json['account']['ticker'],
+        averagePrice = json['account']['average_price'],
+        currentPrice = json['account']['current_price'];
 
   Map<String, dynamic> toJson() => {
         'shares': shares,
@@ -37,25 +37,29 @@ InvestmentObject.fromJson(Map<String, dynamic> json)
 }
 
 
-List <InvestmentObject> _investments = [];
+List _investments = [];
 
 class API {
   static final storage = new FlutterSecureStorage();
- 
-   static Future<void> getUserInvestments() async {
+  static String list = '';
+  static Future getUserInvestments() async {
    
     var token = await storage.read(key: 'jwt');
     var userName = await storage.read(key: 'username');
     Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
-    http.Response response = await http.get(uriInv, headers: {
+    var response = await http.post(uriInv, headers: {
       'Authorization': token.toString(),
-      "Accept": "application/json"
+    }, body: {
+      'username' : userName,
     });
     print(response.body);
     if (response.statusCode == 200) {
-      _investments = (json.decode(response.body) as List)
-          .map((i) => InvestmentObject.fromJson(i))
-          .toList(growable:true);
+      _investments = (json.decode(response.body.toString())["account"]);
+      for (int i = 0; i < _investments.length; i++){
+      list = _investments[i]['ticker'] + '\n' + 'Shares: ' + _investments[i]['shares'].toString() 
+      + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString();
+      return list;
+      }
     } else {
       throw Exception('Failed to load investments');
     }
@@ -64,24 +68,6 @@ class API {
 
 }
 
-class GetInvestmentsWidget extends StatelessWidget{
-    @override
-  Widget build(BuildContext context) {
-  API.getUserInvestments();
-  return Container(
-            height: 200,
-            width: 300,
-   child:  new ListView.builder(
-      itemCount: _investments.length,
-      itemBuilder: (context, index) {
-        // for (int i = 0; i < _investments.length; i++){
-            return ExpandablePanel(
-                    header: Text('Stocks', style: TextStyle(fontSize: 25),),
-                    collapsed: Text(_investments[0].ticker.toString(), style: TextStyle(fontWeight: FontWeight.w300, color: ColorConstants.bodyText)),
-                    expanded: Text(_investments[index].ticker.toString() + '/n' + "Shares:" + _investments[index].shares.toString() + '/n' +
-                    "Average Price:" + _investments[index].averagePrice.toString() + '/n' +
-                    "Current Price:" + _investments[index].currentPrice.toString() + '/n', key: new Key(_investments[index].toString()) , softWrap: true, style: TextStyle(fontSize: 18, color: ColorConstants.bodyText),), 
-                  );  
+
+
  
-      }));
-  }}
