@@ -65,7 +65,7 @@ class API {
       for (int i = 0; i < _investments.length; i++){
       list = _investments[i]['ticker'] + '\n' + 'Shares: ' + _investments[i]['shares'].toString() 
       + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString();
-      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s.shares * (s.current_price - s.average_price)).reduce((accumulator, currentValue) => accumulator + currentValue)) as int);
+      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s['shares'] * (145 - s['average_price'])).reduce((accumulator, currentValue) => accumulator + currentValue)) as int);
       return list; 
       //TODO: add current price when in the database
       }

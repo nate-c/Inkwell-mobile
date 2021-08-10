@@ -118,14 +118,15 @@ void initState(){
               ]
             ),
           SizedBox(height: 20),
+          Text('Investment Value: '.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [
-                Text('Invested Value: '.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),  
-                Text('\$', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
-                Text(investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 20)),
+                  
+                Text('\$', style: TextStyle(fontSize: 30, fontWeight: FontWeight.w300)),
+                Text(investedValue.toString().replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 30)),
                
               ]
             ),
