@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
@@ -53,12 +54,13 @@ class MyHomeState extends State<Home> {
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
-
+  
   @override
   void initState() {
     super.initState();
     // getUserInvestments();
     setInitialStateVariables();
+    ResponseHandler().handleError(response, context);
     // getAccountInfo();
   }
 
@@ -76,6 +78,9 @@ class MyHomeState extends State<Home> {
       setState(() {
         _investedValue = 1;
       });
+    }
+    if(response.statusCode == 401){
+      ResponseHandler().handleError(response, context);
     }
   }
 
@@ -116,7 +121,7 @@ class MyHomeState extends State<Home> {
         Center(
             child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Text("Search Results:"))),
+                child: Text("Search Results:", style: TextStyle(fontSize: 18),))),
       );
     }
     for (int i = 0; i < _searchResults.length; i++) {
@@ -124,12 +129,19 @@ class MyHomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
+            child: Container(
+              color: ColorConstants.button,
+              width: 325,
+              margin: EdgeInsets.all(5),
             child: Padding(
-                padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Text(
-                  _searchResults[i],
-                  key: new Key(_searchResults[i]),
-                )),
+                padding: EdgeInsets.all(15),
+                child: InkWell(
+                  child: Text(_searchResults[i],
+                  key: new Key(_searchResults[i]), style: TextStyle(fontSize: 15), 
+                ),
+                // onTap: ,
+                //TODO: add onTap function
+              ))),
           )
         ],
       );
@@ -185,7 +197,6 @@ class MyHomeState extends State<Home> {
                 PopupMenuItem<int>(
                     value: 2,
                     child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
-                      
                     ),
               ],
               onSelected: (item) => SelectedItem(context, item),
@@ -266,8 +277,8 @@ class MyHomeState extends State<Home> {
                     ),
                     onPressed: () {
                       print('navigate to account details page');
-                      // Navigator.pushNamed(
-                      //     context, RoutesConstants.addMoneyRoute);
+                      Navigator.pushNamed(
+                          context, RoutesConstants.myProfileRoute);
                     },
                     // shape: ShapeBorder.lerp(1, 1, 1),
                     label: const Text('View Details'),
@@ -297,11 +308,17 @@ class MyHomeState extends State<Home> {
                           ))),
                   Container(
                       height: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [...getTextWidgets()],
-                      )),
+                      width: 380,
+                      
+                      child:Scrollbar(
+                        isAlwaysShown: true,
+                        child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [...getTextWidgets()],
+                        )))),
                   Container(
                     height: 50,
                   ),
