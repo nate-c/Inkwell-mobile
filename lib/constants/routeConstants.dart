@@ -14,3 +14,16 @@ class RoutesConstants {
   static final String myProfileRoute = '/myprofile';
   }
 
+void SelectedItem(BuildContext context, item) {
+  switch (item) {
+    case 0:
+      Navigator.pushNamed(context, RoutesConstants.homeRoute);
+      break;
+    case 1:
+      Navigator.pushNamed(context, RoutesConstants.myProfileRoute);
+      break;
+    case 2: 
+      Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
+      break;
+  }
+}

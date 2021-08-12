@@ -281,7 +281,7 @@ class MyRegistrationState extends State<MyRegistration> {
                         .register(username, password, firstname, lastname);
                     if (isValid()) {
                       _showSuccessDialog(
-                          "Success! You are ready to log in now.");
+                          "You are ready to log in now.");
                     } else {
                       ResponseHandler().handleError(response);
                     }

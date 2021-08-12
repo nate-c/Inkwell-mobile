@@ -8,6 +8,7 @@ import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:flutter/services.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/login.dart';
+import 'package:inkwell_mobile/screens/moneyConfirmation.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
 
 class MyAddMoney extends StatefulWidget {
   MyAddMoney({Key? key}) : super(key: key);
-
+  static TextEditingController moneyamtController = new TextEditingController();
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -51,13 +52,13 @@ class MyAddMoney extends StatefulWidget {
   // always marked "final".
 
   @override
-  _MyAddMoneyState createState() => _MyAddMoneyState();
+  MyAddMoneyState createState() => MyAddMoneyState();
 }
 
-TextEditingController _moneyamtController = new TextEditingController();
+
 final storage = new FlutterSecureStorage();
 
-class _MyAddMoneyState extends State<MyAddMoney> {
+class MyAddMoneyState extends State<MyAddMoney> {
   // ignore: non_constant_identifier_names
   Future addmoney(int userId, double amount) async {
     print(userId);
@@ -98,7 +99,7 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 color: ColorConstants.textFieldBox,
                 child: TextFormField(
-                    controller: _moneyamtController,
+                    controller: MyAddMoney.moneyamtController,
                     style: TextStyle(
                       fontSize: 30.0,
                     ),
@@ -154,101 +155,6 @@ class _MyAddMoneyState extends State<MyAddMoney> {
                         context, RoutesConstants.moneyConfirmRoute);
                   },
                   child: Text('Confirm'.toUpperCase()),
-                  style: ElevatedButton.styleFrom(
-                    primary: ColorConstants.button,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ) // This trailing comma makes auto-formatting nicer for build methods.
-        );
-  }
-}
-
-class MoneyConfirmation extends StatelessWidget {
-  MoneyConfirmation({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    void _showSuccessDialog(String msg) {
-      showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-                backgroundColor: Color(0xFF011240),
-                title: Text('Success'),
-                titleTextStyle: TextStyle(color: ColorConstants.greenLink),
-                content: Text(msg),
-                contentTextStyle: TextStyle(color: ColorConstants.bodyText),
-                actions: <Widget>[
-                  TextButton(
-                    child: Text('Okay'),
-                    onPressed: () {
-                      Navigator.pushNamed(context, RoutesConstants.homeRoute);
-                    },
-                  )
-                ],
-              ));
-    }
-
-    return Scaffold(
-        backgroundColor: ColorConstants.background,
-        appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          backgroundColor: ColorConstants.appBarBackground,
-          title: Text('Summary'),
-        ),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Text('Deposit Summary',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
-                  Text('\$ ' + _moneyamtController.text,
-                      style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 300,
-                    child: Text(
-                      'From [Insert Bank] to Inkwell account'.toUpperCase(),
-                      style: TextStyle(
-                          color: ColorConstants.bodyText, fontSize: 15),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                width: 300,
-                margin: new EdgeInsets.all(15),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    String? user = await storage.read(key: 'user_id');
-                    var userId = int.parse(user!);
-                    var amount = double.parse(_moneyamtController.text);
-                    Response response =
-                        await _MyAddMoneyState().addmoney(userId, amount);
-
-                    if (response.statusCode == 200) {
-                      _showSuccessDialog("\$" +
-                          amount.toString() +
-                          " added into your account.");
-                      Navigator.pushNamed(context, RoutesConstants.homeRoute);
-                    }
-                    ResponseHandler().handleError(response);
-                  },
-                  child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
                     primary: ColorConstants.button,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),

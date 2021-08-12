@@ -50,13 +50,13 @@ class MyLoginState extends State<MyLogin> {
         context: context,
         builder: (ctx) => AlertDialog(
               backgroundColor: ColorConstants.background,
-              title: Text('An Error Occured'),
+              title: Text('Invalid Username or Password'),
               content: Text(msg),
               titleTextStyle: TextStyle(color: ColorConstants.errorText),
               contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Okay'),
+                  child: Text('Try Again'),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
@@ -73,6 +73,7 @@ class MyLoginState extends State<MyLogin> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: ColorConstants.appBarBackground,
+          automaticallyImplyLeading: false,
           actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,
@@ -176,12 +177,13 @@ class MyLoginState extends State<MyLogin> {
                           storage.write(
                               key: "user",
                               value: returnPayloadObj["User"].toString());
-                              
+                        
                         } else {
                           _showErrorDialog(
-                              "No account was found matching that username and password.");
+                              "No account was found that matches this username and password combination.");
                         }
-                        
+                        _usernameController.clear();
+                        _passwordController.clear();
                       },
                       child: Text(
                         'Log in'.toUpperCase(),
