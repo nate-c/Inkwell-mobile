@@ -17,17 +17,17 @@ class InvestmentObject {
  
  int shares;
  String ticker;
- int averagePrice;
- int currentPrice;
+ double averagePrice;
+ double currentPrice;
 
 InvestmentObject(this.shares, this.ticker, this.averagePrice, this.currentPrice);
 
 
 InvestmentObject.fromJson(Map<String, dynamic> json)
-      : shares = json['account']['shares'],
-        ticker = json['account']['ticker'],
-        averagePrice = json['account']['average_price'],
-        currentPrice = json['account']['current_price'];
+      : shares = json['investments']['shares'],
+        ticker = json['investments']['ticker'],
+        averagePrice = json['investments']['average_price'],
+        currentPrice = json['investments']['current_price'];
 
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +47,7 @@ class API {
   static final storage = new FlutterSecureStorage();
   static String list = '';
   
-  static var totalInvestmentValue = 0;
+  static double totalInvestmentValue = 0;
  
   static Future getUserInvestments() async {
    
@@ -61,13 +61,12 @@ class API {
     });
     print(response.body);
     if (response.statusCode == 200) {
-      _investments = (json.decode(response.body.toString())["account"]);
+      _investments = (json.decode(response.body.toString())["investments"]);
       for (int i = 0; i < _investments.length; i++){
       list = _investments[i]['ticker'] + '\n' + 'Shares: ' + _investments[i]['shares'].toString() 
-      + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString();
-      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s['shares'] * (145 - s['average_price'])).reduce((accumulator, currentValue) => accumulator + currentValue)) as int);
-      return list; 
-      //TODO: add current price when in the database
+      + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString() + '\n' + 'Current Price: \$' + _investments[i]['current_price'].toString();
+      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s['shares'] * (s['current_price'] - s['average_price'])).reduce((accumulator, currentValue) => accumulator + currentValue)) as double);
+      return list;
       }
     } else {
       throw Exception('Failed to load investments');

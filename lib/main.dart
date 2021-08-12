@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/login.dart';
@@ -94,7 +95,23 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            Container(
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+              ),
+            child: Image(image: AssetImage('lib/images/ink_logo.png'),
+              width: 100,
+              height: 100,
+              fit: BoxFit.fill,
+              alignment: Alignment.center, 
+            )),
+            SizedBox(
+              height: 60,
+            ),
             Text(
               "Welcome To".toUpperCase(),
               style: TextStyle(fontSize: 34),
