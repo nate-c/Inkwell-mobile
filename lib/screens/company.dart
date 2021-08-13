@@ -11,12 +11,12 @@ import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/colorConstants.dart';
 
-void main() => runApp(Home());
+// void main() => runApp(Company());
 
 class Company extends StatefulWidget {
   @override
-  MyHomeState createState() {
-    return MyHomeState();
+  CompanyState createState() {
+    return CompanyState();
   }
 
   Widget build(BuildContext context) {
