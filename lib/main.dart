@@ -6,6 +6,7 @@ import 'package:inkwell_mobile/screens/moneyConfirmation.dart';
 import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
+import 'package:inkwell_mobile/screens/company.dart';
 import 'package:provider/provider.dart';
 import 'constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
             RoutesConstants.registerRoute: (context) => MyRegistration(),
             RoutesConstants.moneyConfirmRoute: (context) => MoneyConfirmation(),
             RoutesConstants.myProfileRoute: (context) => MyProfile(),
+            RoutesConstants.companyPageRoute: (context) => Company()
           },
         ));
   }
@@ -98,17 +100,18 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-            padding: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-              ),
-            child: Image(image: AssetImage('lib/images/ink_logo.png'),
-              width: 100,
-              height: 100,
-              fit: BoxFit.fill,
-              alignment: Alignment.center, 
-            )),
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                ),
+                child: Image(
+                  image: AssetImage('lib/images/ink_logo.png'),
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.fill,
+                  alignment: Alignment.center,
+                )),
             SizedBox(
               height: 60,
             ),
