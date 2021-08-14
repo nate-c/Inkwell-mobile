@@ -64,12 +64,14 @@ class MyProfileState extends State<MyProfile> {
     
   }
 
+
+
 @override
 void initState(){
       setInitialStateVariables();
       API.getUserInvestments();
       super.initState();
-      ResponseHandler().handleError(response, context);
+      ResponseHandler();
     }
 
 @override

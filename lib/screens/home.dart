@@ -54,13 +54,15 @@ class MyHomeState extends State<Home> {
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
-  
+
+
+
   @override
   void initState() {
     super.initState();
     // getUserInvestments();
     setInitialStateVariables();
-    ResponseHandler().handleError(response, context);
+    ResponseHandler();
     // getAccountInfo();
   }
 

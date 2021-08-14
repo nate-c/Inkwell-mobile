@@ -11,7 +11,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
+
+// @JsonSerializable(explicitToJson: true)
+
+List<InvestmentObject> modelUserFromJson(String str) => List<InvestmentObject>.from(json.decode(str).map((x) => InvestmentObject.fromJson(x)));
+String modelUserToJson(List<InvestmentObject> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class InvestmentObject {
  
@@ -20,16 +25,17 @@ class InvestmentObject {
  double averagePrice;
  double currentPrice;
 
-InvestmentObject(this.shares, this.ticker, this.averagePrice, this.currentPrice);
+InvestmentObject({required this.shares, required this.ticker, required this.averagePrice, required this.currentPrice});
 
 
-InvestmentObject.fromJson(Map<String, dynamic> json)
-      : shares = json['investments']['shares'],
-        ticker = json['investments']['ticker'],
-        averagePrice = json['investments']['average_price'],
-        currentPrice = json['investments']['current_price'];
-
-
+factory InvestmentObject.fromJson(Map<String, dynamic> parsedJson)  {
+       return new InvestmentObject(
+       shares : parsedJson['shares'],
+        ticker : parsedJson['ticker'],
+        averagePrice : double.parse(parsedJson['average_price'].toString()),
+        currentPrice : parsedJson['current_price']
+    );
+}
   Map<String, dynamic> toJson() => {
         'shares': shares,
         'ticker': ticker,

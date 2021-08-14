@@ -3,30 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
+import 'package:inkwell_mobile/utils/tokenexpiration.dart';
 
 class ResponseHandler {
 
   handleError(Response response, BuildContext context) async {
-   bool isTokenExpired() {
-     if (response.body == 'expired token'){
-       showDialog(context: context, builder: (ctx) => AlertDialog(
-              backgroundColor: ColorConstants.background,
-              content: Text('You session has expired.'),
-              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, RoutesConstants.loginRoute);
-                  },
-                )
-              ],
-            ));
-     } else{
-       return false;
-     }
-     return true;
-   }
+  
    var statusNum = response.statusCode; 
 
    switch(statusNum){
@@ -37,7 +19,7 @@ class ResponseHandler {
      break; 
 
      case 401: {
-       isTokenExpired();
+       isTokenExpired(response, context);
        print ("Invalid Token Error");}
      break;
 

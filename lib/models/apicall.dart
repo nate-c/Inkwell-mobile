@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/screens/myProfile.dart';
 
 List _investments = [];
@@ -24,13 +25,19 @@ class API {
       'username' : userName,
     });
     print(response.body);
-    if (response.statusCode == 200) {
-      _investments = (json.decode(response.body.toString())["investments"]);
-      for (int i = 0; i < _investments.length; i++){
-      list = _investments[i]['ticker'] + '\n' + 'Shares: ' + _investments[i]['shares'].toString() 
-      + '\n' + 'Average Price: \$' + _investments[i]['average_price'].toString() + '\n' + 'Current Price: \$' + _investments[i]['current_price'].toString();
-      totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s['shares'] * (s['current_price'] - s['average_price'])).reduce((accumulator, currentValue) => accumulator + currentValue)) as double);
-      return list;
+    if(response.statusCode == 200){
+      final data = jsonDecode(response.body.toString())['investments'];
+      print(data);
+        for(Map<String,dynamic> i in data){
+          _investments.add(InvestmentObject.fromJson(i));
+        }
+
+      for (int i = 0; i < _investments.length; i++){ 
+        final nDataList = _investments[i];
+        list = nDataList.ticker + '\n' + 'Shares: ' + nDataList.shares.toString() 
+        + '\n' + 'Average Price: \$' + nDataList.averagePrice.toString() + '\n' + 'Current Price: \$' + nDataList.currentPrice.toString();
+        totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s.shares * (s.currentPrice - s.averagePrice)).reduce((accumulator, currentValue) => accumulator + currentValue)) as double);
+        return list;
       }
     } else {
       throw Exception('Failed to load investments');
