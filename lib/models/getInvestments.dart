@@ -7,7 +7,7 @@ import 'package:inkwell_mobile/screens/myProfile.dart';
 
 List _investments = [];
 
-class API {
+class GetInvesmtents{
   
   static final storage = new FlutterSecureStorage();
   static String list = '';
@@ -35,7 +35,7 @@ class API {
       for (int i = 0; i < _investments.length; i++){ 
         final nDataList = _investments[i];
         list = nDataList.ticker + '\n' + 'Shares: ' + nDataList.shares.toString() 
-        + '\n' + 'Average Price: \$' + nDataList.averagePrice.toString() + '\n' + 'Current Price: \$' + nDataList.currentPrice.toString();
+        + '\n' + 'Average Price: \$' + nDataList.averagePrice.toStringAsFixed(2) + '\n' + 'Current Price: \$' + nDataList.currentPrice.toStringAsFixed(2);
         totalInvestmentValue = (MyProfileState.investedValue! + (_investments.map((s) => s.shares * (s.currentPrice - s.averagePrice)).reduce((accumulator, currentValue) => accumulator + currentValue)) as double);
         return list;
       }
