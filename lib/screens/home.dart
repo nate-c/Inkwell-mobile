@@ -115,7 +115,7 @@ class MyHomeState extends State<Home> {
     }
   }
 
-  List<Widget> getTextWidgets() {
+  List<Widget> getSearchResultsList() {
     List<Widget> searchResults = [];
     if (_searchResults.length > 0) {
       searchResults.add(
@@ -188,14 +188,24 @@ class MyHomeState extends State<Home> {
               color: ColorConstants.expandable,
               icon: Icon(Icons.menu),
               itemBuilder: (context) => [
-                PopupMenuItem<int>(value: 0, child: Text("Home", style: TextStyle(color: ColorConstants.bodyText),)),
                 PopupMenuItem<int>(
-                    value: 1, child: Text("View Portfolio", style: TextStyle(color: ColorConstants.bodyText),)),
+                    value: 0,
+                    child: Text(
+                      "Home",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
+                PopupMenuItem<int>(
+                    value: 1,
+                    child: Text(
+                      "View Portfolio",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
                 PopupMenuItem<int>(
                     value: 2,
-                    child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
-                      
-                    ),
+                    child: Text(
+                      "Add Money",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
               ],
               onSelected: (item) => SelectedItem(context, item),
             ),
@@ -304,13 +314,14 @@ class MyHomeState extends State<Home> {
                             style: TextStyle(
                                 color: ColorConstants.bodyText, fontSize: 15),
                           ))),
-                  Container(
-                      height: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [...getTextWidgets()],
-                      )),
+                  SingleChildScrollView(
+                      child: Container(
+                          height: 200,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [...getSearchResultsList()],
+                          ))),
                   Container(
                     height: 50,
                   ),
