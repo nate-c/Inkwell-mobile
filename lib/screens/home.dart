@@ -132,7 +132,7 @@ class MyHomeState extends State<Home> {
         children: [
           Center(
             child: Container(
-              color: ColorConstants.button,
+              color: ColorConstants.textFieldBox,
               width: 325,
               margin: EdgeInsets.all(5),
             child: Padding(
@@ -223,6 +223,7 @@ class MyHomeState extends State<Home> {
                 // widthFactor: 100,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                   Row(
@@ -231,12 +232,12 @@ class MyHomeState extends State<Home> {
                           padding:
                               EdgeInsets.only(left: 15, right: 15, bottom: 15),
                           child: Text(
-                            "Available To Invest - ",
-                          )),
+                            "Available To Invest    -     ",
+                          style: TextStyle(fontSize: 18), textAlign: TextAlign.center)),
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            _availableToInvest.toString(),
+                           "\$" + _availableToInvest.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
                           )),
                     ],
                   ),
@@ -246,13 +247,13 @@ class MyHomeState extends State<Home> {
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: Text(
-                          "Already Invested - ",
+                          "Already Invested      -     ", style: TextStyle(fontSize: 18), textAlign: TextAlign.center
                         ),
                       ),
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            _investedValue.toString(),
+                           "\$" + _investedValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
                           )),
                     ],
                   ),
@@ -262,29 +263,31 @@ class MyHomeState extends State<Home> {
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: Text(
-                          "Portfolio Value - ",
+                          "Portfolio Value        -     ", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,
                         ),
                       ),
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                            _portfolioValue.toString(),
+                           "\$" + _portfolioValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
                           )),
                     ],
                   ),
-                  FloatingActionButton.extended(
-                    heroTag: new Hero(
-                      tag: 'view details',
-                      child: Text(''),
-                    ),
+                  SizedBox(height: 30,),
+                  ElevatedButton(
+                  
                     onPressed: () {
                       print('navigate to account details page');
                       Navigator.pushNamed(
                           context, RoutesConstants.myProfileRoute);
                     },
                     // shape: ShapeBorder.lerp(1, 1, 1),
-                    label: const Text('View Details'),
-                    backgroundColor: Color.fromARGB(0, 255, 0, 0),
+                    child: Text('View Details'.toUpperCase(), style: TextStyle(fontSize: 18),),
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorConstants.button,
+                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10)
+                    ),
+                    
                   ),
                   Container(
                       width: 300,
@@ -328,14 +331,17 @@ class MyHomeState extends State<Home> {
                     margin: new EdgeInsets.all(15),
                     color: ColorConstants.textFieldBox,
                   ),
-                  FloatingActionButton.extended(
+                  ElevatedButton.icon(
                     onPressed: () {
                       Navigator.pushNamed(
                           context, RoutesConstants.addMoneyRoute);
                     },
-                    label: const Text('Add Money'),
+                    label: Text('Add Money'.toUpperCase(), style: TextStyle(fontSize: 17),),
                     icon: const Icon(Icons.add),
-                    backgroundColor: ColorConstants.button,
+                    style: ElevatedButton.styleFrom(
+                      primary: ColorConstants.button,
+                      padding: EdgeInsets.all(10),
+                      )
                   ),
                 ]))));
   }
