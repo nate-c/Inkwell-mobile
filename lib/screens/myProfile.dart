@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
-import 'package:inkwell_mobile/models/getInvestments.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../models/User.dart';
