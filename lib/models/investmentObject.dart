@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:core';
 
@@ -36,13 +35,11 @@ factory InvestmentObject.fromJson(Map<String, dynamic> parsedJson)  {
         currentPrice : parsedJson['current_price']
     );
 }
+
   Map<String, dynamic> toJson() => {
         'shares': shares,
         'ticker': ticker,
         'average_price': averagePrice,
         'current_price': currentPrice,
-        
       };
- 
 }
-
