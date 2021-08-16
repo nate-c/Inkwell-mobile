@@ -88,9 +88,9 @@ class MyHomeState extends State<Home> {
 
   setInitialStateVariables() async {
     // var amount = await storage.read(key: 'amount');
+    var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    _availableToInvest = 0;
-    // int.parse(amount.toString());
+    _availableToInvest = int.parse(amount.toString());
     _investedValue = 0;
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
