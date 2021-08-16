@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
 }
 
 
+
 class MoneyConfirmation extends StatelessWidget {
   MoneyConfirmation({Key? key}) : super(key: key);
 
@@ -96,7 +97,7 @@ class MoneyConfirmation extends StatelessWidget {
                     if (response.statusCode == 200) {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmationPopUp()));
                     }
-                    ResponseHandler().handleError(response);
+                    ResponseHandler().handleError(response, context);
                   
                   },
                   child: Text('Deposit'.toUpperCase()),

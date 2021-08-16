@@ -6,7 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/models/getInvestments.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../models/User.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:http/http.dart' as http;
@@ -62,11 +64,14 @@ class MyProfileState extends State<MyProfile> {
     
   }
 
+
+
 @override
 void initState(){
       setInitialStateVariables();
-      API.getUserInvestments();
+      GetInvesmtents.getUserInvestments();
       super.initState();
+      ResponseHandler();
     }
 
 @override
@@ -113,7 +118,7 @@ void initState(){
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [  
                 Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)), //TODO: change invested value to current value after API is done
-                Text(API.totalInvestmentValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
+                Text(GetInvesmtents.totalInvestmentValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
                 Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
               ]
             ),
@@ -152,7 +157,7 @@ void initState(){
                 child: ExpandablePanel(
                   header: Text('Stocks', style: TextStyle(fontSize: 25,)),
                   collapsed: Text('', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 0), maxLines: 1,),
-                  expanded: Text(API.list, softWrap: true, style: TextStyle(fontSize: 18),),
+                  expanded: Text(GetInvesmtents.list, softWrap: true, style: TextStyle(fontSize: 18),),
                 
                 )
               )
