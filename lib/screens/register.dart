@@ -283,7 +283,7 @@ class MyRegistrationState extends State<MyRegistration> {
                       _showSuccessDialog(
                           "You are ready to log in now.");
                     } else {
-                      ResponseHandler().handleError(response);
+                      ResponseHandler().handleError(response, context);
                     }
                   },
                   child: Text(
