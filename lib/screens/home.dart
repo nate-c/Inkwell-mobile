@@ -55,8 +55,6 @@ class MyHomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -81,7 +79,7 @@ class MyHomeState extends State<Home> {
         _investedValue = 1;
       });
     }
-    if(response.statusCode == 401){
+    if (response.statusCode == 401) {
       ResponseHandler().handleError(response, context);
     }
   }
@@ -129,7 +127,10 @@ class MyHomeState extends State<Home> {
         Center(
             child: Padding(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                child: Text("Search Results:", style: TextStyle(fontSize: 18),))),
+                child: Text(
+                  "Search Results:",
+                  style: TextStyle(fontSize: 18),
+                ))),
       );
     }
     for (int i = 0; i < _searchResults.length; i++) {
@@ -138,18 +139,20 @@ class MyHomeState extends State<Home> {
         children: [
           Center(
             child: Container(
-              color: ColorConstants.textFieldBox,
-              width: 325,
-              margin: EdgeInsets.all(5),
-            child: Padding(
-                padding: EdgeInsets.all(15),
-                child: InkWell(
-                  child: Text(_searchResults[i],
-                  key: new Key(_searchResults[i]), style: TextStyle(fontSize: 15), 
-                ),
-                // onTap: ,
-                //TODO: add onTap function
-              ))),
+                color: ColorConstants.textFieldBox,
+                width: 325,
+                margin: EdgeInsets.all(5),
+                child: Padding(
+                    padding: EdgeInsets.all(15),
+                    child: InkWell(
+                      child: Text(
+                        _searchResults[i],
+                        key: new Key(_searchResults[i]),
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      // onTap: ,
+                      //TODO: add onTap function
+                    ))),
           )
         ],
       );
@@ -199,13 +202,24 @@ class MyHomeState extends State<Home> {
               color: ColorConstants.expandable,
               icon: Icon(Icons.menu),
               itemBuilder: (context) => [
-                PopupMenuItem<int>(value: 0, child: Text("Home", style: TextStyle(color: ColorConstants.bodyText),)),
                 PopupMenuItem<int>(
-                    value: 1, child: Text("View Portfolio", style: TextStyle(color: ColorConstants.bodyText),)),
+                    value: 0,
+                    child: Text(
+                      "Home",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
+                PopupMenuItem<int>(
+                    value: 1,
+                    child: Text(
+                      "View Portfolio",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
                 PopupMenuItem<int>(
                     value: 2,
-                    child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
-                    ),
+                    child: Text(
+                      "Add Money",
+                      style: TextStyle(color: ColorConstants.bodyText),
+                    )),
               ],
               onSelected: (item) => SelectedItem(context, item),
             ),
@@ -237,14 +251,42 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding:
                               EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          child: Text(
-                            "Available To Invest    -     ",
-                          style: TextStyle(fontSize: 18), textAlign: TextAlign.center)),
+                          child: Text("Available To Invest    -     ",
+                              style: TextStyle(fontSize: 18),
+                              textAlign: TextAlign.center)),
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                           "\$" + _availableToInvest.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
-                          )),
+                              "\$" +
+                                  _availableToInvest
+                                      .toStringAsFixed(2)
+                                      .replaceAllMapped(
+                                          new RegExp(
+                                              r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                          (Match m) => '${m[1]},'),
+                              style: TextStyle(fontSize: 18))),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                        child: Text("Already Invested        -     ",
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.only(bottom: 15),
+                          child: Text(
+                              "\$" +
+                                  _investedValue
+                                      .toStringAsFixed(2)
+                                      .replaceAllMapped(
+                                          new RegExp(
+                                              r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                          (Match m) => '${m[1]},'),
+                              style: TextStyle(fontSize: 18))),
                     ],
                   ),
                   Row(
@@ -253,47 +295,42 @@ class MyHomeState extends State<Home> {
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: Text(
-                          "Already Invested      -     ", style: TextStyle(fontSize: 18), textAlign: TextAlign.center
+                          "Portfolio Value           -     ",
+                          style: TextStyle(fontSize: 18),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       Padding(
                           padding: EdgeInsets.only(bottom: 15),
                           child: Text(
-                           "\$" + _investedValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
-                          )),
+                              "\$" +
+                                  _portfolioValue
+                                      .toStringAsFixed(2)
+                                      .replaceAllMapped(
+                                          new RegExp(
+                                              r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                          (Match m) => '${m[1]},'),
+                              style: TextStyle(fontSize: 18))),
                     ],
                   ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                        child: Text(
-                          "Portfolio Value        -     ", style: TextStyle(fontSize: 18), textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text(
-                           "\$" + _portfolioValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 18)
-                          )),
-                    ],
+                  SizedBox(
+                    height: 30,
                   ),
-                  SizedBox(height: 30,),
                   ElevatedButton(
-                  
                     onPressed: () {
                       print('navigate to account details page');
                       Navigator.pushNamed(
                           context, RoutesConstants.myProfileRoute);
                     },
                     // shape: ShapeBorder.lerp(1, 1, 1),
-                    child: Text('View Details'.toUpperCase(), style: TextStyle(fontSize: 18),),
-                    style: ElevatedButton.styleFrom(
-                      primary: ColorConstants.button,
-                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10)
+                    child: Text(
+                      'View Details'.toUpperCase(),
+                      style: TextStyle(fontSize: 18),
                     ),
-                    
+                    style: ElevatedButton.styleFrom(
+                        primary: ColorConstants.button,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 10)),
                   ),
                   Container(
                       width: 300,
@@ -320,16 +357,15 @@ class MyHomeState extends State<Home> {
                   Container(
                       height: 200,
                       width: 380,
-                      
-                      child:Scrollbar(
-                        isAlwaysShown: true,
-                        child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [...getTextWidgets()],
-                        )))),
+                      child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [...getTextWidgets()],
+                              )))),
                   Container(
                     height: 50,
                   ),
@@ -338,17 +374,19 @@ class MyHomeState extends State<Home> {
                     color: ColorConstants.textFieldBox,
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, RoutesConstants.addMoneyRoute);
-                    },
-                    label: Text('Add Money'.toUpperCase(), style: TextStyle(fontSize: 17),),
-                    icon: const Icon(Icons.add),
-                    style: ElevatedButton.styleFrom(
-                      primary: ColorConstants.button,
-                      padding: EdgeInsets.all(10),
-                      )
-                  ),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, RoutesConstants.addMoneyRoute);
+                      },
+                      label: Text(
+                        'Add Money'.toUpperCase(),
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      icon: const Icon(Icons.add),
+                      style: ElevatedButton.styleFrom(
+                        primary: ColorConstants.button,
+                        padding: EdgeInsets.all(10),
+                      )),
                 ]))));
   }
 }
