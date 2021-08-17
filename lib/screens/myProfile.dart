@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
-import 'package:inkwell_mobile/models/getInvestments.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../models/User.dart';
@@ -43,14 +42,16 @@ class MyProfile extends StatefulWidget {
 class MyProfileState extends State<MyProfile> {
   // final User _user;
   String? _token;
-
+  String list = '';
   // final int _amount;
   static int? investedValue;
+  static var totalInvestmentValue;
+  List _investments = [];
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
-  final storage = new FlutterSecureStorage();
+  static final storage = new FlutterSecureStorage();
  
   
   setInitialStateVariables() async {
@@ -60,8 +61,40 @@ class MyProfileState extends State<MyProfile> {
     setState(() {
       investedValue = int.parse(amount.toString());
       _token = token.toString();
+      totalInvestmentValue = double.parse(investedValue.toString());
     });
     
+  }
+
+  Future getUserInvestments() async {
+   
+    var token = await storage.read(key: 'jwt');
+    var userName = await storage.read(key: 'username');
+    Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
+    var response = await http.post(uriInv, headers: {
+      'Authorization': token.toString(),
+    }, body: {
+      'username' : userName,
+    });
+
+    if(response.statusCode == 200){
+      setState(() {
+       final data = jsonDecode(response.body.toString())['investments'];
+ 
+        for(Map<String,dynamic> i in data){
+          _investments.add(InvestmentObject.fromJson(i));
+        }
+      for (int i = 0; i < _investments.length; i++){ 
+        final nDataList = _investments[i];
+        list = nDataList.ticker + '\n' + 'Shares: ' + nDataList.shares.toString() 
+        + '\n' + 'Average Price: \$' + nDataList.averagePrice.toStringAsFixed(2) + '\n' + 'Current Price: \$' + nDataList.currentPrice.toStringAsFixed(2);
+        totalInvestmentValue = (investedValue! + (_investments.map((s) => s.shares * (s.currentPrice - s.averagePrice)).reduce((accumulator, currentValue) => accumulator + currentValue)) as double);
+      }} 
+      );}
+     else {
+      ResponseHandler().handleError(response, context);
+      throw Exception('Failed to load investments');
+  }
   }
 
 
@@ -69,9 +102,8 @@ class MyProfileState extends State<MyProfile> {
 @override
 void initState(){
       setInitialStateVariables();
-      GetInvesmtents.getUserInvestments();
+      getUserInvestments();
       super.initState();
-      ResponseHandler();
     }
 
 @override
@@ -118,7 +150,7 @@ void initState(){
             mainAxisSize: MainAxisSize.max,
             children: <Widget> [  
                 Text('\$', style: TextStyle(fontSize: 35, fontWeight: FontWeight.w300)), //TODO: change invested value to current value after API is done
-                Text(GetInvesmtents.totalInvestmentValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
+                Text(totalInvestmentValue.toStringAsFixed(2).replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'), style: TextStyle(fontSize: 35)),
                 Text('↑', style: TextStyle(fontSize: 40, color: ColorConstants.greenLink, fontWeight: FontWeight.w800), textAlign: TextAlign.start,),
               ]
             ),
@@ -157,7 +189,7 @@ void initState(){
                 child: ExpandablePanel(
                   header: Text('Stocks', style: TextStyle(fontSize: 25,)),
                   collapsed: Text('', style: TextStyle(fontWeight: FontWeight.w300, fontSize: 0), maxLines: 1,),
-                  expanded: Text(GetInvesmtents.list, softWrap: true, style: TextStyle(fontSize: 18),),
+                  expanded: Text(list, softWrap: true, style: TextStyle(fontSize: 18),),
                 
                 )
               )

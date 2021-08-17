@@ -60,7 +60,6 @@ class MyHomeState extends State<Home> {
     super.initState();
     // getUserInvestments();
     setInitialStateVariables();
-    ResponseHandler();
     // getAccountInfo();
   }
 
@@ -78,17 +77,16 @@ class MyHomeState extends State<Home> {
       setState(() {
         _investedValue = 1;
       });
-    }
-    if (response.statusCode == 401) {
+    } else{
       ResponseHandler().handleError(response, context);
     }
   }
 
   setInitialStateVariables() async {
     // var amount = await storage.read(key: 'amount');
+    var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    _availableToInvest = 0;
-    // int.parse(amount.toString());
+    _availableToInvest = int.parse(amount.toString());
     _investedValue = 0;
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
@@ -181,6 +179,7 @@ class MyHomeState extends State<Home> {
             searchResultsArray[i]["name"];
         updatedSearchResults.add(viewString);
       }
+      ResponseHandler().handleError(response, context);
       _searchResults = updatedSearchResults;
 
       setState(() {});
