@@ -45,7 +45,7 @@ class MyRegistrationState extends State<MyRegistration> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void _showErrorDialog(String msg) {
+  void showErrorDialog(String msg) {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -94,19 +94,19 @@ class MyRegistrationState extends State<MyRegistration> {
         password.isEmpty ||
         firstname.isEmpty ||
         lastname.isEmpty) {
-      _showErrorDialog('Please enter some text.');
+      showErrorDialog('Please enter some text.');
       return false;
     }
     if (password.length > 60 ||
         username.length > 50 ||
         firstname.length > 50 ||
         lastname.length > 50) {
-      _showErrorDialog(
+      showErrorDialog(
           'The maximum length must be 50 characters or less. Please try again.');
       return false;
     }
     if (_confirmpassController.text != password) {
-      _showErrorDialog('Password Does Not Match');
+      showErrorDialog('Password Does Not Match');
       return false;
     }
     return true;

@@ -92,6 +92,7 @@ class MyProfileState extends State<MyProfile> {
       }} 
       );}
      else {
+      ResponseHandler().handleError(response, context);
       throw Exception('Failed to load investments');
   }
   }
@@ -103,7 +104,6 @@ void initState(){
       setInitialStateVariables();
       getUserInvestments();
       super.initState();
-      ResponseHandler();
     }
 
 @override

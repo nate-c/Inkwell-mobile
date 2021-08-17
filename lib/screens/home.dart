@@ -62,7 +62,6 @@ class MyHomeState extends State<Home> {
     super.initState();
     // getUserInvestments();
     setInitialStateVariables();
-    ResponseHandler();
     // getAccountInfo();
   }
 
@@ -80,8 +79,7 @@ class MyHomeState extends State<Home> {
       setState(() {
         _investedValue = 1;
       });
-    }
-    if(response.statusCode == 401){
+    } else{
       ResponseHandler().handleError(response, context);
     }
   }
@@ -178,6 +176,7 @@ class MyHomeState extends State<Home> {
             searchResultsArray[i]["name"];
         updatedSearchResults.add(viewString);
       }
+      ResponseHandler().handleError(response, context);
       _searchResults = updatedSearchResults;
 
       setState(() {});
