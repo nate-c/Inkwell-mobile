@@ -22,6 +22,7 @@ class Company extends StatefulWidget {
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
+    print(args);
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
@@ -42,9 +43,6 @@ class CompanyState extends State<Company> {
   // final User _user;
   String? _token;
   // final int _amount;
-  int _investedValue = 0;
-  int _availableToInvest = 0;
-  int _portfolioValue = 0;
 
   // Array<String> _searchResults;
   // []TickerSearchObject _results;
@@ -64,10 +62,7 @@ class CompanyState extends State<Company> {
   setInitialStateVariables() async {
     // var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    _availableToInvest = 0;
-    // int.parse(amount.toString());
-    _investedValue = 0;
-    _portfolioValue = _investedValue + _availableToInvest;
+
     _token = token.toString();
     setState(() {});
   }
@@ -125,82 +120,13 @@ class CompanyState extends State<Company> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                  Row(
-                    children: [
-                      Padding(
-                          padding:
-                              EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          child: Text(
-                            "Available To Invest - ",
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            _availableToInvest.toString(),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                        child: Text(
-                          "Already Invested - ",
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            _investedValue.toString(),
-                          )),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                        child: Text(
-                          "Portfolio Value - ",
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            _portfolioValue.toString(),
-                          )),
-                    ],
-                  ),
-                  FloatingActionButton.extended(
-                    heroTag: new Hero(
-                      tag: 'view details',
-                      child: Text(''),
-                    ),
-                    onPressed: () {
-                      print('navigate to account details page');
-                      // Navigator.pushNamed(
-                      //     context, RoutesConstants.addMoneyRoute);
-                    },
-                    // shape: ShapeBorder.lerp(1, 1, 1),
-                    label: const Text('View Details'),
-                    backgroundColor: Color.fromARGB(0, 255, 0, 0),
-                  ),
                   Container(
                     height: 50,
+                    child: Text('texe'),
                   ),
                   Container(
                     margin: new EdgeInsets.all(15),
                     color: ColorConstants.textFieldBox,
-                  ),
-                  FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                          context, RoutesConstants.addMoneyRoute);
-                    },
-                    label: const Text('Add Money'),
-                    icon: const Icon(Icons.add),
-                    backgroundColor: ColorConstants.button,
                   ),
                 ]))));
   }
