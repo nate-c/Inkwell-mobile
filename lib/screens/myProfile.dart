@@ -127,7 +127,10 @@ void initState(){
                 PopupMenuItem<int>(
                     value: 2,
                     child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
-                      
+                ),
+                PopupMenuItem<int>(
+                    value: 3,
+                    child: Text("Log Out", style: TextStyle(color: ColorConstants.bodyText),)
                     ),
               ],
               onSelected: (item) => SelectedItem(context, item),
