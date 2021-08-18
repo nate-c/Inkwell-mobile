@@ -1,7 +1,7 @@
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:ui';
 import 'dart:convert';
-
+import 'package:inkwell_mobile/models/routeArguments.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
@@ -20,6 +20,8 @@ class Company extends StatefulWidget {
   }
 
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
