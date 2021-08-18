@@ -152,12 +152,13 @@ class MyHomeState extends State<Home> {
                     padding: EdgeInsets.all(15),
                     child: InkWell(
                       child: GestureDetector(
-                          onTap: navigateToCompanyPage(ticker),
+
+                          // onTap: navigateToCompanyPage(ticker),
                           child: Text(
-                            _searchResults[i],
-                            key: new Key(_searchResults[i]),
-                            style: TextStyle(fontSize: 15),
-                          )),
+                        _searchResults[i],
+                        key: new Key(_searchResults[i]),
+                        style: TextStyle(fontSize: 15),
+                      )),
                     ))),
           )
         ],
