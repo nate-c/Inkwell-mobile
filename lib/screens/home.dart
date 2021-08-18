@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
+import 'package:inkwell_mobile/models/routeArguments.dart';
 import '../models/User.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
@@ -82,6 +83,12 @@ class MyHomeState extends State<Home> {
     }
   }
 
+  navigateToCompanyPage(String company) {
+    int shares = 0;
+    Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+        arguments: CompanyScreenArguments(company, shares));
+  }
+
   setInitialStateVariables() async {
     // var amount = await storage.read(key: 'amount');
     var amount = await storage.read(key: 'amount');
@@ -132,6 +139,7 @@ class MyHomeState extends State<Home> {
       );
     }
     for (int i = 0; i < _searchResults.length; i++) {
+      String ticker = _searchResults[i].split(":")[0];
       var newWidget = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -143,13 +151,13 @@ class MyHomeState extends State<Home> {
                 child: Padding(
                     padding: EdgeInsets.all(15),
                     child: InkWell(
-                      child: Text(
-                        _searchResults[i],
-                        key: new Key(_searchResults[i]),
-                        style: TextStyle(fontSize: 15),
-                      ),
-                      // onTap: ,
-                      //TODO: add onTap function
+                      child: GestureDetector(
+                          onTap: navigateToCompanyPage(ticker),
+                          child: Text(
+                            _searchResults[i],
+                            key: new Key(_searchResults[i]),
+                            style: TextStyle(fontSize: 15),
+                          )),
                     ))),
           )
         ],
