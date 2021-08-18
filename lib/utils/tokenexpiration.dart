@@ -7,7 +7,7 @@ bool isTokenExpired(Response response, BuildContext context) {
      if (response.statusCode == 401 && response.body == 'expired token'){
        showDialog(context: context, builder: (ctx) => AlertDialog(
               backgroundColor: ColorConstants.background,
-              content: Text('You session has expired.'),
+              content: Text('Your session has expired.'),
               contentTextStyle: TextStyle(color: ColorConstants.bodyText),
               actions: <Widget>[
                 TextButton(
