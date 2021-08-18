@@ -13,6 +13,7 @@ class RoutesConstants {
   static final String loginRoute = '/login';
   static final String moneyConfirmRoute = '/moneyConfirmation';
   static final String myProfileRoute = '/myprofile';
+  static final String tradeConfirmationRoute = '/myprofile';
   static final String companyPageRoute = '/company';
 }
 
