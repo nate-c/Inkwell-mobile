@@ -4,6 +4,7 @@ import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/login.dart';
 import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart';
+import 'package:inkwell_mobile/utils/authentication.dart';
 
 class RoutesConstants {
   static final String homeRoute = '/home';
