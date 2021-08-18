@@ -1,4 +1,6 @@
-  class User {
+import 'package:flutter/material.dart';
+
+class User extends ChangeNotifier {
   final int userId;
   final String firstName;
   final String lastName;
