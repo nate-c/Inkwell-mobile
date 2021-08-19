@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/constants/dropdown.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import '../models/User.dart';
@@ -115,28 +116,12 @@ void initState(){
       appBar: AppBar(
         backgroundColor: ColorConstants.appBarBackground,
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-
-              PopupMenuButton<int>(
-              color: ColorConstants.expandable,
-              icon: Icon(Icons.menu),
-              itemBuilder: (context) => [
-                PopupMenuItem<int>(value: 0, child: Text("Home", style: TextStyle(color: ColorConstants.bodyText),)),
-                PopupMenuItem<int>(
-                    value: 1, child: Text("View Portfolio", style: TextStyle(color: ColorConstants.bodyText),)),
-                PopupMenuItem<int>(
-                    value: 2,
-                    child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
-                ),
-                PopupMenuItem<int>(
-                    value: 3,
-                    child: Text("Log Out", style: TextStyle(color: ColorConstants.bodyText),)
-                    ),
-              ],
-              onSelected: (item) => SelectedItem(context, item),
-            ),
-        ],
-      ),
+        actions: [
+          Theme (data: Theme.of(context).copyWith(
+                dividerColor: Colors.white,
+                iconTheme: IconThemeData(color: Colors.white)),
+          child: new Dropdown(),
+      )]),
       backgroundColor: ColorConstants.background,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
