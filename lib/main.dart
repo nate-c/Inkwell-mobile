@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'utils/authentication.dart';
+import 'providers/stateProvider.dart';
 
 //WEEK 7 RELEASE
 void main() {
@@ -23,9 +24,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          // TO DO: fix this as it causes memory leaks ie.
+          // per https://pub.dev/documentation/provider/latest/provider/ChangeNotifierProvider-class.html
           ChangeNotifierProvider.value(
             value: Authentication(),
-          )
+          ),
+          ChangeNotifierProvider(create: (_) => StateProvider()),
         ],
         child: MaterialApp(
           title: 'Inkwell',
