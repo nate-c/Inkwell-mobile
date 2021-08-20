@@ -20,9 +20,9 @@ class Company extends StatefulWidget {
   }
 
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
-    print(args);
+    // final args =
+    //     ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
+    // print(args);
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
