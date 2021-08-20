@@ -15,16 +15,28 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/tickerSearchObject.dart';
 import '../constants/colorConstants.dart';
 import 'addmoney.dart';
+import 'package:provider/provider.dart';
+import 'package:inkwell_mobile/providers/stateProvider.dart';
 
 void main() => runApp(Home());
 
+//hacky attempt to access _state outside of home
+var genericState = null;
+
 class Home extends StatefulWidget {
+  var _state = null;
+
   @override
   MyHomeState createState() {
     return MyHomeState();
   }
 
   Widget build(BuildContext context) {
+    StateProvider _state = Provider.of<StateProvider>(context);
+    print(_state);
+    genericState = _state;
+    print(genericState);
+    // HomeState = _state;
     return MaterialApp(
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
@@ -48,7 +60,7 @@ class MyHomeState extends State<Home> {
   int _investedValue = 0;
   int _availableToInvest = 0;
   int _portfolioValue = 0;
-
+  StateProvider _stateProvider;
   // Array<String> _searchResults;
   List<String> _searchResults = [];
   // []TickerSearchObject _results;
@@ -56,6 +68,10 @@ class MyHomeState extends State<Home> {
   //TODO: add function that changes value on homepage
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
+
+  MyHomeState(StateProvider d) {
+    StateProvider _stateProvider = d;
+  }
 
   @override
   void initState() {
@@ -85,9 +101,17 @@ class MyHomeState extends State<Home> {
   }
 
   navigateToCompanyPage(String company) {
-    int shares = 0;
-    Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-        arguments: CompanyScreenArguments(company, shares));
+    // Home._state.
+    print(genericState);
+    // if (company != null) {
+    //   genericState.setSelectedCompany(company.trim());
+    //   // HomeState.
+    //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
+    // }
+
+    // int shares = 0;
+    // Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+    //     arguments: CompanyScreenArguments(company, shares));
   }
 
   setInitialStateVariables() async {
@@ -153,13 +177,12 @@ class MyHomeState extends State<Home> {
                     padding: EdgeInsets.all(15),
                     child: InkWell(
                       child: GestureDetector(
-
-                          // onTap: navigateToCompanyPage(ticker),
+                          onTap: navigateToCompanyPage(ticker),
                           child: Text(
-                        _searchResults[i],
-                        key: new Key(_searchResults[i]),
-                        style: TextStyle(fontSize: 15),
-                      )),
+                            _searchResults[i],
+                            key: new Key(_searchResults[i]),
+                            style: TextStyle(fontSize: 15),
+                          )),
                     ))),
           )
         ],
@@ -207,10 +230,11 @@ class MyHomeState extends State<Home> {
           backgroundColor: ColorConstants.appBarBackground,
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            Theme (data: Theme.of(context).copyWith(
-                dividerColor: Colors.white,
-                iconTheme: IconThemeData(color: Colors.white)),
-          child: new Dropdown(),
+            Theme(
+              data: Theme.of(context).copyWith(
+                  dividerColor: Colors.white,
+                  iconTheme: IconThemeData(color: Colors.white)),
+              child: new Dropdown(),
             )
           ],
         ),
