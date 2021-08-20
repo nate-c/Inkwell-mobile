@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: Authentication(),
           ),
-          ChangeNotifierProvider(create: (_) => StateProvider()),
+          ChangeNotifierProvider(create: (context) => StateProvider()),
         ],
         child: MaterialApp(
           title: 'Inkwell',
