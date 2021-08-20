@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
-import 'package:inkwell_mobile/constants/dropdown.dart';
+import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:inkwell_mobile/models/routeArguments.dart';
 import '../models/User.dart';
@@ -60,7 +60,7 @@ class MyHomeState extends State<Home> {
   int _investedValue = 0;
   int _availableToInvest = 0;
   int _portfolioValue = 0;
-  StateProvider _stateProvider;
+  // StateProvider _stateProvider;
   // Array<String> _searchResults;
   List<String> _searchResults = [];
   // []TickerSearchObject _results;
@@ -69,9 +69,9 @@ class MyHomeState extends State<Home> {
   final TextEditingController _searchController = TextEditingController();
   final storage = new FlutterSecureStorage();
 
-  MyHomeState(StateProvider d) {
-    StateProvider _stateProvider = d;
-  }
+  // MyHomeState(StateProvider d) {
+  //   StateProvider _stateProvider = d;
+  // }
 
   @override
   void initState() {
@@ -104,14 +104,14 @@ class MyHomeState extends State<Home> {
     // Home._state.
     print(genericState);
     // if (company != null) {
-    //   genericState.setSelectedCompany(company.trim());
+    //   // genericState.setSelectedCompany(company.trim());
     //   // HomeState.
     //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
     // }
 
-    // int shares = 0;
-    // Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-    //     arguments: CompanyScreenArguments(company, shares));
+    int shares = 0;
+    Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+        arguments: CompanyScreenArguments(company, shares));
   }
 
   setInitialStateVariables() async {
@@ -177,7 +177,7 @@ class MyHomeState extends State<Home> {
                     padding: EdgeInsets.all(15),
                     child: InkWell(
                       child: GestureDetector(
-                          onTap: navigateToCompanyPage(ticker),
+                          onTap: () => navigateToCompanyPage(ticker),
                           child: Text(
                             _searchResults[i],
                             key: new Key(_searchResults[i]),
