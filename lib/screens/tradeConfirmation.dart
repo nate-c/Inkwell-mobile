@@ -7,16 +7,21 @@ import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:flutter/services.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(TradeConfirmation());
+void main() => runApp(StockTradeConfirmation());
 
-class StockTradeConfirmation extends StatelessWidget {
+class StockTradeConfirmation extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  TradeConfirmationState createState() {
+    return TradeConfirmationState();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,7 +32,7 @@ class StockTradeConfirmation extends StatelessWidget {
               displayColor: ColorConstants.bodyText,
             ),
       ),
-      home: TradeConfirmation(),
+      home: StockTradeConfirmation(),
       routes: {
         RoutesConstants.tradeConfirmationRoute: (context) => Home(),
       },
@@ -35,8 +40,45 @@ class StockTradeConfirmation extends StatelessWidget {
   }
 }
 
-class TradeConfirmation extends StatelessWidget {
-  TradeConfirmation({Key? key}) : super(key: key);
+int? accountId;
+String? ticker;
+int? shares;
+String? type;
+double? buyPrice;
+double? sellPrice;
+double? tradePrice;
+
+class TradeConfirmationState extends State<StockTradeConfirmation> {
+  
+
+  getTradeInfo() async{
+    var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
+    {{
+      "account_id": accountId,
+      "ticker": ticker,
+      "shares": shares,
+      "type": type,
+      "buy_price": buyPrice,
+      "sell_price": sellPrice
+    }});
+
+    if (response.statusCode == 200){
+      if(buyPrice == null){
+        tradePrice = sellPrice;
+      } else if(sellPrice == null){
+        tradePrice = buyPrice;
+      }
+      return tradePrice;
+    }
+  }
+ 
+  @override
+  void initState(){
+    getTradeInfo();
+    super.initState();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +101,13 @@ class TradeConfirmation extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text('Deposit Summary',
+                  Text('Trade Summary',
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   Text(
                       '\$ ' +
-                          MyAddMoney.moneyamtController.text.replaceAllMapped(
+                          ((shares! * tradePrice!).toString()).replaceAllMapped(
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},'),
                       style:
@@ -101,7 +143,7 @@ class TradeConfirmation extends StatelessWidget {
                     }
                     ResponseHandler().handleError(response, context);
                   },
-                  child: Text('Deposit'.toUpperCase()),
+                  child: Text('Trade'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
                     primary: ColorConstants.button,
                     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
