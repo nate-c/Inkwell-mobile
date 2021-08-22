@@ -145,9 +145,9 @@ class MyHomeState extends State<Home> {
         _investments.where((a) => a.ticker == company.trim()).toList();
     var investment =
         filteredInvestments.length > 0 ? filteredInvestments[0] : null;
-    print(investment);
+    print(investment?.ticker);
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-        arguments: CompanyScreenArguments(null));
+        arguments: CompanyScreenArguments(investment));
   }
 
   setInitialStateVariables() async {
