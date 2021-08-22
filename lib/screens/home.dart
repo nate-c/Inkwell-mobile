@@ -155,7 +155,7 @@ class MyHomeState extends State<Home> {
 
     investment = new InvestmentObject(
         shares: shares,
-        ticker: ticker,
+        ticker: company,
         averagePrice: avgPrice,
         currentPrice: currPrice);
     print(investment?.ticker);
