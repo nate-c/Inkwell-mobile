@@ -9,7 +9,6 @@ import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/colorConstants.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/constants/assetConstants.dart';
@@ -29,16 +28,26 @@ class Company extends StatelessWidget {
     final args =
         ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
     var io = args.investmentObject;
-    print('io');
-    print(io);
     var shares = io.shares;
     bool hasShares = io.shares > 0;
     void sellStock() {
-      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute);
+      var newInvestment = new InvestmentObject(
+          shares: io.shares,
+          ticker: io.ticker,
+          averagePrice: io.averagePrice,
+          currentPrice: io.currentPrice);
+      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
+          arguments: TradeCompletionScreenArguments(newInvestment, 'SELL'));
     }
 
     void buyStock() {
-      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute);
+      var newInvestment = new InvestmentObject(
+          shares: io.shares,
+          ticker: io.ticker,
+          averagePrice: io.averagePrice,
+          currentPrice: io.currentPrice);
+      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
+          arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
     }
 
     return new Scaffold(
