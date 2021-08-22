@@ -113,10 +113,17 @@ class MyHomeState extends State<Home> {
 
     if (response.statusCode == 200) {
       List<InvestmentObject> newInvestments = [];
+      print('home  - get user investments');
+      print(response.body);
       final data = jsonDecode(response.body.toString())['investments'];
       for (Map<String, dynamic> i in data) {
-        newInvestments.add(InvestmentObject.fromJson(i));
+        print('i');
+        print(i.toString());
+        var newInvestment = InvestmentObject.fromJson(i);
+        newInvestments.add(newInvestment);
       }
+      print('new investments');
+      print(newInvestments.toString());
       _investments = newInvestments;
       setState(() {});
     } else {
@@ -133,11 +140,12 @@ class MyHomeState extends State<Home> {
     //   // HomeState.
     //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
     // }
-    print(_investments);
+    // print(_investments);
     var filteredInvestments =
         _investments.where((a) => a.ticker == company.trim()).toList();
     var investment =
         filteredInvestments.length > 0 ? filteredInvestments[0] : null;
+    print(investment);
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
         arguments: CompanyScreenArguments(null));
   }
