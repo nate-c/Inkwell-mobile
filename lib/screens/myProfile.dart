@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/screens/login.dart';
+import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
@@ -192,6 +194,9 @@ class MyProfileState extends State<MyProfile> {
                     // Column(
                     // children: [...getInvestmentsWidget()],
                     // ),
+                    InkWell(
+                      child: Text("Trade confirmation"),
+                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => TradeConfirmation()));}),
 
                     ExpandableTheme(
                         data: ExpandableThemeData(
