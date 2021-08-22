@@ -143,9 +143,23 @@ class MyHomeState extends State<Home> {
     // print(_investments);
     var filteredInvestments =
         _investments.where((a) => a.ticker == company.trim()).toList();
-    var investment =
+    var filteredInvestment =
         filteredInvestments.length > 0 ? filteredInvestments[0] : null;
+    var investment;
+    var shares = filteredInvestment != null ? filteredInvestment.shares : 0;
+    var ticker = filteredInvestment != null ? filteredInvestment.ticker : '';
+    double avgPrice =
+        filteredInvestment != null ? filteredInvestment.averagePrice : 0;
+    double currPrice =
+        filteredInvestment != null ? filteredInvestment.currentPrice : 0;
+
+    investment = new InvestmentObject(
+        shares: shares,
+        ticker: ticker,
+        averagePrice: avgPrice,
+        currentPrice: currPrice);
     print(investment?.ticker);
+
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
         arguments: CompanyScreenArguments(investment));
   }
