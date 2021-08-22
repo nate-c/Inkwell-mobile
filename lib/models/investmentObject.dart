@@ -32,6 +32,12 @@ class InvestmentObject {
       required this.averagePrice,
       required this.currentPrice});
 
+  // InvestmentObject.fromInvestmentObject(InvestmentObject obj) {
+  //   this.shares = obj.shares;
+  //   this.ticker = obj.ticker;
+  //   this.averagePrice = obj.averagePrice;
+  //   this.currentPrice = obj.currentPrice;
+  // }
   factory InvestmentObject.fromJson(Map<String, dynamic> parsedJson) {
     return new InvestmentObject(
         shares: parsedJson['shares'],
