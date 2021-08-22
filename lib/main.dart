@@ -7,6 +7,7 @@ import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/company.dart';
+import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:provider/provider.dart';
 import 'constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
@@ -57,7 +58,9 @@ class MyApp extends StatelessWidget {
             RoutesConstants.registerRoute: (context) => MyRegistration(),
             RoutesConstants.moneyConfirmRoute: (context) => MoneyConfirmation(),
             RoutesConstants.myProfileRoute: (context) => MyProfile(),
-            RoutesConstants.companyPageRoute: (context) => Company()
+            RoutesConstants.companyPageRoute: (context) => Company(),
+            RoutesConstants.tradeConfirmationPageRoute: (context) =>
+                TradeConfirmation()
           },
         ));
   }
