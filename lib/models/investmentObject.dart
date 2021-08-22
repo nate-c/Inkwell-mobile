@@ -14,27 +14,35 @@ import 'package:json_annotation/json_annotation.dart';
 
 // @JsonSerializable(explicitToJson: true)
 
-List<InvestmentObject> modelUserFromJson(String str) => List<InvestmentObject>.from(json.decode(str).map((x) => InvestmentObject.fromJson(x)));
-String modelUserToJson(List<InvestmentObject> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+List<InvestmentObject> modelUserFromJson(String str) =>
+    List<InvestmentObject>.from(
+        json.decode(str).map((x) => InvestmentObject.fromJson(x)));
+String modelUserToJson(List<InvestmentObject> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class InvestmentObject {
- 
- int shares;
- String ticker;
- double averagePrice;
- double currentPrice;
+  int shares;
+  String ticker;
+  double averagePrice;
+  double currentPrice;
 
-InvestmentObject({required this.shares, required this.ticker, required this.averagePrice, required this.currentPrice});
+  InvestmentObject(
+      {required this.shares,
+      required this.ticker,
+      required this.averagePrice,
+      required this.currentPrice});
 
+  factory InvestmentObject.fromJson(Map<String, dynamic> parsedJson) {
+    return new InvestmentObject(
+        shares: parsedJson['shares'],
+        ticker: parsedJson['ticker'],
+        averagePrice: double.parse(parsedJson['average_price'].toString()),
+        currentPrice: parsedJson['current_price']);
+  }
 
-factory InvestmentObject.fromJson(Map<String, dynamic> parsedJson)  {
-       return new InvestmentObject(
-       shares : parsedJson['shares'],
-        ticker : parsedJson['ticker'],
-        averagePrice : double.parse(parsedJson['average_price'].toString()),
-        currentPrice : parsedJson['current_price']
-    );
-}
+  void updateCurrentPrice(double price) {
+    currentPrice = price;
+  }
 
   Map<String, dynamic> toJson() => {
         'shares': shares,
