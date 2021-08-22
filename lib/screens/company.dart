@@ -11,6 +11,8 @@ import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/colorConstants.dart';
+import 'package:inkwell_mobile/widgets/dropdown.dart';
+import 'package:inkwell_mobile/constants/assetConstants.dart';
 
 // void main() => runApp(Company());
 
@@ -27,43 +29,20 @@ class Company extends StatelessWidget {
     final args =
         ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
     var io = args.investmentObject;
+    print('io');
+    print(io);
+    var ticker = io?.ticker != null ? io?.ticker.toString() : '';
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: ColorConstants.appBarBackground,
           actions: <Widget>[
-            PopupMenuButton<int>(
-              color: ColorConstants.expandable,
-              icon: Icon(Icons.menu),
-              itemBuilder: (context) => [
-                PopupMenuItem<int>(
-                    value: 0,
-                    child: Text(
-                      "Home",
-                      style: TextStyle(color: ColorConstants.bodyText),
-                    )),
-                PopupMenuItem<int>(
-                    value: 1,
-                    child: Text(
-                      "View Portfolio",
-                      style: TextStyle(color: ColorConstants.bodyText),
-                    )),
-                PopupMenuItem<int>(
-                    value: 2,
-                    child: Text(
-                      "Add Money",
-                      style: TextStyle(color: ColorConstants.bodyText),
-                    )),
-              ],
-              onSelected: (item) => SelectedItem(context, item),
-            ),
-            // IconButton(
-            // alignment: Alignment.centerRight,
-            // color: ColorConstants.bodyText,
-            // onPressed: () {
-            //   Navigator.pushNamed(context, '/myprofile');
-            // },
-            // icon: const Icon(Icons.person),)
+            Theme(
+              data: Theme.of(context).copyWith(
+                  dividerColor: Colors.white,
+                  iconTheme: IconThemeData(color: Colors.white)),
+              child: new Dropdown(),
+            )
           ],
         ),
         backgroundColor: ColorConstants.background,
@@ -80,13 +59,30 @@ class Company extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                   Container(
-                    height: 50,
-                    child: Text('texe'),
+                    height: 100,
+                    margin: new EdgeInsets.fromLTRB(15, 15, 15, 0),
+                    // padding: EdgeInsets.all(20),
+                    child: Center(child: Text('IMAGE GOES HERE')),
                   ),
                   Container(
-                    margin: new EdgeInsets.all(15),
-                    color: ColorConstants.textFieldBox,
-                  ),
+                      height: 50,
+                      // padding: EdgeInsets.all(20),
+                      margin: new EdgeInsets.fromLTRB(15, 0, 15, 15),
+                      // color: ColorConstants.textFieldBox,
+                      child: Center(child: Text(ticker.toString()))),
+                  Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      child: Image(
+                        image: AssetImage(AssetConstants.demoChartPath),
+                        width: 100,
+                        height: 250,
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.center,
+                      ))
                 ]))));
   }
 }
