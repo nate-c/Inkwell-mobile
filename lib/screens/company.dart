@@ -31,10 +31,16 @@ class Company extends StatelessWidget {
     var io = args.investmentObject;
     print('io');
     print(io);
-    var ticker = io?.ticker != null ? io?.ticker.toString() : '';
-    var shares = io?.shares;
-    void sellStock() {}
-    void buyStock() {}
+    var shares = io.shares;
+    bool hasShares = io.shares > 0;
+    void sellStock() {
+      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute);
+    }
+
+    void buyStock() {
+      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute);
+    }
+
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -72,7 +78,7 @@ class Company extends StatelessWidget {
                       // padding: EdgeInsets.all(20),
                       margin: new EdgeInsets.fromLTRB(15, 0, 15, 15),
                       // color: ColorConstants.textFieldBox,
-                      child: Center(child: Text(ticker.toString()))),
+                      child: Center(child: Text(io.ticker.toString()))),
                   Container(
                       padding: EdgeInsets.all(5),
                       child: Image(
@@ -87,13 +93,12 @@ class Company extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
-                          if (shares != null && shares > 0)
+                          if (hasShares)
+                            //HIDES BUY BUTTON IF THERE'S NO SHARES
                             Container(
                               margin: EdgeInsetsDirectional.all(5),
                               child: ElevatedButton(
-                                  onPressed: () {
-                                    buyStock();
-                                  },
+                                  onPressed: () => {buyStock()},
                                   child: Text(
                                     'Buy'.toUpperCase(),
                                     style: TextStyle(fontSize: 18),
@@ -105,11 +110,11 @@ class Company extends StatelessWidget {
                                   )),
                             ),
                           Container(
-                            margin: EdgeInsetsDirectional.all(5),
+                            margin: (hasShares)
+                                ? EdgeInsetsDirectional.all(5)
+                                : EdgeInsets.fromLTRB(15, 5, 15, 5),
                             child: ElevatedButton(
-                                onPressed: () {
-                                  sellStock();
-                                },
+                                onPressed: () => {sellStock()},
                                 child: Text(
                                   'Sell'.toUpperCase(),
                                   style: TextStyle(fontSize: 18),
