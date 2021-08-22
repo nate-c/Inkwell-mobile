@@ -61,7 +61,7 @@ class MyHomeState extends State<Home> {
   int _investedValue = 0;
   int _availableToInvest = 0;
   int _portfolioValue = 0;
-  List _investments = [];
+  List<InvestmentObject> _investments = [];
 
   // StateProvider _stateProvider;
   // Array<String> _searchResults;
@@ -134,9 +134,12 @@ class MyHomeState extends State<Home> {
     //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
     // }
     print(_investments);
-    int shares = 0;
+    var filteredInvestments =
+        _investments.where((a) => a.ticker == company.trim()).toList();
+    var investment =
+        filteredInvestments.length > 0 ? filteredInvestments[0] : null;
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-        arguments: CompanyScreenArguments(company, shares));
+        arguments: CompanyScreenArguments(null));
   }
 
   setInitialStateVariables() async {
