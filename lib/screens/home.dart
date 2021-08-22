@@ -8,6 +8,7 @@ import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:inkwell_mobile/models/routeArguments.dart';
 import '../models/User.dart';
+import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
@@ -60,6 +61,8 @@ class MyHomeState extends State<Home> {
   int _investedValue = 0;
   int _availableToInvest = 0;
   int _portfolioValue = 0;
+  List _investments = [];
+
   // StateProvider _stateProvider;
   // Array<String> _searchResults;
   List<String> _searchResults = [];
@@ -81,34 +84,56 @@ class MyHomeState extends State<Home> {
     // getAccountInfo();
   }
 
-  getUserInvestments() async {
+  Future getselectedTickerPrice(ticker) async {
     var token = await storage.read(key: 'jwt');
-    var userName = await storage.read(key: 'username');
-    Uri uri = Uri.parse(UriConstants.getUserInvestmentsUri);
-
-    var response = await http.post(uri, headers: {
-      'authorization': token.toString()
-    }, body: {
-      'username': userName.toString(),
+    Uri uriInv =
+        Uri.parse(UriConstants.getUserInvestmentsUri + '?ticker=' + ticker);
+    var response = await http.post(uriInv, headers: {
+      'Authorization': token.toString(),
     });
+
     if (response.statusCode == 200) {
-      setState(() {
-        _investedValue = 1;
-      });
+      //filter current investments to see if it contains selected ticker.
+
     } else {
       ResponseHandler().handleError(response, context);
+      throw Exception('Failed to load investments');
+    }
+  }
+
+  Future getUserInvestments() async {
+    var token = await storage.read(key: 'jwt');
+    var userName = await storage.read(key: 'username');
+    Uri uriInv = Uri.parse(UriConstants.getUserInvestmentsUri);
+    var response = await http.post(uriInv, headers: {
+      'Authorization': token.toString(),
+    }, body: {
+      'username': userName,
+    });
+
+    if (response.statusCode == 200) {
+      List newInvestments = [];
+      final data = jsonDecode(response.body.toString())['investments'];
+      for (Map<String, dynamic> i in data) {
+        newInvestments.add(InvestmentObject.fromJson(i));
+      }
+      _investments = newInvestments;
+      setState(() {});
+    } else {
+      ResponseHandler().handleError(response, context);
+      throw Exception('Failed to load investments');
     }
   }
 
   navigateToCompanyPage(String company) {
-    // Home._state.
     print(genericState);
+    // FILTER INVESTMENTS TO SEE IF IT CONTAINS
     // if (company != null) {
     //   // genericState.setSelectedCompany(company.trim());
     //   // HomeState.
     //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
     // }
-
+    print(_investments);
     int shares = 0;
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
         arguments: CompanyScreenArguments(company, shares));
@@ -124,6 +149,7 @@ class MyHomeState extends State<Home> {
     _token = token.toString();
     setState(() {});
     getAccountInfo();
+    getUserInvestments();
   }
 
   void getAccountInfo() async {
