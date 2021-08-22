@@ -5,6 +5,7 @@ import 'package:inkwell_mobile/models/routeArguments.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import '../models/User.dart';
+import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:http/http.dart' as http;
 import '../constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
@@ -14,14 +15,18 @@ import '../constants/colorConstants.dart';
 // void main() => runApp(Company());
 
 class Company extends StatelessWidget {
+  // final InvestmentObject _investmentObject;// = null;
+
   // @override
   // CompanyState createState() {
   //   return CompanyState();
   // }
+
   @override
   Widget build(BuildContext context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
+    var io = args.investmentObject;
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
