@@ -10,6 +10,7 @@ import 'package:inkwell_mobile/screens/company.dart';
 import 'package:provider/provider.dart';
 import 'constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
+import 'package:inkwell_mobile/constants/assetConstants.dart';
 import 'utils/authentication.dart';
 import 'providers/stateProvider.dart';
 
@@ -110,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.white,
                 ),
                 child: Image(
-                  image: AssetImage('lib/images/ink_logo.png'),
+                  image: AssetImage(AssetConstants.logoPath),
                   width: 100,
                   height: 100,
                   fit: BoxFit.fill,
