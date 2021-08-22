@@ -7,7 +7,10 @@ import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:flutter/services.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
+import 'package:inkwell_mobile/models/investmentObject.dart';
+import 'package:inkwell_mobile/models/routeArguments.dart';
 import 'package:inkwell_mobile/screens/addmoney.dart';
+import 'package:inkwell_mobile/screens/company.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
@@ -40,14 +43,16 @@ class TradeConfirmation extends StatefulWidget {
 
 
 int? accountId;
-String? ticker;
-int? shares;
+final String ticker = '';
+final int shares = 0;
+final double averagePrice = 0;
+final double currentPrice = 0;
 String? type;
 double? buyPrice;
 double? sellPrice;
 bool? isBuying;
 bool? isSelling;
-String? tradeType; 
+final String tradeType = ''; 
 
 
 class TradeConfirmationState extends State<TradeConfirmation> {
@@ -82,13 +87,19 @@ class TradeConfirmationState extends State<TradeConfirmation> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
+    var io = args.investmentObject;
+    final InvestmentObject investment = new InvestmentObject(
+      shares: io.shares, ticker: io.ticker, averagePrice: io.averagePrice, currentPrice: io.currentPrice);
+
     return new Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           backgroundColor: ColorConstants.appBarBackground,
-          title: Text('Trade Summary'),
+          title: Text(''),
         ),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -101,10 +112,7 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text('Trade Summary',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 10),
+          
                   Text(
                       '\$ ' +
                           ((20 * 100).toString()).replaceAllMapped( //TODO: change when numbers are gathered
