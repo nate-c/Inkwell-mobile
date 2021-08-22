@@ -32,6 +32,9 @@ class Company extends StatelessWidget {
     print('io');
     print(io);
     var ticker = io?.ticker != null ? io?.ticker.toString() : '';
+    var shares = io?.shares;
+    void sellStock() {}
+    void buyStock() {}
     return new Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -72,16 +75,46 @@ class Company extends StatelessWidget {
                       child: Center(child: Text(ticker.toString()))),
                   Container(
                       padding: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
                       child: Image(
                         image: AssetImage(AssetConstants.demoChartPath),
                         width: 100,
                         height: 250,
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.center,
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(5),
+                      height: 100,
+                      child: Row(
+                        children: [
+                          if (shares != null && shares > 0)
+                            ElevatedButton(
+                                onPressed: () {
+                                  buyStock();
+                                },
+                                child: Text(
+                                  'Buy'.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: ColorConstants.button,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 50, vertical: 10),
+                                )),
+                          ElevatedButton(
+                              onPressed: () {
+                                sellStock();
+                              },
+                              child: Text(
+                                'Sell'.toUpperCase(),
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: ColorConstants.button,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 50, vertical: 10),
+                              )),
+                        ],
                       ))
                 ]))));
   }
