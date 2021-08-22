@@ -112,7 +112,7 @@ class MyHomeState extends State<Home> {
     });
 
     if (response.statusCode == 200) {
-      List newInvestments = [];
+      List<InvestmentObject> newInvestments = [];
       final data = jsonDecode(response.body.toString())['investments'];
       for (Map<String, dynamic> i in data) {
         newInvestments.add(InvestmentObject.fromJson(i));
