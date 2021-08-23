@@ -70,16 +70,16 @@ int? newShares;
       tradeType = 'selling';
       sellPrice = io.currentPrice;
       buyPrice = null;
-    }});
+    }
+   });
   print(moneyInvested.text);
     
     onUpdate(){
-      var amount = double.parse(moneyInvested.text);
+     setState(() {
+        var amount = double.parse(moneyInvested.text);
       newShares = ((amount ~/ io.currentPrice)).floor();
-      setState(() {
-        
-      });
-    }
+     });
+   }
 
     return new Scaffold(
         backgroundColor: ColorConstants.background,
@@ -96,8 +96,8 @@ int? newShares;
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
           Container(
@@ -129,29 +129,27 @@ int? newShares;
                           color: ColorConstants.bodyText, fontSize: 21),
                     ),
                     onChanged: (text){
+                      onUpdate();
                       print(moneyInvested.text);
                     },
                     ),
               ),
-                 SizedBox(height: 10),
-                  Container( 
+              SizedBox(height: 10),
+                Container( 
                     width: 300,
-                    child: Text(
-                      ( "You have " + " \$"+ MyProfileState.investedValue.toString().replaceAllMapped( 
+                    child: Text(('You have \$' + MyProfileState.investedValue.toString().replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                              (Match m) => '${m[1]},') +" to invest.").toUpperCase(),
-                      style: TextStyle(
-                          color: ColorConstants.bodyText, fontSize: 15),
-                    ),
-                  ),
+                              (Match m) => '${m[1]},') + " to invest.").toUpperCase(), style: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 15)),
+                ),
                   SizedBox(height: 10),
                   Container( 
                     width: 300,
                     child: Text(
-                      ( "You are buying "+" \$" + moneyInvested.text.replaceAllMapped( 
+                      ( "You are buying "+"\$" + moneyInvested.text.replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},') +" of "+ 
-                      io.ticker.toString() + " at "+ io.currentPrice.toString() + " which amounts to " + newShares.toString() +" shares.").toUpperCase(),
+                      io.ticker.toString() + " at \$"+ io.currentPrice.toString() + " which amounts to about " + newShares.toString() +" shares.").toUpperCase(),
                       style: TextStyle(
                           color: ColorConstants.bodyText, fontSize: 15),
                     ),
@@ -162,34 +160,55 @@ int? newShares;
                 width: 300,
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
-                    {{
-                      "account_id": accountId,
-                      "ticker": io.ticker,
-                      "shares": newShares,
-                      "type": args.tradeType,
-                      "buy_price": buyPrice,
-                      "sell_price": sellPrice
-                    }});
-
-                    if (response.statusCode == 200) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ConfirmationPopUp()));
-                    }
-                    ResponseHandler().handleError(response, context);
-                  },
-                  child: Text('Trade'.toUpperCase()),
+                  child: Text('Buy'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
                     primary: ColorConstants.button,
-                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                  ),
+                    padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
+                  onPressed: () async {
+                  showDialog(context: context, builder:(ctx) =>
+                  AlertDialog(
+                    content: Text( "You are buying "+" \$" + moneyInvested.text.replaceAllMapped( 
+                              new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                              (Match m) => '${m[1]},') +" of "+ 
+                      io.ticker.toString() + " at \$"+ io.currentPrice.toString() + " which amounts to about " + newShares.toString() +" shares."
+                      +"\n \n Are you sure you want to make the trade?"
+                      ),
+                  backgroundColor: ColorConstants.background,
+                  contentTextStyle: TextStyle(color:ColorConstants.bodyText),
+                  actions: <Widget>[
+                        TextButton(
+                          child: Text('Yes'),
+                          onPressed: () async {
+                            var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
+                          {{
+                            "account_id": accountId,
+                            "ticker": io.ticker,
+                            "shares": newShares,
+                            "type": args.tradeType,
+                            "buy_price": buyPrice,
+                            "sell_price": sellPrice
+                          }});
+                          print(response.body);
+                          if (response.statusCode == 200) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ConfirmationPopUp()));
+                          }
+                          ResponseHandler().handleError(response, context);
+                        }),
+                        TextButton(
+                                  child: Text('No'),
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop(context);
+                                  },
+                        )
+                        ])); 
+                        } 
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ) // This trailing comma makes auto-formatting nicer for build methods.
         );
   }
