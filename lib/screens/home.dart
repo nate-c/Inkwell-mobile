@@ -117,6 +117,11 @@ class MyHomeState extends State<Home> {
     }
   }
 
+  int setAccountId(String id) async {
+    storage.write(key: "account_id", value: id);
+    return 0;
+  }
+
   void setCorrectDataPoints(List<InvestmentObject> investments) {}
   navigateToCompanyPage(String company) async {
     print(genericState);
@@ -199,6 +204,7 @@ class MyHomeState extends State<Home> {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       var accountBalance = data['accountData']['amount'].toString();
+      await setAccountId(data['accountData']['account_id'].toString());
       _availableToInvest = double.parse(accountBalance);
       setState(() {});
       // print(response.body);
