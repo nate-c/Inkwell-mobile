@@ -48,21 +48,27 @@ class Company extends StatelessWidget {
           ticker: io.ticker,
           averagePrice: io.averagePrice,
           currentPrice: io.currentPrice);
+      print('new investment buy stock');
+      print(newInvestment.toString());
+
       if (newInvestment.averagePrice == 0 && newInvestment.currentPrice == 0) {
         var token = await storage.read(key: 'jwt');
         Uri uriTickerPrice =
             Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + io.ticker);
-        var response = await http.post(uriTickerPrice, headers: {
+        var response = await http.get(uriTickerPrice, headers: {
           'Authorization': token.toString(),
         });
-
+        print('response');
+        print(response.body);
         if (response.statusCode == 200) {
           //filter current investments to see if it contains selected ticker.
           var pricePayload = jsonDecode(response.body.toString());
-          double price = double.parse(pricePayload["price"]);
+          print('price payload');
+          print(pricePayload["price"]);
+          var newCurrentPrice = double.parse(pricePayload["price"]);
           print('price');
-          print(price);
-          newInvestment.updateCurrentPrice(price);
+          print(newCurrentPrice);
+          newInvestment.updateCurrentPrice(newCurrentPrice);
           Navigator.pushNamed(
               context, RoutesConstants.tradeConfirmationPageRoute,
               arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
