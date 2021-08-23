@@ -204,12 +204,12 @@ var investedValue;
                               "Authorization": token.toString(),
                             },  
                             body: {
-                            "account_id": accountId.toString(),
+                            "account_id": accountId,
                             "ticker": io.ticker.toString(),
-                            "shares": newShares.toString(),
+                            "shares": newShares,
                             "type": args.tradeType.toString(),
-                            "buy_price": buyPrice.toString(),
-                            "sell_price": sellPrice.toString()
+                            "buy_price": buyPrice,
+                            "sell_price": null
                           });
                           print(response.body);
                           if (response.statusCode == 200) {
