@@ -60,7 +60,9 @@ class MyApp extends StatelessWidget {
             RoutesConstants.myProfileRoute: (context) => MyProfile(),
             RoutesConstants.companyPageRoute: (context) => Company(),
             RoutesConstants.tradeConfirmationPageRoute: (context) =>
-                TradeConfirmation()
+                TradeConfirmation(),
+            // RoutesConstants.confirmationPopUpRoute: (context) =>
+            //     ConfirmationPopUp()
           },
         ));
   }
