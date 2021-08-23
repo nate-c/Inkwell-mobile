@@ -117,7 +117,7 @@ class MyHomeState extends State<Home> {
     }
   }
 
-  int setAccountId(String id) async {
+  Future <int> setAccountId(String id) async {
     storage.write(key: "account_id", value: id);
     return 0;
   }
