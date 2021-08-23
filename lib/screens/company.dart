@@ -63,13 +63,17 @@ class Company extends StatelessWidget {
           print('price');
           print(price);
           newInvestment.updateCurrentPrice(price);
+          Navigator.pushNamed(
+              context, RoutesConstants.tradeConfirmationPageRoute,
+              arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
         } else {
           ResponseHandler().handleError(response, context);
           throw Exception('Failed to load investments');
         }
+      } else {
+        Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
+            arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
       }
-      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
-          arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
     }
 
     return new Scaffold(
@@ -121,6 +125,7 @@ class Company extends StatelessWidget {
                       )),
                   Container(
                       padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.fromLTRB(20, 0, 10, 0),
                       height: 100,
                       child: Row(
                         children: [
