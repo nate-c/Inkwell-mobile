@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:inkwell_mobile/models/routeArguments.dart';
@@ -58,9 +59,9 @@ class MyHomeState extends State<Home> {
   // final User _user;
   String? _token;
   // final int _amount;
-  int _investedValue = 0;
-  int _availableToInvest = 0;
-  int _portfolioValue = 0;
+  double _investedValue = 0;
+  double _availableToInvest = 0;
+  double _portfolioValue = 0;
   List<InvestmentObject> _investments = [];
 
   // StateProvider _stateProvider;
@@ -82,23 +83,6 @@ class MyHomeState extends State<Home> {
     // getUserInvestments();
     setInitialStateVariables();
     // getAccountInfo();
-  }
-
-  Future getselectedTickerPrice(ticker) async {
-    var token = await storage.read(key: 'jwt');
-    Uri uriInv =
-        Uri.parse(UriConstants.getUserInvestmentsUri + '?ticker=' + ticker);
-    var response = await http.post(uriInv, headers: {
-      'Authorization': token.toString(),
-    });
-
-    if (response.statusCode == 200) {
-      //filter current investments to see if it contains selected ticker.
-
-    } else {
-      ResponseHandler().handleError(response, context);
-      throw Exception('Failed to load investments');
-    }
   }
 
   Future getUserInvestments() async {
@@ -125,6 +109,7 @@ class MyHomeState extends State<Home> {
       print('new investments');
       print(newInvestments.toString());
       _investments = newInvestments;
+
       setState(() {});
     } else {
       ResponseHandler().handleError(response, context);
@@ -132,7 +117,13 @@ class MyHomeState extends State<Home> {
     }
   }
 
-  navigateToCompanyPage(String company) {
+  int setAccountId(String id) async {
+    storage.write(key: "account_id", value: id);
+    return 0;
+  }
+
+  void setCorrectDataPoints(List<InvestmentObject> investments) {}
+  navigateToCompanyPage(String company) async {
     print(genericState);
     // FILTER INVESTMENTS TO SEE IF IT CONTAINS
     // if (company != null) {
@@ -159,25 +150,50 @@ class MyHomeState extends State<Home> {
         averagePrice: avgPrice,
         currentPrice: currPrice);
     print(investment?.ticker);
-
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
         arguments: CompanyScreenArguments(investment));
+    // //GETTING UPDATED PRICE IF YOU DON'T HAVE IT
+    // if (shares == 0 && currentPrice == 0) {
+    //   var token = await storage.read(key: 'jwt');
+    //   Uri uriTickerPrice =
+    //       Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + ticker);
+    //   var response = await http.get(uriTickerPrice, headers: {
+    //     'Authorization': token.toString(),
+    //   });
+    //   if (response.statusCode == 200) {
+    //     //filter current investments to see if it contains selected ticker.
+    //     var pricePayload = jsonDecode(response.body.toString());
+    //     var newCurrentPrice = double.parse(pricePayload["price"].toString());
+    //     investment.updateCurrentPrice(newCurrentPrice);
+    //     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+    //         arguments: CompanyScreenArguments(investment));
+    //   } else {
+    //     print('click error');
+    //     print(response.body);
+    //     print(response.statusCode);
+    //     ResponseHandler().handleError(response, context);
+    //     throw Exception('Failed to load price info');
+    //   }
+    // } else {
+    //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+    //       arguments: CompanyScreenArguments(investment));
+    // }
   }
 
   setInitialStateVariables() async {
     // var amount = await storage.read(key: 'amount');
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'jwt');
-    _availableToInvest = int.parse(amount.toString());
+    _availableToInvest = double.parse(amount.toString());
     _investedValue = 0;
     _portfolioValue = _investedValue + _availableToInvest;
     _token = token.toString();
     setState(() {});
-    getAccountInfo();
-    getUserInvestments();
+    await getAccountInfo();
+    await getUserInvestments();
   }
 
-  void getAccountInfo() async {
+  Future getAccountInfo() async {
     Uri uriReg = Uri.parse(UriConstants.getAccountBalanceUri);
     var user_id = await storage.read(key: 'user_id');
     var response = await http.post(uriReg, headers: {
@@ -186,6 +202,11 @@ class MyHomeState extends State<Home> {
       'user_id': user_id.toString(),
     });
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      var accountBalance = data['accountData']['amount'].toString();
+      await setAccountId(data['accountData']['account_id'].toString());
+      _availableToInvest = double.parse(accountBalance);
+      setState(() {});
       // print(response.body);
       // print(response.body["data"]);
       // var responseData = await jsonDecode(response.body.toString())["data"];
@@ -199,6 +220,7 @@ class MyHomeState extends State<Home> {
       //     int.parse(responseData["data"]["account_id"].toString());
       // setState(() {});
     }
+    return 0;
   }
 
   List<Widget> getSearchResultsList() {

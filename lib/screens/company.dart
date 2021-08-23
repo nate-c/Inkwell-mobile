@@ -58,17 +58,13 @@ class Company extends StatelessWidget {
         var response = await http.get(uriTickerPrice, headers: {
           'Authorization': token.toString(),
         });
-        print('response');
-        print(response.body);
         if (response.statusCode == 200) {
           //filter current investments to see if it contains selected ticker.
           var pricePayload = jsonDecode(response.body.toString());
-          print('price payload');
-          print(pricePayload["price"]);
           var newCurrentPrice = double.parse(pricePayload["price"].toString());
-          print('price');
-          print(newCurrentPrice);
           newInvestment.updateCurrentPrice(newCurrentPrice);
+          print('new investment data');
+          print(newInvestment.toString());
           Navigator.pushNamed(
               context, RoutesConstants.tradeConfirmationPageRoute,
               arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
