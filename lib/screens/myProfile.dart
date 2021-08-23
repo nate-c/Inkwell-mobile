@@ -83,25 +83,23 @@ class MyProfileState extends State<MyProfile> {
         for (Map<String, dynamic> i in data) {
           _investments.add(new InvestmentObject.fromJson(i));
         }
-        
+        print(_investments.toString());
         for (int i = 0; i < _investments.length; i++) {
-          final nDataList = _investments[i];
-          list = nDataList.ticker +
+          list = _investments[i].ticker.toString() +
               '\n' +
               'Shares: ' +
-              nDataList.shares.toString() +
+              _investments[i].shares.toString() +
               '\n' +
               'Average Price: \$' +
-              nDataList.averagePrice.toStringAsFixed(2) +
+              _investments[i].averagePrice.toStringAsFixed(2) +
               '\n' +
               'Current Price: \$' +
-              nDataList.currentPrice.toStringAsFixed(2);
-          totalInvestmentValue = (investedValue! +
+              _investments[i].currentPrice.toStringAsFixed(2); 
+        }totalInvestmentValue = (investedValue! +
               (_investments
                   .map((s) => s.shares * (s.currentPrice - s.averagePrice))
                   .reduce((accumulator, currentValue) =>
                       accumulator + currentValue)) as double);
-        }
       });
     } else {
       ResponseHandler().handleError(response, context);
