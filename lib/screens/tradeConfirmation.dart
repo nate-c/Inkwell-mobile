@@ -49,10 +49,9 @@ int? accountId;
 String? type;
 double? buyPrice;
 double? sellPrice;
-bool? isBuying;
-bool? isSelling;
 String? tradeType;
-
+int? newShares;
+ 
  TextEditingController moneyInvested = new TextEditingController();
 
 
@@ -63,22 +62,24 @@ String? tradeType;
   var io = args.investmentObject;
 
   setState(() {
-      if (type == 'BUY'){
-        isBuying = true;
-        isSelling = false;
+      if (args.tradeType == 'BUY'){
         tradeType = 'buying';
         buyPrice = io.currentPrice;
         sellPrice = null;
-    } else if (type == 'SELL'){
-      isSelling = true;
-      isBuying = false;
+    } else if (args.tradeType == 'SELL'){
       tradeType = 'selling';
       sellPrice = io.currentPrice;
       buyPrice = null;
     }});
-  
-    var amount = double.parse(moneyInvested.text);
-    io.shares = (amount / io.currentPrice).floor();
+  print(moneyInvested.text);
+    
+    onUpdate(){
+      var amount = double.parse(moneyInvested.text);
+      newShares = ((amount ~/ io.currentPrice)).floor();
+      setState(() {
+        
+      });
+    }
 
     return new Scaffold(
         backgroundColor: ColorConstants.background,
@@ -147,10 +148,10 @@ String? tradeType;
                   Container( 
                     width: 300,
                     child: Text(
-                      ( "You are " + type.toString()+" \$" + moneyInvested.text.replaceAllMapped( 
+                      ( "You are buying "+" \$" + moneyInvested.text.replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},') +" of "+ 
-                      io.ticker.toString() + " at "+ io.currentPrice.toString() + " which amounts to " + io.shares.toString() +" shares.").toUpperCase(),
+                      io.ticker.toString() + " at "+ io.currentPrice.toString() + " which amounts to " + newShares.toString() +" shares.").toUpperCase(),
                       style: TextStyle(
                           color: ColorConstants.bodyText, fontSize: 15),
                     ),
@@ -166,8 +167,8 @@ String? tradeType;
                     {{
                       "account_id": accountId,
                       "ticker": io.ticker,
-                      "shares": io.shares,
-                      "type": type,
+                      "shares": newShares,
+                      "type": args.tradeType,
                       "buy_price": buyPrice,
                       "sell_price": sellPrice
                     }});
