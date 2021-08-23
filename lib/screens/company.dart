@@ -124,52 +124,52 @@ class Company extends StatelessWidget {
                       height: 100,
                       child: Row(
                         children: [
-                          if (hasShares)
-                            //HIDES BUY BUTTON IF THERE'S NO SHARES
-                            Container(
-                              margin: EdgeInsetsDirectional.all(5),
-                              child: ElevatedButton(
-                                  onPressed: () => {buyStock()},
-                                  child: Text(
-                                    'Buy'.toUpperCase(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ColorConstants.button,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 10),
-                                  )),
-                            ),
+                          //HIDES BUY BUTTON IF THERE'S NO SHARES
                           Container(
-                            margin: (!hasShares)
-                                ? EdgeInsetsDirectional.all(5)
-                                : EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: hasShares
-                                ? Center(
-                                    child: ElevatedButton(
-                                        onPressed: () => {sellStock()},
-                                        child: Text(
-                                          'Sell'.toUpperCase(),
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: ColorConstants.button,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 50, vertical: 10),
-                                        )),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () => {sellStock()},
-                                    child: Text(
-                                      'Sell'.toUpperCase(),
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: ColorConstants.button,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 50, vertical: 10),
-                                    )),
+                            margin: EdgeInsetsDirectional.all(5),
+                            child: ElevatedButton(
+                                onPressed: () => {buyStock()},
+                                child: Text(
+                                  'Buy'.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: ColorConstants.button,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 50, vertical: 10),
+                                )),
                           ),
+                          if (hasShares)
+                            Container(
+                              margin: (!hasShares)
+                                  ? EdgeInsetsDirectional.all(5)
+                                  : EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: hasShares
+                                  ? Center(
+                                      child: ElevatedButton(
+                                          onPressed: () => {sellStock()},
+                                          child: Text(
+                                            'Sell'.toUpperCase(),
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: ColorConstants.button,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 50, vertical: 10),
+                                          )),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: () => {sellStock()},
+                                      child: Text(
+                                        'Sell'.toUpperCase(),
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ColorConstants.button,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 50, vertical: 10),
+                                      )),
+                            ),
                         ],
                       ))
                 ]))));
