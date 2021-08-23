@@ -18,6 +18,7 @@ class RoutesConstants {
   static final String tradeConfirmationRoute = '/myprofile';
   static final String companyPageRoute = '/company';
   static final String tradeConfirmationPageRoute = '/tradeConfirmation';
+  static final String confirmationPopUpRoute = '/confirmationPopUp';
 }
 
 void SelectedItem(BuildContext context, item) {
