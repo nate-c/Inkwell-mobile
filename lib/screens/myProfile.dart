@@ -67,6 +67,40 @@ class MyProfileState extends State<MyProfile> {
     });
   }
 
+  List<Widget> listAllOwnedStocks() {
+    List<Widget> ownedStocks = [];
+    if (_investments.length == 0) {
+      return ownedStocks;
+    }
+    for (int i = 0; i < _investments.length; i++) {
+      var io = _investments[i];
+      print('list stock');
+      print(io.toString());
+      String text = io.ticker +
+          '\n' +
+          'Shares: ' +
+          io.shares.toString() +
+          '\n' +
+          'Average Price: \$' +
+          io.averagePrice.toStringAsFixed(2) +
+          '\n' +
+          'Current Price: \$' +
+          io.currentPrice.toStringAsFixed(2);
+      var widget = Text(
+        text,
+        softWrap: true,
+        style: TextStyle(fontSize: 18),
+      );
+      ownedStocks.add(widget);
+      // Text(
+      //   list,
+      //   softWrap: true,
+      //   style: TextStyle(fontSize: 18),
+      // ),
+    }
+    return ownedStocks;
+  }
+
   Future getUserInvestments() async {
     var token = await storage.read(key: 'jwt');
     var userName = await storage.read(key: 'username');
@@ -90,7 +124,9 @@ class MyProfileState extends State<MyProfile> {
         final nDataList = _investments[i];
         print('ndatalist');
         print(nDataList.toString());
-        list = nDataList.ticker +
+        // ADDS THE NEW LINE TO SHOW
+        String postText = i != _investments.length ? '\n \n' : '';
+        list += nDataList.ticker +
             '\n' +
             'Shares: ' +
             nDataList.shares.toString() +
@@ -99,12 +135,15 @@ class MyProfileState extends State<MyProfile> {
             nDataList.averagePrice.toStringAsFixed(2) +
             '\n' +
             'Current Price: \$' +
-            nDataList.currentPrice.toStringAsFixed(2);
+            nDataList.currentPrice.toStringAsFixed(2) +
+            postText;
         totalInvestmentValue = (investedValue! +
             (_investments
                 .map((s) => s.shares * (s.currentPrice - s.averagePrice))
                 .reduce((accumulator, currentValue) =>
-                    accumulator + currentValue)) as double);
+                    accumulator + currentValue)));
+        // commenting out as it seems to throw an error
+        // accumulator + currentValue)) as double);
       }
       setState(() {});
     } else {
@@ -236,6 +275,9 @@ class MyProfileState extends State<MyProfile> {
                                 softWrap: true,
                                 style: TextStyle(fontSize: 18),
                               ),
+                              // expanded: ListView(
+                              //   children: listAllOwnedStocks(),
+                              // )
                             ))),
                   ]),
             )));
