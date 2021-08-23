@@ -49,7 +49,7 @@ class MyProfileState extends State<MyProfile> {
   // final int _amount;
   static int? investedValue;
   static var totalInvestmentValue;
-  List _investments = [];
+  List<InvestmentObject> _investments = [];
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
@@ -65,6 +65,40 @@ class MyProfileState extends State<MyProfile> {
       _token = token.toString();
       totalInvestmentValue = double.parse(investedValue.toString());
     });
+  }
+
+  List<Widget> listAllOwnedStocks() {
+    List<Widget> ownedStocks = [];
+    if (_investments.length == 0) {
+      return ownedStocks;
+    }
+    for (int i = 0; i < _investments.length; i++) {
+      var io = _investments[i];
+      print('list stock');
+      print(io.toString());
+      String text = io.ticker +
+          '\n' +
+          'Shares: ' +
+          io.shares.toString() +
+          '\n' +
+          'Average Price: \$' +
+          io.averagePrice.toStringAsFixed(2) +
+          '\n' +
+          'Current Price: \$' +
+          io.currentPrice.toStringAsFixed(2);
+      var widget = Text(
+        text,
+        softWrap: true,
+        style: TextStyle(fontSize: 18),
+      );
+      ownedStocks.add(widget);
+      // Text(
+      //   list,
+      //   softWrap: true,
+      //   style: TextStyle(fontSize: 18),
+      // ),
+    }
+    return ownedStocks;
   }
 
   Future getUserInvestments() async {
@@ -96,11 +130,11 @@ class MyProfileState extends State<MyProfile> {
               'Current Price: \$' +
               _investments[i].currentPrice.toStringAsFixed(2) +
               '\n \n'; 
-        }totalInvestmentValue = (investedValue! +
+        }totalInvestmentValue = investedValue! +
               (_investments
                   .map((s) => s.shares * (s.currentPrice - s.averagePrice))
                   .reduce((accumulator, currentValue) =>
-                      accumulator + currentValue)) as double);
+                      accumulator + currentValue));
       });
     } else {
       ResponseHandler().handleError(response, context);
@@ -110,9 +144,9 @@ class MyProfileState extends State<MyProfile> {
 
   @override
   void initState() {
+    super.initState();
     setInitialStateVariables();
     getUserInvestments();
-    super.initState();
   }
 
   @override
@@ -223,6 +257,9 @@ class MyProfileState extends State<MyProfile> {
                                 softWrap: true,
                                 style: TextStyle(fontSize: 18),
                               ),
+                              // expanded: ListView(
+                              //   children: listAllOwnedStocks(),
+                              // )
                             ))),
                   ]),
             )));

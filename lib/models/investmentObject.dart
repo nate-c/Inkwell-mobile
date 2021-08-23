@@ -56,4 +56,19 @@ class InvestmentObject {
         'average_price': averagePrice,
         'current_price': currentPrice,
       };
+
+  @override
+  toString() {
+    String string = '{ \n' +
+        'shares:' +
+        shares.toString() +
+        '\n ticker: ' +
+        ticker +
+        '\n average_price: ' +
+        averagePrice.toString() +
+        '\n current_price: ' +
+        currentPrice.toString() +
+        '\n }';
+    return string;
+  }
 }

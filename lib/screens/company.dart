@@ -12,11 +12,13 @@ import 'package:inkwell_mobile/constants/routeConstants.dart';
 import '../constants/colorConstants.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/constants/assetConstants.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // void main() => runApp(Company());
 
 class Company extends StatelessWidget {
-  // final InvestmentObject _investmentObject;// = null;
+  final storage = new FlutterSecureStorage();
 
   // @override
   // CompanyState createState() {
@@ -40,14 +42,44 @@ class Company extends StatelessWidget {
           arguments: TradeCompletionScreenArguments(newInvestment, 'SELL'));
     }
 
-    void buyStock(){
+    void buyStock() async{
       var newInvestment = new InvestmentObject(
           shares: io.shares,
           ticker: io.ticker,
           averagePrice: io.averagePrice,
           currentPrice: io.currentPrice);
-      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
-          arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
+      print('new investment buy stock');
+      print(newInvestment.toString());
+
+      if (newInvestment.averagePrice == 0 && newInvestment.currentPrice == 0) {
+        var token = await storage.read(key: 'jwt');
+        Uri uriTickerPrice =
+            Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + io.ticker);
+        var response = await http.get(uriTickerPrice, headers: {
+          'Authorization': token.toString(),
+        });
+        print('response');
+        print(response.body);
+        if (response.statusCode == 200) {
+          //filter current investments to see if it contains selected ticker.
+          var pricePayload = jsonDecode(response.body.toString());
+          print('price payload');
+          print(pricePayload["price"]);
+          var newCurrentPrice = double.parse(pricePayload["price"].toString());
+          print('price');
+          print(newCurrentPrice);
+          newInvestment.updateCurrentPrice(newCurrentPrice);
+          Navigator.pushNamed(
+              context, RoutesConstants.tradeConfirmationPageRoute,
+              arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
+        } else {
+          ResponseHandler().handleError(response, context);
+          throw Exception('Failed to load investments');
+        }
+      } else {
+        Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
+            arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
+      }
     }
 
     return new Scaffold(
@@ -97,57 +129,70 @@ class Company extends StatelessWidget {
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.center,
                       )),
+                  if (hasShares)
+                    Container(
+                      margin: EdgeInsetsDirectional.all(5),
+                      child: Text('Currently own ' +
+                          io.shares.toString() +
+                          ' shares at ' +
+                          io.averagePrice.toString()),
+                    ),
+                  Container(
+                    margin: EdgeInsetsDirectional.all(5),
+                    child: Text('Current Price: ' + io.currentPrice.toString()),
+                  ),
                   Container(
                       padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.fromLTRB(20, 0, 10, 0),
                       height: 100,
                       child: Row(
                         children: [
-                          if (hasShares)
-                            //HIDES BUY BUTTON IF THERE'S NO SHARES
-                            Container(
-                              margin: EdgeInsetsDirectional.all(5),
-                              child: ElevatedButton(
-                                  onPressed: () => {buyStock()},
-                                  child: Text(
-                                    'Buy'.toUpperCase(),
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: ColorConstants.button,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 10),
-                                  )),
-                            ),
+                          //HIDES BUY BUTTON IF THERE'S NO SHARES
                           Container(
-                            margin: (!hasShares)
-                                ? EdgeInsetsDirectional.all(5)
-                                : EdgeInsets.fromLTRB(15, 5, 15, 5),
-                            child: hasShares
-                                ? Center(
-                                    child: ElevatedButton(
-                                        onPressed: () => {sellStock()},
-                                        child: Text(
-                                          'Sell'.toUpperCase(),
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: ColorConstants.button,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 50, vertical: 10),
-                                        )),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: () => {sellStock()},
-                                    child: Text(
-                                      'Sell'.toUpperCase(),
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: ColorConstants.button,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 50, vertical: 10),
-                                    )),
+                            margin: EdgeInsetsDirectional.all(5),
+                            child: ElevatedButton(
+                                onPressed: () => {buyStock()},
+                                child: Text(
+                                  'Buy'.toUpperCase(),
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: ColorConstants.button,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 50, vertical: 10),
+                                )),
                           ),
+                          if (hasShares)
+                            Container(
+                              margin: (!hasShares)
+                                  ? EdgeInsetsDirectional.all(5)
+                                  : EdgeInsets.fromLTRB(15, 5, 15, 5),
+                              child: hasShares
+                                  ? Center(
+                                      child: ElevatedButton(
+                                          onPressed: () => {sellStock()},
+                                          child: Text(
+                                            'Sell'.toUpperCase(),
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: ColorConstants.button,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 50, vertical: 10),
+                                          )),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: () => {sellStock()},
+                                      child: Text(
+                                        'Sell'.toUpperCase(),
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: ColorConstants.button,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 50, vertical: 10),
+                                      )),
+                            ),
                         ],
                       ))
                 ]))));
