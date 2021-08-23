@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
+import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:inkwell_mobile/models/routeArguments.dart';
@@ -132,7 +133,7 @@ class MyHomeState extends State<Home> {
     }
   }
 
-  navigateToCompanyPage(String company) {
+  navigateToCompanyPage(String company) async {
     print(genericState);
     // FILTER INVESTMENTS TO SEE IF IT CONTAINS
     // if (company != null) {
@@ -159,9 +160,34 @@ class MyHomeState extends State<Home> {
         averagePrice: avgPrice,
         currentPrice: currPrice);
     print(investment?.ticker);
-
     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
         arguments: CompanyScreenArguments(investment));
+    // //GETTING UPDATED PRICE IF YOU DON'T HAVE IT
+    // if (shares == 0 && currentPrice == 0) {
+    //   var token = await storage.read(key: 'jwt');
+    //   Uri uriTickerPrice =
+    //       Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + ticker);
+    //   var response = await http.get(uriTickerPrice, headers: {
+    //     'Authorization': token.toString(),
+    //   });
+    //   if (response.statusCode == 200) {
+    //     //filter current investments to see if it contains selected ticker.
+    //     var pricePayload = jsonDecode(response.body.toString());
+    //     var newCurrentPrice = double.parse(pricePayload["price"].toString());
+    //     investment.updateCurrentPrice(newCurrentPrice);
+    //     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+    //         arguments: CompanyScreenArguments(investment));
+    //   } else {
+    //     print('click error');
+    //     print(response.body);
+    //     print(response.statusCode);
+    //     ResponseHandler().handleError(response, context);
+    //     throw Exception('Failed to load price info');
+    //   }
+    // } else {
+    //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+    //       arguments: CompanyScreenArguments(investment));
+    // }
   }
 
   setInitialStateVariables() async {
