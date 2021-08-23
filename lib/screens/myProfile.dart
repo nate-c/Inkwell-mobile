@@ -112,40 +112,30 @@ class MyProfileState extends State<MyProfile> {
     });
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body.toString())['investments'];
-
-      for (Map<String, dynamic> i in data) {
-        var io = InvestmentObject.fromJson(i);
-        print('investment object');
-        print(io.toString());
-        _investments.add(io);
-      }
-      for (int i = 0; i < _investments.length; i++) {
-        final nDataList = _investments[i];
-        print('ndatalist');
-        print(nDataList.toString());
-        // ADDS THE NEW LINE TO SHOW
-        String postText = i != _investments.length ? '\n \n' : '';
-        list += nDataList.ticker +
-            '\n' +
-            'Shares: ' +
-            nDataList.shares.toString() +
-            '\n' +
-            'Average Price: \$' +
-            nDataList.averagePrice.toStringAsFixed(2) +
-            '\n' +
-            'Current Price: \$' +
-            nDataList.currentPrice.toStringAsFixed(2) +
-            postText;
-        totalInvestmentValue = (investedValue! +
-            (_investments
-                .map((s) => s.shares * (s.currentPrice - s.averagePrice))
-                .reduce((accumulator, currentValue) =>
-                    accumulator + currentValue)));
-        // commenting out as it seems to throw an error
-        // accumulator + currentValue)) as double);
-      }
-      setState(() {});
+      setState(() {
+        final data = jsonDecode(response.body.toString())['investments'];
+        for (Map<String, dynamic> i in data) {
+          _investments.add(new InvestmentObject.fromJson(i));
+        }
+        print(_investments.toString());
+        for (int i = 0; i < _investments.length; i++) {
+          list += _investments[i].ticker.toString() +
+              '\n' +
+              'Shares: ' +
+              _investments[i].shares.toString() +
+              '\n' +
+              'Average Price: \$' +
+              _investments[i].averagePrice.toStringAsFixed(2) +
+              '\n' +
+              'Current Price: \$' +
+              _investments[i].currentPrice.toStringAsFixed(2) +
+              '\n \n'; 
+        }totalInvestmentValue = investedValue! +
+              (_investments
+                  .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+                  .reduce((accumulator, currentValue) =>
+                      accumulator + currentValue));
+      });
     } else {
       ResponseHandler().handleError(response, context);
       throw Exception('Failed to load investments');
@@ -237,15 +227,7 @@ class MyProfileState extends State<MyProfile> {
                     // Column(
                     // children: [...getInvestmentsWidget()],
                     // ),
-                    // InkWell(
-                    //     child: Text("Trade confirmation"),
-                    //     onTap: () {
-                    //       Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //               builder: (context) => TradeConfirmation()));
-                    //     }),
-
+                
                     ExpandableTheme(
                         data: ExpandableThemeData(
                           iconColor: ColorConstants.expandArrows,
