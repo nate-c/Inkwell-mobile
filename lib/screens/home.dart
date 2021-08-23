@@ -109,7 +109,8 @@ class MyHomeState extends State<Home> {
       print('new investments');
       print(newInvestments.toString());
       _investments = newInvestments;
-
+      _investedValue = setCorrectInvestmentValues(_investments);
+      _portfolioValue = _availableToInvest + _investedValue;
       setState(() {});
     } else {
       ResponseHandler().handleError(response, context);
@@ -122,7 +123,14 @@ class MyHomeState extends State<Home> {
     return 0;
   }
 
-  void setCorrectDataPoints(List<InvestmentObject> investments) {}
+  double setCorrectInvestmentValues(List<InvestmentObject> investments) {
+    double alreadyInvested = 0;
+    alreadyInvested = (investments
+        .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+        .reduce((accumulator, currentValue) => accumulator + currentValue));
+    return alreadyInvested;
+  }
+
   navigateToCompanyPage(String company) async {
     print(genericState);
     // FILTER INVESTMENTS TO SEE IF IT CONTAINS
