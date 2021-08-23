@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;  
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
@@ -45,12 +45,7 @@ class TradeConfirmation extends StatefulWidget {
 
 
 class TradeConfirmationState extends State<TradeConfirmation> {
-
 int? accountId;
-static final String ticker = '';
-static final int shares = 0;
-static final double averagePrice = 0;
-static final double currentPrice = 0;
 String? type;
 double? buyPrice;
 double? sellPrice;
@@ -58,58 +53,33 @@ bool? isBuying;
 bool? isSelling;
 String? tradeType;
 
-var newInvestment = new InvestmentObject(
-          shares: shares,
-          ticker: ticker,
-          averagePrice: averagePrice,
-          currentPrice: currentPrice);
-
-  TextEditingController moneyInvested = new TextEditingController();
-
-findTradeType(){
-   setState(() {
-    if (tradeType == 'BUY'){
-      isBuying = true;
-      isSelling = false;
-      type = 'BUY';
-      tradeType = 'buying';
-  } else if (tradeType == 'SELL'){
-    isSelling = true;
-    isBuying = false;
-    type = 'SELL';
-    tradeType = 'selling';
-  }});
-}
-  // getTradeInfo() async{
-  //   var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
-  //   {{
-  //     "account_id": accountId,
-  //     "ticker": ticker,
-  //     "shares": shares,
-  //     "type": type,
-  //     "buy_price": buyPrice,
-  //     "sell_price": sellPrice
-  //   }});
-
-  //   if (response.statusCode == 200){
-  //     if(buyPrice == null){
-  //       tradePrice = sellPrice;
-  //     } else if(sellPrice == null){
-  //       tradePrice = buyPrice;
-  //     }
-  //     return tradePrice;
-  //   }
-  // }
- 
-  @override
-  void initState(){
-  findTradeType();
-  super.initState();
-  }
+ TextEditingController moneyInvested = new TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
+
+  final args = ModalRoute.of(context)!.settings.arguments as TradeCompletionScreenArguments;
+  var io = args.investmentObject;
+
+  setState(() {
+      if (type == 'BUY'){
+        isBuying = true;
+        isSelling = false;
+        tradeType = 'buying';
+        buyPrice = io.currentPrice;
+        sellPrice = null;
+    } else if (type == 'SELL'){
+      isSelling = true;
+      isBuying = false;
+      tradeType = 'selling';
+      sellPrice = io.currentPrice;
+      buyPrice = null;
+    }});
+  
+    var amount = double.parse(moneyInvested.text);
+    io.shares = (amount / io.currentPrice).floor();
+
     return new Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
@@ -180,7 +150,7 @@ findTradeType(){
                       ( "You are " + type.toString()+" \$" + moneyInvested.text.replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},') +" of "+ 
-                      ticker.toString() + " at "+ currentPrice.toString() + " which amounts to " + shares.toString() +" shares.").toUpperCase(),
+                      io.ticker.toString() + " at "+ io.currentPrice.toString() + " which amounts to " + io.shares.toString() +" shares.").toUpperCase(),
                       style: TextStyle(
                           color: ColorConstants.bodyText, fontSize: 15),
                     ),
@@ -195,8 +165,8 @@ findTradeType(){
                     var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
                     {{
                       "account_id": accountId,
-                      "ticker": ticker,
-                      "shares": shares,
+                      "ticker": io.ticker,
+                      "shares": io.shares,
                       "type": type,
                       "buy_price": buyPrice,
                       "sell_price": sellPrice

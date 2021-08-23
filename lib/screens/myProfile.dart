@@ -85,7 +85,7 @@ class MyProfileState extends State<MyProfile> {
         }
         print(_investments.toString());
         for (int i = 0; i < _investments.length; i++) {
-          list = _investments[i].ticker.toString() +
+          list += _investments[i].ticker.toString() +
               '\n' +
               'Shares: ' +
               _investments[i].shares.toString() +
@@ -94,7 +94,8 @@ class MyProfileState extends State<MyProfile> {
               _investments[i].averagePrice.toStringAsFixed(2) +
               '\n' +
               'Current Price: \$' +
-              _investments[i].currentPrice.toStringAsFixed(2); 
+              _investments[i].currentPrice.toStringAsFixed(2) +
+              '\n \n'; 
         }totalInvestmentValue = (investedValue! +
               (_investments
                   .map((s) => s.shares * (s.currentPrice - s.averagePrice))
