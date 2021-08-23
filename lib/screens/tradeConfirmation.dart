@@ -198,23 +198,25 @@ var investedValue;
                           child: Text('Yes'),
                           onPressed: () async {
                             accountId = await storage.read(key: 'account_id');
-                            var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
-                          {{
-                            "account_id": accountId,
-                            "ticker": io.ticker,
-                            "shares": newShares,
-                            "type": args.tradeType,
-                            "buy_price": buyPrice,
-                            "sell_price": sellPrice
-                          }});
+                            var token = await storage.read(key: 'jwt');
+                            var response = await http.post(Uri.parse(UriConstants.executeTradeUri), 
+                            headers: {
+                              "Authorization": token.toString(),
+                            },  
+                            body: {
+                            "account_id": accountId.toString(),
+                            "ticker": io.ticker.toString(),
+                            "shares": newShares.toString(),
+                            "type": args.tradeType.toString(),
+                            "buy_price": buyPrice.toString(),
+                            "sell_price": sellPrice.toString()
+                          });
                           print(response.body);
                           if (response.statusCode == 200) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ConfirmationPopUp()));
-                          }
-                          ResponseHandler().handleError(response, context);
+                            Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPopUpRoute);
+                          } else{
+                            print(response.body);
+                            ResponseHandler().handleError(response, context);}
                         }),
                         TextButton(
                                   child: Text('No'),
@@ -233,7 +235,7 @@ var investedValue;
   }
 }
 
-class ConfirmationPopUp extends StatelessWidget {
+class TradeConfirmationPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
