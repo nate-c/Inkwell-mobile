@@ -80,10 +80,10 @@ class MyProfileState extends State<MyProfile> {
     if (response.statusCode == 200) {
       setState(() {
         final data = jsonDecode(response.body.toString())['investments'];
-
         for (Map<String, dynamic> i in data) {
-          _investments.add(InvestmentObject.fromJson(i));
+          _investments.add(new InvestmentObject.fromJson(i));
         }
+        
         for (int i = 0; i < _investments.length; i++) {
           final nDataList = _investments[i];
           list = nDataList.ticker +
@@ -194,10 +194,7 @@ class MyProfileState extends State<MyProfile> {
                     // Column(
                     // children: [...getInvestmentsWidget()],
                     // ),
-                    InkWell(
-                      child: Text("Trade confirmation"),
-                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => TradeConfirmation()));}),
-
+                
                     ExpandableTheme(
                         data: ExpandableThemeData(
                           iconColor: ColorConstants.expandArrows,

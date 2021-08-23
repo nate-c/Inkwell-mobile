@@ -30,7 +30,7 @@ class Company extends StatelessWidget {
     var io = args.investmentObject;
     var shares = io.shares;
     bool hasShares = io.shares > 0;
-    void sellStock() async{
+    void sellStock(){
       var newInvestment = new InvestmentObject(
           shares: io.shares,
           ticker: io.ticker,
@@ -40,7 +40,7 @@ class Company extends StatelessWidget {
           arguments: TradeCompletionScreenArguments(newInvestment, 'SELL'));
     }
 
-    void buyStock() async{
+    void buyStock(){
       var newInvestment = new InvestmentObject(
           shares: io.shares,
           ticker: io.ticker,

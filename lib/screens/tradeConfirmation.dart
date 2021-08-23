@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:flutter/services.dart';
+import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/models/routeArguments.dart';
@@ -13,6 +14,7 @@ import 'package:inkwell_mobile/screens/addmoney.dart';
 import 'package:inkwell_mobile/screens/company.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
+import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/utils/authentication.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
 import 'package:provider/provider.dart';
@@ -42,21 +44,42 @@ class TradeConfirmation extends StatefulWidget {
 }
 
 
+class TradeConfirmationState extends State<TradeConfirmation> {
+
 int? accountId;
-final String ticker = '';
-final int shares = 0;
-final double averagePrice = 0;
-final double currentPrice = 0;
+static final String ticker = '';
+static final int shares = 0;
+static final double averagePrice = 0;
+static final double currentPrice = 0;
 String? type;
 double? buyPrice;
 double? sellPrice;
 bool? isBuying;
 bool? isSelling;
-final String tradeType = ''; 
+String? tradeType;
 
+var newInvestment = new InvestmentObject(
+          shares: shares,
+          ticker: ticker,
+          averagePrice: averagePrice,
+          currentPrice: currentPrice);
 
-class TradeConfirmationState extends State<TradeConfirmation> {
+  TextEditingController moneyInvested = new TextEditingController();
 
+findTradeType(){
+   setState(() {
+    if (tradeType == 'BUY'){
+      isBuying = true;
+      isSelling = false;
+      type = 'BUY';
+      tradeType = 'buying';
+  } else if (tradeType == 'SELL'){
+    isSelling = true;
+    isBuying = false;
+    type = 'SELL';
+    tradeType = 'selling';
+  }});
+}
   // getTradeInfo() async{
   //   var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
   //   {{
@@ -78,21 +101,15 @@ class TradeConfirmationState extends State<TradeConfirmation> {
   //   }
   // }
  
-  // @override
-  // void initState(){
-  //   // getTradeInfo();
-  //   super.initState();
-  // }
+  @override
+  void initState(){
+  findTradeType();
+  super.initState();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as CompanyScreenArguments;
-    var io = args.investmentObject;
-    final InvestmentObject investment = new InvestmentObject(
-      shares: io.shares, ticker: io.ticker, averagePrice: io.averagePrice, currentPrice: io.currentPrice);
-
     return new Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
@@ -112,22 +129,58 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-          
-                  Text(
-                      '\$ ' +
-                          ((20 * 100).toString()).replaceAllMapped( //TODO: change when numbers are gathered
+          Container(
+                width: 300,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                margin: new EdgeInsets.all(15),
+                color: ColorConstants.textFieldBox,
+                child: TextFormField(
+                    // controller: ,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                    ),
+                    keyboardType: TextInputType.number,
+                    controller: moneyInvested,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+                    ],
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(vertical: 10),
+                      border: InputBorder.none,
+                      prefixText: "\$ ",
+                      prefixStyle: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 24),
+                      hintText: "0.00",
+                      hintStyle: TextStyle(
+                          color: ColorConstants.textInTextField, fontSize: 24),
+                      labelText: "Enter Money Amount",
+                      labelStyle: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 21),
+                    ),
+                    onChanged: (text){
+                      print(moneyInvested.text);
+                    },
+                    ),
+              ),
+                 SizedBox(height: 10),
+                  Container( 
+                    width: 300,
+                    child: Text(
+                      ( "You have " + " \$"+ MyProfileState.investedValue.toString().replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                              (Match m) => '${m[1]},'),
-                      style:
-                          TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
+                              (Match m) => '${m[1]},') +" to invest.").toUpperCase(),
+                      style: TextStyle(
+                          color: ColorConstants.bodyText, fontSize: 15),
+                    ),
+                  ),
                   SizedBox(height: 10),
                   Container( 
                     width: 300,
                     child: Text(
-                      ( "You are " + tradeType.toString()+" \$"+(20 * 100).toString().replaceAllMapped( 
+                      ( "You are " + type.toString()+" \$" + moneyInvested.text.replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},') +" of "+ 
-                      ticker.toString() + " at "+ buyPrice.toString() + " which amounts to " + shares.toString() +" shares.").toUpperCase(),
+                      ticker.toString() + " at "+ currentPrice.toString() + " which amounts to " + shares.toString() +" shares.").toUpperCase(),
                       style: TextStyle(
                           color: ColorConstants.bodyText, fontSize: 15),
                     ),
@@ -191,9 +244,7 @@ class ConfirmationPopUp extends StatelessWidget {
               height: 20,
             ),
             Text(
-              "\$" +
-                  20000.toString() +
-                  " has been added into your account.".toUpperCase(),
+              "Trade Complete".toUpperCase(),
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 25),
             ),
