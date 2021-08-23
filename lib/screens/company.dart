@@ -12,11 +12,13 @@ import 'package:inkwell_mobile/constants/routeConstants.dart';
 import '../constants/colorConstants.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/constants/assetConstants.dart';
+import 'package:inkwell_mobile/utils/error_handling.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 // void main() => runApp(Company());
 
 class Company extends StatelessWidget {
-  // final InvestmentObject _investmentObject;// = null;
+  final storage = new FlutterSecureStorage();
 
   // @override
   // CompanyState createState() {
@@ -30,7 +32,7 @@ class Company extends StatelessWidget {
     var io = args.investmentObject;
     var shares = io.shares;
     bool hasShares = io.shares > 0;
-    void sellStock() async{
+    void sellStock() async {
       var newInvestment = new InvestmentObject(
           shares: io.shares,
           ticker: io.ticker,
@@ -40,12 +42,32 @@ class Company extends StatelessWidget {
           arguments: TradeCompletionScreenArguments(newInvestment, 'SELL'));
     }
 
-    void buyStock() async{
+    void buyStock() async {
       var newInvestment = new InvestmentObject(
           shares: io.shares,
           ticker: io.ticker,
           averagePrice: io.averagePrice,
           currentPrice: io.currentPrice);
+      if (newInvestment.averagePrice == 0 && newInvestment.currentPrice == 0) {
+        var token = await storage.read(key: 'jwt');
+        Uri uriTickerPrice =
+            Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + io.ticker);
+        var response = await http.post(uriTickerPrice, headers: {
+          'Authorization': token.toString(),
+        });
+
+        if (response.statusCode == 200) {
+          //filter current investments to see if it contains selected ticker.
+          var pricePayload = jsonDecode(response.body.toString());
+          double price = double.parse(pricePayload["price"]);
+          print('price');
+          print(price);
+          newInvestment.updateCurrentPrice(price);
+        } else {
+          ResponseHandler().handleError(response, context);
+          throw Exception('Failed to load investments');
+        }
+      }
       Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPageRoute,
           arguments: TradeCompletionScreenArguments(newInvestment, 'BUY'));
     }
