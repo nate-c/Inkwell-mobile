@@ -65,7 +65,7 @@ class Company extends StatelessWidget {
           var pricePayload = jsonDecode(response.body.toString());
           print('price payload');
           print(pricePayload["price"]);
-          var newCurrentPrice = double.parse(pricePayload["price"]);
+          var newCurrentPrice = double.parse(pricePayload["price"].toString());
           print('price');
           print(newCurrentPrice);
           newInvestment.updateCurrentPrice(newCurrentPrice);
