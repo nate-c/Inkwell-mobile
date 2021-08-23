@@ -123,6 +123,18 @@ class Company extends StatelessWidget {
                         fit: BoxFit.fitWidth,
                         alignment: Alignment.center,
                       )),
+                  if (hasShares)
+                    Container(
+                      margin: EdgeInsetsDirectional.all(5),
+                      child: Text('Currently own ' +
+                          io.shares.toString() +
+                          ' shares at ' +
+                          io.averagePrice.toString()),
+                    ),
+                  Container(
+                    margin: EdgeInsetsDirectional.all(5),
+                    child: Text('Current Price: ' + io.currentPrice.toString()),
+                  ),
                   Container(
                       padding: EdgeInsets.all(5),
                       margin: EdgeInsets.fromLTRB(20, 0, 10, 0),
