@@ -49,7 +49,7 @@ class MyProfileState extends State<MyProfile> {
   // final int _amount;
   static int? investedValue;
   static var totalInvestmentValue;
-  List _investments = [];
+  List<InvestmentObject> _investments = [];
   // []TickerSearchObject _results;
   // final String _searchValue;
   //TODO: add function that changes value on homepage
@@ -78,31 +78,35 @@ class MyProfileState extends State<MyProfile> {
     });
 
     if (response.statusCode == 200) {
-      setState(() {
-        final data = jsonDecode(response.body.toString())['investments'];
+      final data = jsonDecode(response.body.toString())['investments'];
 
-        for (Map<String, dynamic> i in data) {
-          _investments.add(InvestmentObject.fromJson(i));
-        }
-        for (int i = 0; i < _investments.length; i++) {
-          final nDataList = _investments[i];
-          list = nDataList.ticker +
-              '\n' +
-              'Shares: ' +
-              nDataList.shares.toString() +
-              '\n' +
-              'Average Price: \$' +
-              nDataList.averagePrice.toStringAsFixed(2) +
-              '\n' +
-              'Current Price: \$' +
-              nDataList.currentPrice.toStringAsFixed(2);
-          totalInvestmentValue = (investedValue! +
-              (_investments
-                  .map((s) => s.shares * (s.currentPrice - s.averagePrice))
-                  .reduce((accumulator, currentValue) =>
-                      accumulator + currentValue)) as double);
-        }
-      });
+      for (Map<String, dynamic> i in data) {
+        var io = InvestmentObject.fromJson(i);
+        print('investment object');
+        print(io.toString());
+        _investments.add(io);
+      }
+      for (int i = 0; i < _investments.length; i++) {
+        final nDataList = _investments[i];
+        print('ndatalist');
+        print(nDataList.toString());
+        list = nDataList.ticker +
+            '\n' +
+            'Shares: ' +
+            nDataList.shares.toString() +
+            '\n' +
+            'Average Price: \$' +
+            nDataList.averagePrice.toStringAsFixed(2) +
+            '\n' +
+            'Current Price: \$' +
+            nDataList.currentPrice.toStringAsFixed(2);
+        totalInvestmentValue = (investedValue! +
+            (_investments
+                .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+                .reduce((accumulator, currentValue) =>
+                    accumulator + currentValue)) as double);
+      }
+      setState(() {});
     } else {
       ResponseHandler().handleError(response, context);
       throw Exception('Failed to load investments');
@@ -111,9 +115,9 @@ class MyProfileState extends State<MyProfile> {
 
   @override
   void initState() {
+    super.initState();
     setInitialStateVariables();
     getUserInvestments();
-    super.initState();
   }
 
   @override
@@ -194,9 +198,14 @@ class MyProfileState extends State<MyProfile> {
                     // Column(
                     // children: [...getInvestmentsWidget()],
                     // ),
-                    InkWell(
-                      child: Text("Trade confirmation"),
-                      onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => TradeConfirmation()));}),
+                    // InkWell(
+                    //     child: Text("Trade confirmation"),
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //               builder: (context) => TradeConfirmation()));
+                    //     }),
 
                     ExpandableTheme(
                         data: ExpandableThemeData(
