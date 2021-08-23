@@ -109,8 +109,10 @@ class MyHomeState extends State<Home> {
       print('new investments');
       print(newInvestments.toString());
       _investments = newInvestments;
-      _investedValue = setCorrectInvestmentValues(_investments);
-      _portfolioValue = _availableToInvest + _investedValue;
+      _investedValue = getInvestedValueOfInvestments(newInvestments);
+      _portfolioValue = _availableToInvest +
+          _investedValue +
+          getResidualGrowth(newInvestments);
       setState(() {});
     } else {
       ResponseHandler().handleError(response, context);
@@ -123,12 +125,20 @@ class MyHomeState extends State<Home> {
     return 0;
   }
 
-  double setCorrectInvestmentValues(List<InvestmentObject> investments) {
+  double getInvestedValueOfInvestments(List<InvestmentObject> investments) {
     double alreadyInvested = 0;
     alreadyInvested = (investments
-        .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+        .map((s) => s.shares * s.averagePrice)
         .reduce((accumulator, currentValue) => accumulator + currentValue));
     return alreadyInvested;
+  }
+
+  double getResidualGrowth(List<InvestmentObject> investments) {
+    double residualGrowth = 0;
+    residualGrowth = (_investments
+        .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+        .reduce((accumulator, currentValue) => accumulator + currentValue));
+    return residualGrowth;
   }
 
   navigateToCompanyPage(String company) async {
