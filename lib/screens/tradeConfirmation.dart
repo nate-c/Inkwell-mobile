@@ -45,12 +45,13 @@ class TradeConfirmation extends StatefulWidget {
 
 
 class TradeConfirmationState extends State<TradeConfirmation> {
-int? accountId;
+var accountId;
 String? type;
 double? buyPrice;
 double? sellPrice;
 String? tradeType;
 int? newShares;
+var investedValue;
  
  TextEditingController moneyInvested = new TextEditingController();
 
@@ -73,12 +74,29 @@ int? newShares;
     }
    });
   print(moneyInvested.text);
-    
-    onUpdate(){
-     setState(() {
+    onUpdate() async{
+     investedValue = await storage.read(key: 'amount');   
         var amount = double.parse(moneyInvested.text);
-      newShares = ((amount ~/ io.currentPrice)).floor();
-     });
+        if(amount > double.parse(investedValue!)){
+            showDialog(context: context, builder:(ctx) =>
+                  AlertDialog(
+                    title: Text('An Error Occurred'),
+                    titleTextStyle: TextStyle(color: Colors.red[300]),
+                    content: Text('Entered amount is greater than your investment value.'),
+                    backgroundColor: ColorConstants.background,
+                    contentTextStyle: TextStyle(color:ColorConstants.bodyText),
+                    actions: <Widget>[
+                        TextButton(
+                          child: Text('Go Back'),
+                          onPressed: (){
+                            Navigator.of(ctx).pop(context);
+                          }
+                        )]
+                  ));
+                  moneyInvested.clear();
+        }
+        newShares = ((amount ~/ io.currentPrice)).floor();
+    setState(() { });
    }
 
     return new Scaffold(
@@ -137,7 +155,7 @@ int? newShares;
               SizedBox(height: 10),
                 Container( 
                     width: 300,
-                    child: Text(('You have \$' + MyProfileState.investedValue.toString().replaceAllMapped( 
+                    child: Text(('You have \$' + investedValue.toString().replaceAllMapped( 
                               new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                               (Match m) => '${m[1]},') + " to invest.").toUpperCase(), style: TextStyle(
                           color: ColorConstants.bodyText, fontSize: 15)),
@@ -179,6 +197,7 @@ int? newShares;
                         TextButton(
                           child: Text('Yes'),
                           onPressed: () async {
+                            accountId = await storage.read(key: 'account_id');
                             var response = await http.post(Uri.parse(UriConstants.executeTradeUri), body: 
                           {{
                             "account_id": accountId,

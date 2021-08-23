@@ -50,7 +50,7 @@ class MyRegistrationState extends State<MyRegistration> {
         context: context,
         builder: (ctx) => AlertDialog(
               backgroundColor: Color(0xFF011240),
-              title: Text('An Error Occured'),
+              title: Text('An Error Occurred'),
               titleTextStyle: TextStyle(color: Colors.red[300]),
               content: Text(msg),
               contentTextStyle: TextStyle(color: Colors.white),
