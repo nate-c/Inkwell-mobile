@@ -19,7 +19,10 @@ void SelectedItem(BuildContext context, item) {
     case 2: 
       Navigator.pushNamed(context, RoutesConstants.addMoneyRoute);
       break;
-    case 3: 
+    case 3:
+      Navigator.pushNamed(context, RoutesConstants.resetPasswordRoute);
+      break;
+    case 4: 
       var response;
       showDialog(context: context, builder:(ctx) =>
         AlertDialog(
@@ -60,6 +63,7 @@ void SelectedItem(BuildContext context, item) {
     
 
       break;
+    
   }
 }
 
@@ -85,9 +89,13 @@ void SelectedItem(BuildContext context, item) {
                     value: 2,
                     child: Text("Add Money", style: TextStyle(color: ColorConstants.bodyText),)
                     ),
-                PopupMenuDivider(),
                 PopupMenuItem<int>(
                     value: 3,
+                    child: Text("Reset Password", style: TextStyle(color: ColorConstants.bodyText),)
+                    ),
+                PopupMenuDivider(),
+                PopupMenuItem<int>(
+                    value: 4,
                     child: Text("Log Out", style: TextStyle(color: ColorConstants.bodyText),)
                     ),
               ],

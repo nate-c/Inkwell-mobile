@@ -7,6 +7,7 @@ import 'package:inkwell_mobile/screens/myProfile.dart';
 import 'package:inkwell_mobile/screens/register.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/screens/company.dart';
+import 'package:inkwell_mobile/screens/resetPassword.dart';
 import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:provider/provider.dart';
 import 'constants/colorConstants.dart';
@@ -65,6 +66,8 @@ class MyApp extends StatelessWidget {
                ConfirmationPopUp(),
             RoutesConstants.tradeConfirmationPopUpRoute: (context) =>
                TradeConfirmationPopUp(),
+            RoutesConstants.resetPasswordRoute: (context) =>
+               ResetPassword(),
           },
         ));
   }
