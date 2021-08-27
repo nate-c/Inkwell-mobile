@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inkwell_mobile/constants/colorConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
+import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/screens/home.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -120,19 +121,19 @@ class ResetPasswordState extends State<ResetPassword> {
                   var username = await storage.read(key: 'username');
                   var token = await storage.read(key: 'jwt');
                   var newPassword = _newpwController.text;
+                  var oldPassword = _oldpwController.text;
                   if(_confirmnewpwController.text == newPassword && newPassword != _oldpwController.text){
                   //Code for URI
-                  var response = await http.post('', headers: {
+                  var response = await http.post(Uri.parse(UriConstants.resetPasswordUri), headers: {
                     'Authorization': token.toString(),
                   }, body: {
-                    'un': username,
-                    'newpw': newPassword,
+                    'username': username,
+                    'password': newPassword,
+                    'oldpassword': oldPassword
                   });
                   if (response.statusCode == 200){
                     showDialog(context: context, builder:(ctx) => AlertDialog(
                       backgroundColor: Color(0xFF011240),
-                      title: Text('An Error Occurred'),
-                      titleTextStyle: TextStyle(color: Colors.red[300]),
                       content: Text('Password reset successful!'),
                       contentTextStyle: TextStyle(color: Colors.white),
                       actions: <Widget>[
