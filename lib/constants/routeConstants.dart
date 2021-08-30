@@ -20,6 +20,7 @@ class RoutesConstants {
   static final String tradeConfirmationPageRoute = '/tradeConfirmation';
   static final String confirmationPopUpRoute = '/confirmationPopUp';
   static final String tradeConfirmationPopUpRoute = '/confirmationPopUp';
+  static final String resetPasswordRoute = '/resetpassword';
 }
 
 void SelectedItem(BuildContext context, item) {
