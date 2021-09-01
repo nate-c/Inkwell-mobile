@@ -85,6 +85,27 @@ class MyRegistrationState extends State<MyRegistration> {
             ));
   }
 
+  void register() async {
+    var username = _usernameController.text;
+    var password = _passwordController.text;
+    var firstname = _firstnameController.text;
+    var lastname = _lastnameController.text;
+
+    bool isValidForm = isValid();
+    if (isValidForm) {
+      var response = await Authentication()
+          .register(username, password, firstname, lastname);
+      if (response.statusCode == 200) {
+        _showSuccessDialog("You are ready to log in now.");
+      } else {
+        print(response.body);
+        // ResponseHandler().handleError(response, context);
+        //TO DO: NEED TO DISTINGUIH BETWEEN ACTUAL 500 AND registration failing
+        showErrorDialog("Error: Username already exists");
+      }
+    }
+  }
+
   bool validatorFn() {
     var username = _usernameController.text;
     var password = _passwordController.text;
@@ -271,21 +292,7 @@ class MyRegistrationState extends State<MyRegistration> {
                         style: TextStyle(color: Colors.white, fontSize: 15),
                       ))),
               ElevatedButton(
-                  onPressed: () async {
-                    var username = _usernameController.text;
-                    var password = _passwordController.text;
-                    var firstname = _firstnameController.text;
-                    var lastname = _lastnameController.text;
-
-                    var response = await Authentication()
-                        .register(username, password, firstname, lastname);
-                    if (isValid()) {
-                      _showSuccessDialog(
-                          "You are ready to log in now.");
-                    } else {
-                      ResponseHandler().handleError(response, context);
-                    }
-                  },
+                  onPressed: () => {register()},
                   child: Text(
                     'Register'.toUpperCase(),
                     style: TextStyle(color: Colors.white),
