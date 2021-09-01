@@ -18,7 +18,7 @@ class Authentication with ChangeNotifier {
       'firstName': firstname,
       'lastName': lastname,
     });
-    return response.statusCode;
+    return response;
   }
 
   Future<String?> logIn(String username, String password) async {
@@ -31,5 +31,4 @@ class Authentication with ChangeNotifier {
 
     if (response.statusCode == 200) return response.body;
   }
-  
 }
