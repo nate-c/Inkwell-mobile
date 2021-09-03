@@ -470,20 +470,6 @@ class MyHomeState extends State<Home> {
                     margin: new EdgeInsets.all(15),
                     color: ColorConstants.textFieldBox,
                   ),
-                  ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, RoutesConstants.addMoneyRoute);
-                      },
-                      label: Text(
-                        'Add Money'.toUpperCase(),
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      icon: const Icon(Icons.add),
-                      style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.button,
-                        padding: EdgeInsets.all(10),
-                      )),
                 ]))));
   }
 }
