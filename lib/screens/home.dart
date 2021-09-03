@@ -142,21 +142,13 @@ class MyHomeState extends State<Home> {
   }
 
   navigateToCompanyPage(String company) async {
-    print(genericState);
-    // FILTER INVESTMENTS TO SEE IF IT CONTAINS
-    // if (company != null) {
-    //   // genericState.setSelectedCompany(company.trim());
-    //   // HomeState.
-    //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute);
-    // }
-    // print(_investments);
+    //CORRECT
     var filteredInvestments =
         _investments.where((a) => a.ticker == company.trim()).toList();
     var filteredInvestment =
         filteredInvestments.length > 0 ? filteredInvestments[0] : null;
     var investment;
     var shares = filteredInvestment != null ? filteredInvestment.shares : 0;
-    var ticker = filteredInvestment != null ? filteredInvestment.ticker : '';
     double avgPrice =
         filteredInvestment != null ? filteredInvestment.averagePrice : 0;
     double currPrice =
@@ -164,38 +156,38 @@ class MyHomeState extends State<Home> {
 
     investment = new InvestmentObject(
         shares: shares,
-        ticker: company,
+        ticker: company.trim(),
         averagePrice: avgPrice,
         currentPrice: currPrice);
-    print(investment?.ticker);
-    Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-        arguments: CompanyScreenArguments(investment));
-    // //GETTING UPDATED PRICE IF YOU DON'T HAVE IT
-    // if (shares == 0 && currentPrice == 0) {
-    //   var token = await storage.read(key: 'jwt');
-    //   Uri uriTickerPrice =
-    //       Uri.parse(UriConstants.getTickerPriceUri + '?ticker=' + ticker);
-    //   var response = await http.get(uriTickerPrice, headers: {
-    //     'Authorization': token.toString(),
-    //   });
-    //   if (response.statusCode == 200) {
-    //     //filter current investments to see if it contains selected ticker.
-    //     var pricePayload = jsonDecode(response.body.toString());
-    //     var newCurrentPrice = double.parse(pricePayload["price"].toString());
-    //     investment.updateCurrentPrice(newCurrentPrice);
-    //     Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-    //         arguments: CompanyScreenArguments(investment));
-    //   } else {
-    //     print('click error');
-    //     print(response.body);
-    //     print(response.statusCode);
-    //     ResponseHandler().handleError(response, context);
-    //     throw Exception('Failed to load price info');
-    //   }
-    // } else {
-    //   Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
-    //       arguments: CompanyScreenArguments(investment));
-    // }
+
+    // TEST TO FIX PRICE
+    if (shares == 0 && currPrice == 0) {
+      var token = await storage.read(key: 'jwt');
+      Uri uriTickerPrice = Uri.parse(
+          UriConstants.getTickerPriceUri + '?ticker=' + investment.ticker);
+      var response = await http.get(uriTickerPrice, headers: {
+        'Authorization': token.toString(),
+      });
+      print(response);
+      if (response.statusCode == 200) {
+        //filter current investments to see if it contains selected ticker.
+        var pricePayload = jsonDecode(response.body.toString());
+        print(pricePayload["price"].toString());
+        var newCurrentPrice = double.parse(pricePayload["price"].toString());
+        investment.updateCurrentPrice(newCurrentPrice);
+        Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+            arguments: CompanyScreenArguments(investment));
+      } else {
+        print('click error');
+        print(response.body);
+        print(response.statusCode);
+        ResponseHandler().handleError(response, context);
+        throw Exception('Failed to load price info');
+      }
+    } else {
+      Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+          arguments: CompanyScreenArguments(investment));
+    }
   }
 
   setInitialStateVariables() async {
@@ -254,6 +246,7 @@ class MyHomeState extends State<Home> {
                 ))),
       );
     }
+
     for (int i = 0; i < _searchResults.length; i++) {
       String ticker = _searchResults[i].split(":")[0];
       var newWidget = Row(
@@ -439,8 +432,14 @@ class MyHomeState extends State<Home> {
                           child: TextFormField(
                             controller: _searchController,
                             onEditingComplete: () async {
-                              search();
-                              hideKeyboard(context);
+                              if (_searchController.text.length > 0) {
+                                search();
+                                hideKeyboard(context);
+                              } else if (_searchController.text.length == 0) {
+                                //adding this to set search fields blank
+                                search();
+                                hideKeyboard(context);
+                              }
                             },
                             decoration: InputDecoration(
                                 labelText:
@@ -452,7 +451,7 @@ class MyHomeState extends State<Home> {
                                 color: ColorConstants.bodyText, fontSize: 15),
                           ))),
                   Container(
-                      height: 200,
+                      height: 300,
                       width: 380,
                       child: Scrollbar(
                           isAlwaysShown: true,
