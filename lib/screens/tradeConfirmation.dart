@@ -106,7 +106,7 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                   title: Text('An Error Occurred'),
                   titleTextStyle: TextStyle(color: Colors.red[300]),
                   content: Text(
-                      'Entered amount is greater than your investment value.'),
+                      'Entered amount is greater than your account balance. Please add more money or select a different amount to invest.'),
                   backgroundColor: ColorConstants.background,
                   contentTextStyle: TextStyle(color: ColorConstants.bodyText),
                   actions: <Widget>[
