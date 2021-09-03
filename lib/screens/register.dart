@@ -56,7 +56,7 @@ class MyRegistrationState extends State<MyRegistration> {
               contentTextStyle: TextStyle(color: Colors.white),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Okay'),
+                  child: Text('Ok'),
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
