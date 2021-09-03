@@ -55,7 +55,6 @@ class MyAddMoney extends StatefulWidget {
   MyAddMoneyState createState() => MyAddMoneyState();
 }
 
-
 final storage = new FlutterSecureStorage();
 
 class MyAddMoneyState extends State<MyAddMoney> {
@@ -76,6 +75,25 @@ class MyAddMoneyState extends State<MyAddMoney> {
     return response;
   }
 
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              backgroundColor: ColorConstants.background,
+              title: Text(''),
+              content: Text(msg),
+              titleTextStyle: TextStyle(color: ColorConstants.errorText),
+              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Try Again'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,8 +169,13 @@ class MyAddMoneyState extends State<MyAddMoney> {
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, RoutesConstants.moneyConfirmRoute);
+                    if (MyAddMoney.moneyamtController.text.length > 0) {
+                      Navigator.pushNamed(
+                          context, RoutesConstants.moneyConfirmRoute);
+                    } else {
+                      _showErrorDialog(
+                          "Please enter an amount you would like to invest");
+                    }
                   },
                   child: Text('Confirm'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
