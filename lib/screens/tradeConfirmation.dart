@@ -257,18 +257,18 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                                       " which amounts to about " +
                                       newShares.toString() +
                                       " shares." +
-                                      "\n \n Are you sure you want to make the trade?"),
+                                      "\n \n Confirm to complete trade"),
                                   backgroundColor: ColorConstants.background,
                                   contentTextStyle:
                                       TextStyle(color: ColorConstants.bodyText),
                                   actions: <Widget>[
                                     TextButton(
-                                        child: Text('Yes'),
+                                        child: Text('Confirm'),
                                         onPressed: () async {
                                           executeTrade();
                                         }),
                                     TextButton(
-                                      child: Text('No'),
+                                      child: Text('Cancel'),
                                       onPressed: () {
                                         Navigator.of(ctx).pop(context);
                                       },
