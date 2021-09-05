@@ -122,6 +122,160 @@ class TradeConfirmationState extends State<TradeConfirmation> {
     setState(() {});
   }
 
+  Widget returnSellSection(InvestmentObject io) {
+    Widget sellSection = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Container(
+          width: 300,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: new EdgeInsets.all(15),
+          color: ColorConstants.textFieldBox,
+          child: TextFormField(
+            // controller: ,
+            style: TextStyle(
+              fontSize: 30.0,
+            ),
+            keyboardType: TextInputType.number,
+            controller: moneyInvested,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+            ],
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 10),
+              border: InputBorder.none,
+              prefixText: "\$ ",
+              prefixStyle:
+                  TextStyle(color: ColorConstants.bodyText, fontSize: 24),
+              hintText: "0.00",
+              hintStyle: TextStyle(
+                  color: ColorConstants.textInTextField, fontSize: 24),
+              labelText: "Enter Money Amount",
+              labelStyle:
+                  TextStyle(color: ColorConstants.bodyText, fontSize: 21),
+            ),
+            onChanged: (text) {
+              onUpdate();
+              print(moneyInvested.text);
+            },
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: 300,
+          child: Text(
+              ('You have \$' +
+                      investedValue.toString().replaceAllMapped(
+                          new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                          (Match m) => '${m[1]},') +
+                      " to invest.")
+                  .toUpperCase(),
+              style: TextStyle(color: ColorConstants.bodyText, fontSize: 15)),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: 300,
+          child: Text(
+            ("You are buying " +
+                    "\$" +
+                    moneyInvested.text.replaceAllMapped(
+                        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                        (Match m) => '${m[1]},') +
+                    " of " +
+                    io.ticker.toString() +
+                    " at \$" +
+                    io.currentPrice.toString() +
+                    " which amounts to about " +
+                    newShares.toString() +
+                    " shares.")
+                .toUpperCase(),
+            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+          ),
+        ),
+      ],
+    );
+    return sellSection;
+  }
+
+  Widget returnBuySection(InvestmentObject io) {
+    Widget buySection = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        Container(
+          width: 300,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: new EdgeInsets.all(15),
+          color: ColorConstants.textFieldBox,
+          child: TextFormField(
+            // controller: ,
+            style: TextStyle(
+              fontSize: 30.0,
+            ),
+            keyboardType: TextInputType.number,
+            controller: moneyInvested,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+            ],
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.symmetric(vertical: 10),
+              border: InputBorder.none,
+              prefixText: "\$ ",
+              prefixStyle:
+                  TextStyle(color: ColorConstants.bodyText, fontSize: 24),
+              hintText: "0.00",
+              hintStyle: TextStyle(
+                  color: ColorConstants.textInTextField, fontSize: 24),
+              labelText: "Enter Money Amount",
+              labelStyle:
+                  TextStyle(color: ColorConstants.bodyText, fontSize: 21),
+            ),
+            onChanged: (text) {
+              onUpdate();
+              print(moneyInvested.text);
+            },
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: 300,
+          child: Text(
+              ('You have \$' +
+                      investedValue.toString().replaceAllMapped(
+                          new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                          (Match m) => '${m[1]},') +
+                      " to invest.")
+                  .toUpperCase(),
+              style: TextStyle(color: ColorConstants.bodyText, fontSize: 15)),
+        ),
+        SizedBox(height: 10),
+        Container(
+          width: 300,
+          child: Text(
+            ("You are buying " +
+                    "\$" +
+                    moneyInvested.text.replaceAllMapped(
+                        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                        (Match m) => '${m[1]},') +
+                    " of " +
+                    io.ticker.toString() +
+                    " at \$" +
+                    io.currentPrice.toString() +
+                    " which amounts to about " +
+                    newShares.toString() +
+                    " shares.")
+                .toUpperCase(),
+            style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
+          ),
+        ),
+      ],
+    );
+    return buySection;
+  }
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
@@ -155,87 +309,89 @@ class TradeConfirmationState extends State<TradeConfirmation> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Container(
-                    width: 300,
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    margin: new EdgeInsets.all(15),
-                    color: ColorConstants.textFieldBox,
-                    child: TextFormField(
-                      // controller: ,
-                      style: TextStyle(
-                        fontSize: 30.0,
-                      ),
-                      keyboardType: TextInputType.number,
-                      controller: moneyInvested,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
-                      ],
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                        border: InputBorder.none,
-                        prefixText: "\$ ",
-                        prefixStyle: TextStyle(
-                            color: ColorConstants.bodyText, fontSize: 24),
-                        hintText: "0.00",
-                        hintStyle: TextStyle(
-                            color: ColorConstants.textInTextField,
-                            fontSize: 24),
-                        labelText: "Enter Money Amount",
-                        labelStyle: TextStyle(
-                            color: ColorConstants.bodyText, fontSize: 21),
-                      ),
-                      onChanged: (text) {
-                        onUpdate();
-                        print(moneyInvested.text);
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 300,
-                    child: Text(
-                        ('You have \$' +
-                                investedValue.toString().replaceAllMapped(
-                                    new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                    (Match m) => '${m[1]},') +
-                                " to invest.")
-                            .toUpperCase(),
-                        style: TextStyle(
-                            color: ColorConstants.bodyText, fontSize: 15)),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    width: 300,
-                    child: Text(
-                      ("You are buying " +
-                              "\$" +
-                              moneyInvested.text.replaceAllMapped(
-                                  new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                  (Match m) => '${m[1]},') +
-                              " of " +
-                              io.ticker.toString() +
-                              " at \$" +
-                              io.currentPrice.toString() +
-                              " which amounts to about " +
-                              newShares.toString() +
-                              " shares.")
-                          .toUpperCase(),
-                      style: TextStyle(
-                          color: ColorConstants.bodyText, fontSize: 15),
-                    ),
-                  ),
-                ],
-              ),
+              if (args.tradeType == 'BUY') returnBuySection(io),
+              if (args.tradeType == 'SELL') returnSellSection(io),
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: <Widget>[
+              //     Container(
+              //       width: 300,
+              //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //       margin: new EdgeInsets.all(15),
+              //       color: ColorConstants.textFieldBox,
+              //       child: TextFormField(
+              //         // controller: ,
+              //         style: TextStyle(
+              //           fontSize: 30.0,
+              //         ),
+              //         keyboardType: TextInputType.number,
+              //         controller: moneyInvested,
+              //         inputFormatters: <TextInputFormatter>[
+              //           FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+              //         ],
+              //         decoration: InputDecoration(
+              //           contentPadding: EdgeInsets.symmetric(vertical: 10),
+              //           border: InputBorder.none,
+              //           prefixText: "\$ ",
+              //           prefixStyle: TextStyle(
+              //               color: ColorConstants.bodyText, fontSize: 24),
+              //           hintText: "0.00",
+              //           hintStyle: TextStyle(
+              //               color: ColorConstants.textInTextField,
+              //               fontSize: 24),
+              //           labelText: "Enter Money Amount",
+              //           labelStyle: TextStyle(
+              //               color: ColorConstants.bodyText, fontSize: 21),
+              //         ),
+              //         onChanged: (text) {
+              //           onUpdate();
+              //           print(moneyInvested.text);
+              //         },
+              //       ),
+              //     ),
+              //     SizedBox(height: 10),
+              //     Container(
+              //       width: 300,
+              //       child: Text(
+              //           ('You have \$' +
+              //                   investedValue.toString().replaceAllMapped(
+              //                       new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+              //                       (Match m) => '${m[1]},') +
+              //                   " to invest.")
+              //               .toUpperCase(),
+              //           style: TextStyle(
+              //               color: ColorConstants.bodyText, fontSize: 15)),
+              //     ),
+              //     SizedBox(height: 10),
+              //     Container(
+              //       width: 300,
+              //       child: Text(
+              //         ("You are buying " +
+              //                 "\$" +
+              //                 moneyInvested.text.replaceAllMapped(
+              //                     new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+              //                     (Match m) => '${m[1]},') +
+              //                 " of " +
+              //                 io.ticker.toString() +
+              //                 " at \$" +
+              //                 io.currentPrice.toString() +
+              //                 " which amounts to about " +
+              //                 newShares.toString() +
+              //                 " shares.")
+              //             .toUpperCase(),
+              //         style: TextStyle(
+              //             color: ColorConstants.bodyText, fontSize: 15),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               Container(
                 width: 300,
                 margin: new EdgeInsets.all(15),
                 child: ElevatedButton(
-                    child: Text('Buy'.toUpperCase()),
+                    child: Text(args.tradeType == 'BUY' ? 'BUY' : 'SELL'),
                     style: ElevatedButton.styleFrom(
                         primary: ColorConstants.button,
                         padding:
