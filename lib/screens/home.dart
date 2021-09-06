@@ -346,7 +346,7 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding:
                               EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          child: Text("Available to Invest    -     ",
+                          child: Text("Available to Invest     -     ",
                               style: TextStyle(fontSize: 18),
                               textAlign: TextAlign.center)),
                       Padding(
