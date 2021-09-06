@@ -303,6 +303,11 @@ class MyHomeState extends State<Home> {
     }
   }
 
+  void resetSearchResults() {
+    _searchResults = [];
+    setState(() {});
+  }
+
   void hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
@@ -431,12 +436,13 @@ class MyHomeState extends State<Home> {
                               EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                           child: TextFormField(
                             controller: _searchController,
+                            onChanged: (text) {
+                              if (text == '') {
+                                resetSearchResults();
+                              }
+                            },
                             onEditingComplete: () async {
                               if (_searchController.text.length > 0) {
-                                search();
-                                hideKeyboard(context);
-                              } else if (_searchController.text.length == 0) {
-                                //adding this to set search fields blank
                                 search();
                                 hideKeyboard(context);
                               }
