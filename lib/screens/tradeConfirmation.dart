@@ -52,6 +52,7 @@ class TradeConfirmationState extends State<TradeConfirmation> {
   var investedValue;
 
   TextEditingController moneyInvested = new TextEditingController();
+  TextEditingController numOfStocks = new TextEditingController();
 
   executeTrade() async {
     final args = ModalRoute.of(context)!.settings.arguments
@@ -60,17 +61,6 @@ class TradeConfirmationState extends State<TradeConfirmation> {
 
     accountId = await storage.read(key: 'account_id');
     var token = await storage.read(key: 'jwt');
-    var requestBody = json.encode({
-      "account_id": accountId.toString(),
-      "ticker": io.ticker.toString(),
-      "shares": newShares.toString(),
-      "type": args.tradeType.toString(),
-      "buy_price": buyPrice.toString(),
-      "sell_price": null
-    });
-    print('req body');
-    print(requestBody);
-    double sell_price = -1;
     var response =
         await http.post(Uri.parse(UriConstants.executeTradeUri), headers: {
       "Authorization": token.toString(),
@@ -80,10 +70,9 @@ class TradeConfirmationState extends State<TradeConfirmation> {
       "shares": newShares.toString(),
       "type": args.tradeType.toString(),
       "buy_price": buyPrice.toString(),
-      "sell_price": sell_price.toString()
-    }
-            // body: requestBody
-            );
+      "sell_price":
+          args.tradeType == 'BUY' ? (-1).toString() : io.currentPrice.toString()
+    });
     print(response.body);
     if (response.statusCode == 200) {
       Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPopUpRoute);
@@ -122,6 +111,32 @@ class TradeConfirmationState extends State<TradeConfirmation> {
     setState(() {});
   }
 
+  onUpdateNumOfShares() async {
+    final args = ModalRoute.of(context)!.settings.arguments
+        as TradeCompletionScreenArguments;
+    var io = args.investmentObject;
+    int stocks = int.parse(numOfStocks.text);
+    if (stocks > io.shares) {
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                  title: Text('An Error Occurred'),
+                  titleTextStyle: TextStyle(color: Colors.red[300]),
+                  content: Text('You cannot sell more stock than you own.'),
+                  backgroundColor: ColorConstants.background,
+                  contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+                  actions: <Widget>[
+                    TextButton(
+                        child: Text('Go Back'),
+                        onPressed: () {
+                          Navigator.of(ctx).pop(context);
+                        })
+                  ]));
+      // numOfStocks.clear();
+    }
+    setState(() {});
+  }
+
   Widget returnSellSection(InvestmentObject io) {
     Widget sellSection = Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,61 +154,58 @@ class TradeConfirmationState extends State<TradeConfirmation> {
               fontSize: 30.0,
             ),
             keyboardType: TextInputType.number,
-            controller: moneyInvested,
+            controller: numOfStocks,
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
+              FilteringTextInputFormatter.allow(RegExp('[0-9]'))
             ],
             decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(vertical: 10),
               border: InputBorder.none,
-              prefixText: "\$ ",
               prefixStyle:
                   TextStyle(color: ColorConstants.bodyText, fontSize: 24),
-              hintText: "0.00",
+              hintText: "Eg. 1",
               hintStyle: TextStyle(
-                  color: ColorConstants.textInTextField, fontSize: 24),
-              labelText: "Enter Money Amount",
+                  color: ColorConstants.textInTextField, fontSize: 16),
+              labelText: "Enter Number of Shares to Buy",
               labelStyle:
-                  TextStyle(color: ColorConstants.bodyText, fontSize: 21),
+                  TextStyle(color: ColorConstants.bodyText, fontSize: 16),
             ),
             onChanged: (text) {
-              onUpdate();
-              print(moneyInvested.text);
+              onUpdateNumOfShares();
+              print(numOfStocks.text);
             },
           ),
         ),
-        SizedBox(height: 10),
         Container(
           width: 300,
           child: Text(
-              ('You have \$' +
-                      investedValue.toString().replaceAllMapped(
-                          new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                          (Match m) => '${m[1]},') +
-                      " to invest.")
-                  .toUpperCase(),
-              style: TextStyle(color: ColorConstants.bodyText, fontSize: 15)),
-        ),
-        SizedBox(height: 10),
-        Container(
-          width: 300,
-          child: Text(
-            ("You are buying " +
-                    "\$" +
-                    moneyInvested.text.replaceAllMapped(
-                        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                        (Match m) => '${m[1]},') +
-                    " of " +
-                    io.ticker.toString() +
-                    " at \$" +
-                    io.currentPrice.toString() +
-                    " which amounts to about " +
-                    newShares.toString() +
-                    " shares.")
-                .toUpperCase(),
+            "You currently own " +
+                io.shares.toString() +
+                " shares of " +
+                io.ticker,
             style: TextStyle(color: ColorConstants.bodyText, fontSize: 15),
           ),
         ),
+        SizedBox(height: 10),
+        Container(
+          width: 300,
+          child: Text(
+              ('You have chosen to sell ' +
+                  (numOfStocks.text != '' ? numOfStocks.text : "0 ") +
+                  'shares of ' +
+                  io.ticker +
+                  " at " +
+                  io.currentPrice.toString() +
+                  ". You would gain \$" +
+                  ((double.parse(numOfStocks.text != ''
+                                  ? numOfStocks.text
+                                  : "0") *
+                              io.currentPrice)
+                          .toString() +
+                      ' from this trade.')),
+              style: TextStyle(color: ColorConstants.bodyText, fontSize: 15)),
+        ),
+        SizedBox(height: 10),
       ],
     );
     return sellSection;
@@ -276,6 +288,69 @@ class TradeConfirmationState extends State<TradeConfirmation> {
     return buySection;
   }
 
+  showBuyPopUp() async {
+    final args = ModalRoute.of(context)!.settings.arguments
+        as TradeCompletionScreenArguments;
+    var io = args.investmentObject;
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+                content: Text("You are buying " +
+                    " \$" +
+                    moneyInvested.text.replaceAllMapped(
+                        new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                        (Match m) => '${m[1]},') +
+                    " of " +
+                    io.ticker.toString() +
+                    " at \$" +
+                    io.currentPrice.toString() +
+                    " which amounts to about " +
+                    newShares.toString() +
+                    " shares." +
+                    "\n \n Confirm to complete trade"),
+                backgroundColor: ColorConstants.background,
+                contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+                actions: <Widget>[
+                  TextButton(
+                      child: Text('Confirm'),
+                      onPressed: () async {
+                        executeTrade();
+                      }),
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(context);
+                    },
+                  )
+                ]));
+  }
+
+  showSellPopUp() async {
+    final args = ModalRoute.of(context)!.settings.arguments
+        as TradeCompletionScreenArguments;
+    var io = args.investmentObject;
+    int stocks = int.parse(numOfStocks.text);
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+                content: Text("You are selling " + numOfStocks.text + " "),
+                backgroundColor: ColorConstants.background,
+                contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+                actions: <Widget>[
+                  TextButton(
+                      child: Text('Confirm'),
+                      onPressed: () async {
+                        executeTrade();
+                      }),
+                  TextButton(
+                    child: Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop(context);
+                    },
+                  )
+                ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments
@@ -311,82 +386,6 @@ class TradeConfirmationState extends State<TradeConfirmation> {
             children: <Widget>[
               if (args.tradeType == 'BUY') returnBuySection(io),
               if (args.tradeType == 'SELL') returnSellSection(io),
-              // Column(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   mainAxisSize: MainAxisSize.max,
-              //   children: <Widget>[
-              //     Container(
-              //       width: 300,
-              //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              //       margin: new EdgeInsets.all(15),
-              //       color: ColorConstants.textFieldBox,
-              //       child: TextFormField(
-              //         // controller: ,
-              //         style: TextStyle(
-              //           fontSize: 30.0,
-              //         ),
-              //         keyboardType: TextInputType.number,
-              //         controller: moneyInvested,
-              //         inputFormatters: <TextInputFormatter>[
-              //           FilteringTextInputFormatter.allow(RegExp('[0-9.]'))
-              //         ],
-              //         decoration: InputDecoration(
-              //           contentPadding: EdgeInsets.symmetric(vertical: 10),
-              //           border: InputBorder.none,
-              //           prefixText: "\$ ",
-              //           prefixStyle: TextStyle(
-              //               color: ColorConstants.bodyText, fontSize: 24),
-              //           hintText: "0.00",
-              //           hintStyle: TextStyle(
-              //               color: ColorConstants.textInTextField,
-              //               fontSize: 24),
-              //           labelText: "Enter Money Amount",
-              //           labelStyle: TextStyle(
-              //               color: ColorConstants.bodyText, fontSize: 21),
-              //         ),
-              //         onChanged: (text) {
-              //           onUpdate();
-              //           print(moneyInvested.text);
-              //         },
-              //       ),
-              //     ),
-              //     SizedBox(height: 10),
-              //     Container(
-              //       width: 300,
-              //       child: Text(
-              //           ('You have \$' +
-              //                   investedValue.toString().replaceAllMapped(
-              //                       new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-              //                       (Match m) => '${m[1]},') +
-              //                   " to invest.")
-              //               .toUpperCase(),
-              //           style: TextStyle(
-              //               color: ColorConstants.bodyText, fontSize: 15)),
-              //     ),
-              //     SizedBox(height: 10),
-              //     Container(
-              //       width: 300,
-              //       child: Text(
-              //         ("You are buying " +
-              //                 "\$" +
-              //                 moneyInvested.text.replaceAllMapped(
-              //                     new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-              //                     (Match m) => '${m[1]},') +
-              //                 " of " +
-              //                 io.ticker.toString() +
-              //                 " at \$" +
-              //                 io.currentPrice.toString() +
-              //                 " which amounts to about " +
-              //                 newShares.toString() +
-              //                 " shares.")
-              //             .toUpperCase(),
-              //         style: TextStyle(
-              //             color: ColorConstants.bodyText, fontSize: 15),
-              //       ),
-              //     ),
-              //   ],
-              // ),
               Container(
                 width: 300,
                 margin: new EdgeInsets.all(15),
@@ -397,39 +396,11 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
                     onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                                  content: Text("You are buying " +
-                                      " \$" +
-                                      moneyInvested.text.replaceAllMapped(
-                                          new RegExp(
-                                              r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                          (Match m) => '${m[1]},') +
-                                      " of " +
-                                      io.ticker.toString() +
-                                      " at \$" +
-                                      io.currentPrice.toString() +
-                                      " which amounts to about " +
-                                      newShares.toString() +
-                                      " shares." +
-                                      "\n \n Confirm to complete trade"),
-                                  backgroundColor: ColorConstants.background,
-                                  contentTextStyle:
-                                      TextStyle(color: ColorConstants.bodyText),
-                                  actions: <Widget>[
-                                    TextButton(
-                                        child: Text('Confirm'),
-                                        onPressed: () async {
-                                          executeTrade();
-                                        }),
-                                    TextButton(
-                                      child: Text('Cancel'),
-                                      onPressed: () {
-                                        Navigator.of(ctx).pop(context);
-                                      },
-                                    )
-                                  ]));
+                      if (args.tradeType == 'BUY') {
+                        showBuyPopUp();
+                      } else {
+                        showSellPopUp();
+                      }
                     }),
               ),
             ],
@@ -467,7 +438,7 @@ class TradeConfirmationPopUp extends StatelessWidget {
             ),
             FloatingActionButton.extended(
               backgroundColor: ColorConstants.button,
-              label: Text('Return to Home'.toUpperCase()),
+              label: Text('Return to Home page'.toUpperCase()),
               onPressed: () {
                 Navigator.pushNamed(context, RoutesConstants.homeRoute);
                 MyAddMoney.moneyamtController.clear();
