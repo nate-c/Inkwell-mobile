@@ -47,7 +47,8 @@ class MyProfileState extends State<MyProfile> {
   String? _token;
   String list = '';
   // final int _amount;
-  static int? investedValue;
+
+  static double? investedValue;
   static var totalInvestmentValue;
   List<InvestmentObject> _investments = [];
   // []TickerSearchObject _results;
@@ -60,11 +61,10 @@ class MyProfileState extends State<MyProfile> {
     var amount = await storage.read(key: 'amount');
     var token = await storage.read(key: 'token');
 
-    setState(() {
-      investedValue = int.parse(amount.toString());
-      _token = token.toString();
-      totalInvestmentValue = double.parse(investedValue.toString());
-    });
+    investedValue = double.parse(amount.toString());
+    _token = token.toString();
+    totalInvestmentValue = double.parse(investedValue.toString());
+    setState(() {});
   }
 
   List<Widget> listAllOwnedStocks() {
@@ -112,30 +112,32 @@ class MyProfileState extends State<MyProfile> {
     });
 
     if (response.statusCode == 200) {
-      setState(() {
-        final data = jsonDecode(response.body.toString())['investments'];
-        for (Map<String, dynamic> i in data) {
-          _investments.add(new InvestmentObject.fromJson(i));
-        }
-        print(_investments.toString());
-        for (int i = 0; i < _investments.length; i++) {
-          list += _investments[i].ticker.toString() +
-              '\n' +
-              'Shares: ' +
-              _investments[i].shares.toString() +
-              '\n' +
-              'Average Price: \$' +
-              _investments[i].averagePrice.toStringAsFixed(2) +
-              '\n' +
-              'Current Price: \$' +
-              _investments[i].currentPrice.toStringAsFixed(2) +
-              '\n \n'; 
-        }totalInvestmentValue = investedValue! +
-              (_investments
-                  .map((s) => s.shares * (s.currentPrice - s.averagePrice))
-                  .reduce((accumulator, currentValue) =>
-                      accumulator + currentValue));
-      });
+      final data = jsonDecode(response.body.toString())['investments'];
+      for (Map<String, dynamic> i in data) {
+        _investments.add(new InvestmentObject.fromJson(i));
+      }
+      print(_investments.toString());
+      for (int i = 0; i < _investments.length; i++) {
+        list += _investments[i].ticker.toString() +
+            '\n' +
+            'Shares: ' +
+            _investments[i].shares.toString() +
+            '\n' +
+            'Average Price: \$' +
+            _investments[i].averagePrice.toStringAsFixed(2) +
+            '\n' +
+            'Current Price: \$' +
+            _investments[i].currentPrice.toStringAsFixed(2) +
+            '\n \n';
+      }
+      // var amount = await storage.read(key: 'amount');
+      // var accountBalance = double.parse(amount.toString());
+      totalInvestmentValue = investedValue! +
+          (_investments
+              .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+              .reduce(
+                  (accumulator, currentValue) => accumulator + currentValue));
+      setState(() {});
     } else {
       ResponseHandler().handleError(response, context);
       throw Exception('Failed to load investments');
@@ -227,7 +229,7 @@ class MyProfileState extends State<MyProfile> {
                     // Column(
                     // children: [...getInvestmentsWidget()],
                     // ),
-                
+
                     ExpandableTheme(
                         data: ExpandableThemeData(
                           iconColor: ColorConstants.expandArrows,
