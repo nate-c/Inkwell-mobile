@@ -54,13 +54,28 @@ class TradeConfirmationState extends State<TradeConfirmation> {
   TextEditingController moneyInvested = new TextEditingController();
   TextEditingController numOfStocks = new TextEditingController();
 
-  executeTrade() async {
+  bool validateTrade(String tradeType) {
+    bool isValid = true;
+    if (numOfStocks.text == '' && tradeType == 'BUY') {
+      return false;
+    }
+    // if(){
+    //   return false;
+    // }
+    return isValid;
+  }
+
+  executeBuyTrade() async {
     final args = ModalRoute.of(context)!.settings.arguments
         as TradeCompletionScreenArguments;
     var io = args.investmentObject;
 
     accountId = await storage.read(key: 'account_id');
     var token = await storage.read(key: 'jwt');
+    // bool isValid = validateTrade(args.tradeType);
+    // if (!isValid) {
+    //   return;
+    // }
     var response =
         await http.post(Uri.parse(UriConstants.executeTradeUri), headers: {
       "Authorization": token.toString(),
@@ -70,8 +85,40 @@ class TradeConfirmationState extends State<TradeConfirmation> {
       "shares": newShares.toString(),
       "type": args.tradeType.toString(),
       "buy_price": buyPrice.toString(),
-      "sell_price":
-          args.tradeType == 'BUY' ? (-1).toString() : io.currentPrice.toString()
+      "sell_price": (-1).toString()
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      Navigator.pushNamed(context, RoutesConstants.tradeConfirmationPopUpRoute);
+    } else {
+      print(response.body);
+      ResponseHandler().handleError(response, context);
+    }
+  }
+
+  executeSellTrade() async {
+    final args = ModalRoute.of(context)!.settings.arguments
+        as TradeCompletionScreenArguments;
+    var io = args.investmentObject;
+
+    accountId = await storage.read(key: 'account_id');
+    var token = await storage.read(key: 'jwt');
+    // bool isValid = validateTrade(args.tradeType);
+    // if (!isValid) {
+    //   return;
+    // }
+    int shares = int.parse(numOfStocks.text);
+
+    var response =
+        await http.post(Uri.parse(UriConstants.executeTradeUri), headers: {
+      "Authorization": token.toString(),
+    }, body: {
+      "account_id": accountId,
+      "ticker": io.ticker.trim().toString(),
+      "shares": shares.toString(),
+      "type": args.tradeType.toString(),
+      "buy_price": (-1).toString(),
+      "sell_price": io.currentPrice.toString()
     });
     print(response.body);
     if (response.statusCode == 200) {
@@ -314,7 +361,7 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                   TextButton(
                       child: Text('Confirm'),
                       onPressed: () async {
-                        executeTrade();
+                        executeBuyTrade();
                       }),
                   TextButton(
                     child: Text('Cancel'),
@@ -333,14 +380,15 @@ class TradeConfirmationState extends State<TradeConfirmation> {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-                content: Text("You are selling " + numOfStocks.text + " "),
+                content:
+                    Text("You are selling " + numOfStocks.text + " shares."),
                 backgroundColor: ColorConstants.background,
                 contentTextStyle: TextStyle(color: ColorConstants.bodyText),
                 actions: <Widget>[
                   TextButton(
                       child: Text('Confirm'),
                       onPressed: () async {
-                        executeTrade();
+                        executeSellTrade();
                       }),
                   TextButton(
                     child: Text('Cancel'),
@@ -359,11 +407,11 @@ class TradeConfirmationState extends State<TradeConfirmation> {
 
     setState(() {
       if (args.tradeType == 'BUY') {
-        tradeType = 'buying';
+        // tradeType = 'buying';
         buyPrice = io.currentPrice;
         sellPrice = null;
       } else if (args.tradeType == 'SELL') {
-        tradeType = 'selling';
+        // tradeType = 'selling';
         sellPrice = io.currentPrice;
         buyPrice = null;
       }
