@@ -213,7 +213,7 @@ class TradeConfirmationState extends State<TradeConfirmation> {
               hintText: "Eg. 1",
               hintStyle: TextStyle(
                   color: ColorConstants.textInTextField, fontSize: 16),
-              labelText: "Enter Number of Shares to Buy",
+              labelText: "Enter Number of Shares to Sell",
               labelStyle:
                   TextStyle(color: ColorConstants.bodyText, fontSize: 16),
             ),
