@@ -38,14 +38,11 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class MoneyConfirmation extends StatelessWidget {
   MoneyConfirmation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         backgroundColor: ColorConstants.background,
         appBar: AppBar(
@@ -69,7 +66,11 @@ class MoneyConfirmation extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
-                  Text('\$ ' + MyAddMoney.moneyamtController.text.replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},'),
+                  Text(
+                      '\$ ' +
+                          MyAddMoney.moneyamtController.text.replaceAllMapped(
+                              new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                              (Match m) => '${m[1]},'),
                       style:
                           TextStyle(fontSize: 35, fontWeight: FontWeight.w300)),
                   SizedBox(height: 10),
@@ -90,15 +91,19 @@ class MoneyConfirmation extends StatelessWidget {
                   onPressed: () async {
                     String? user = await storage.read(key: 'user_id');
                     var userId = int.parse(user!);
-                    var amount = double.parse(MyAddMoney.moneyamtController.text);
+                    var amount =
+                        double.parse(MyAddMoney.moneyamtController.text);
                     var response =
                         await MyAddMoneyState().addmoney(userId, amount);
 
                     if (response.statusCode == 200) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => ConfirmationPopUp()));
+                      storage.write(key: "amount", value: amount.toString());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ConfirmationPopUp()));
                     }
                     ResponseHandler().handleError(response, context);
-                  
                   },
                   child: Text('Deposit'.toUpperCase()),
                   style: ElevatedButton.styleFrom(
@@ -114,34 +119,47 @@ class MoneyConfirmation extends StatelessWidget {
   }
 }
 
-class ConfirmationPopUp extends StatelessWidget{
+class ConfirmationPopUp extends StatelessWidget {
   var amount = MyAddMoney.moneyamtController.text;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.background,
-      body: Center(child:
-        Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget> [
-        Text("Congratulations!".toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 30),),
-        SizedBox(height: 20,),
-        Text ("\$" + amount.toString() +
-                          " has been added into your account.".toUpperCase(), textAlign: TextAlign.center, style: TextStyle(fontSize: 25),),
-        SizedBox(height: 100,),
-        FloatingActionButton.extended(
-          backgroundColor: ColorConstants.button,
-          label: Text('Return to Home'.toUpperCase()),
-          onPressed: (){
-            Navigator.pushNamed(context, RoutesConstants.homeRoute);
-            MyAddMoney.moneyamtController.clear();
-          },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Congratulations!".toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "\$" +
+                  amount.toString() +
+                  " has been added into your account.".toUpperCase(),
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 25),
+            ),
+            SizedBox(
+              height: 100,
+            ),
+            FloatingActionButton.extended(
+              backgroundColor: ColorConstants.button,
+              label: Text('Return to Home'.toUpperCase()),
+              onPressed: () {
+                Navigator.pushNamed(context, RoutesConstants.homeRoute);
+                MyAddMoney.moneyamtController.clear();
+              },
+            ),
+          ],
         ),
-
-        ],),)
-      ,);
-    
-    }
+      ),
+    );
+  }
 }
