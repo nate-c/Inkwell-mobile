@@ -43,7 +43,7 @@ class InvestmentObject {
         shares: parsedJson['shares'],
         ticker: parsedJson['ticker'],
         averagePrice: double.parse(parsedJson['average_price'].toString()),
-        currentPrice: parsedJson['current_price']);
+        currentPrice: double.parse(parsedJson['current_price'].toString()));
   }
 
   void updateCurrentPrice(double price) {
