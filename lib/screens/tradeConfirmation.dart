@@ -65,6 +65,26 @@ class TradeConfirmationState extends State<TradeConfirmation> {
     return isValid;
   }
 
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              backgroundColor: ColorConstants.background,
+              title: Text(''),
+              content: Text(msg),
+              titleTextStyle: TextStyle(color: ColorConstants.errorText),
+              contentTextStyle: TextStyle(color: ColorConstants.bodyText),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Try Again'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
   executeBuyTrade() async {
     final args = ModalRoute.of(context)!.settings.arguments
         as TradeCompletionScreenArguments;
@@ -303,9 +323,11 @@ class TradeConfirmationState extends State<TradeConfirmation> {
           width: 300,
           child: Text(
               ('You have \$' +
-                      investedValue.toString().replaceAllMapped(
-                          new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                          (Match m) => '${m[1]},') +
+                      (investedValue.toString().length >= 0
+                          ? investedValue.toString().replaceAllMapped(
+                              new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                              (Match m) => '${m[1]},')
+                          : '\$0') +
                       " to invest.")
                   .toUpperCase(),
               style: TextStyle(color: ColorConstants.bodyText, fontSize: 15)),
@@ -445,9 +467,19 @@ class TradeConfirmationState extends State<TradeConfirmation> {
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20)),
                     onPressed: () async {
                       if (args.tradeType == 'BUY') {
-                        showBuyPopUp();
+                        if (moneyInvested.text.length > 0) {
+                          showBuyPopUp();
+                        } else {
+                          _showErrorDialog(
+                              'Please insert a valid investment amount');
+                        }
                       } else {
-                        showSellPopUp();
+                        if (numOfStocks.text.length > 0) {
+                          showSellPopUp();
+                        } else {
+                          _showErrorDialog(
+                              'Please innvest a valid investment amount');
+                        }
                       }
                     }),
               ),
