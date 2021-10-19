@@ -206,7 +206,7 @@ class MyProfileState extends State<MyProfile> {
                           ),
                         ]),
                     SizedBox(height: 20),
-                    Text('Investment Value: '.toUpperCase(),
+                    Text('Cash Invested: '.toUpperCase(),
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w300)),
                     Row(
