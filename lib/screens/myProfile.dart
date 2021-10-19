@@ -134,7 +134,9 @@ class MyProfileState extends State<MyProfile> {
       // var accountBalance = double.parse(amount.toString());
       totalInvestmentValue = investedValue! +
           (_investments
-              .map((s) => s.shares * (s.currentPrice - s.averagePrice))
+              .map((s) =>
+                  (s.shares * s.averagePrice) +
+                  (s.shares * (s.currentPrice - s.averagePrice)))
               .reduce(
                   (accumulator, currentValue) => accumulator + currentValue));
       setState(() {});
