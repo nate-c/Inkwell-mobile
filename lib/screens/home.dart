@@ -346,7 +346,7 @@ class MyHomeState extends State<Home> {
                       Padding(
                           padding:
                               EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          child: Text("Available to Invest     -     ",
+                          child: Text("Cash Balance    -     ",
                               style: TextStyle(fontSize: 18),
                               textAlign: TextAlign.center)),
                       Padding(
@@ -367,30 +367,8 @@ class MyHomeState extends State<Home> {
                       Padding(
                         padding:
                             EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                        child: Text("Already Invested        -     ",
-                            style: TextStyle(fontSize: 18),
-                            textAlign: TextAlign.center),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: Text(
-                              "\$" +
-                                  _investedValue
-                                      .toStringAsFixed(2)
-                                      .replaceAllMapped(
-                                          new RegExp(
-                                              r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                          (Match m) => '${m[1]},'),
-                              style: TextStyle(fontSize: 18))),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: Text(
-                          "Portfolio Value           -     ",
+                          "Total Balance    -     ",
                           style: TextStyle(fontSize: 18),
                           textAlign: TextAlign.center,
                         ),
