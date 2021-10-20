@@ -11,17 +11,18 @@ import 'package:inkwell_mobile/screens/tradeConfirmation.dart';
 import 'package:inkwell_mobile/widgets/dropdown.dart';
 import 'package:inkwell_mobile/models/investmentObject.dart';
 import 'package:inkwell_mobile/utils/error_handling.dart';
-import '../models/User.dart';
+import 'package:inkwell_mobile/models/User.dart';
+import 'package:inkwell_mobile/models/routeArguments.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:http/http.dart' as http;
-import '../constants/uriConstants.dart';
+import 'package:inkwell_mobile/constants/uriConstants.dart';
 import 'package:inkwell_mobile/constants/routeConstants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../models/tickerSearchObject.dart';
+import 'package:inkwell_mobile/models/tickerSearchObject.dart';
 import 'package:expandable/expandable.dart';
 import 'addmoney.dart';
 
-void main() => runApp(MyProfile());
+// void main() => runApp(MyProfile());
 
 class MyProfile extends StatefulWidget {
   @override
@@ -67,15 +68,12 @@ class MyProfileState extends State<MyProfile> {
     setState(() {});
   }
 
-  List<Widget> listAllOwnedStocks() {
-    List<Widget> ownedStocks = [];
+  Widget getOwnedStocks() {
     if (_investments.length == 0) {
-      return ownedStocks;
+      return new Container();
     }
-    for (int i = 0; i < _investments.length; i++) {
-      var io = _investments[i];
-      print('list stock');
-      print(io.toString());
+    List<Widget> stocks = [];
+    _investments.forEach((io) {
       String text = io.ticker +
           '\n' +
           'Shares: ' +
@@ -86,19 +84,23 @@ class MyProfileState extends State<MyProfile> {
           '\n' +
           'Current Price: \$' +
           io.currentPrice.toStringAsFixed(2);
-      var widget = Text(
-        text,
-        softWrap: true,
-        style: TextStyle(fontSize: 18),
-      );
-      ownedStocks.add(widget);
-      // Text(
-      //   list,
-      //   softWrap: true,
-      //   style: TextStyle(fontSize: 18),
-      // ),
-    }
-    return ownedStocks;
+
+      var widget = GestureDetector(
+          onTap: () => navigateToCompanyPage(io),
+          child: Text(
+            text,
+            softWrap: true,
+            style: TextStyle(fontSize: 18),
+          ));
+      stocks.add(widget);
+      stocks.add(new Text("\n"));
+    });
+    return Column(children: [...stocks]);
+  }
+
+  void navigateToCompanyPage(InvestmentObject investment) {
+    Navigator.pushNamed(context, RoutesConstants.companyPageRoute,
+        arguments: CompanyScreenArguments(investment));
   }
 
   Future getUserInvestments() async {
@@ -117,19 +119,6 @@ class MyProfileState extends State<MyProfile> {
         _investments.add(new InvestmentObject.fromJson(i));
       }
       print(_investments.toString());
-      for (int i = 0; i < _investments.length; i++) {
-        list += _investments[i].ticker.toString() +
-            '\n' +
-            'Shares: ' +
-            _investments[i].shares.toString() +
-            '\n' +
-            'Average Price: \$' +
-            _investments[i].averagePrice.toStringAsFixed(2) +
-            '\n' +
-            'Current Price: \$' +
-            _investments[i].currentPrice.toStringAsFixed(2) +
-            '\n \n';
-      }
       // var amount = await storage.read(key: 'amount');
       // var accountBalance = double.parse(amount.toString());
       totalInvestmentValue = investedValue! +
@@ -256,14 +245,7 @@ class MyProfileState extends State<MyProfile> {
                                     fontWeight: FontWeight.w300, fontSize: 0),
                                 maxLines: 1,
                               ),
-                              expanded: Text(
-                                list,
-                                softWrap: true,
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              // expanded: ListView(
-                              //   children: listAllOwnedStocks(),
-                              // )
+                              expanded: getOwnedStocks(),
                             ))),
                   ]),
             )));
