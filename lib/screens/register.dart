@@ -152,7 +152,8 @@ class MyRegistrationState extends State<MyRegistration> {
             child: SingleChildScrollView(
                 child: Form(
           key: _formKey,
-          child: Column(
+          child: SingleChildScrollView(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -303,7 +304,7 @@ class MyRegistrationState extends State<MyRegistration> {
                         EdgeInsets.symmetric(horizontal: 125, vertical: 20),
                   )),
             ],
-          ),
+          )),
         ))));
   }
 }
