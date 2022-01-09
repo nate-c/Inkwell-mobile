@@ -77,125 +77,130 @@ class MyLoginState extends State<MyLogin> {
           actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,
-        body: Center(
-            key: _formKey,
-            child: Form(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "Inkwell".toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 50,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  InkWell(
-                    child: Text("Don't have an account? Register.",
-                        style: TextStyle(fontSize: 15),
-                        textAlign: TextAlign.center),
-                    onTap: () => Navigator.pushNamed(context, RoutesConstants.registerRoute),
-                  ),
-                  Container(
-                      width: 300,
-                      margin: new EdgeInsets.all(15),
-                      color: ColorConstants.textFieldBox,
-                      child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          child: TextFormField(
-                            controller: _usernameController,
-                            decoration: InputDecoration(
-                                labelText: "Username",
-                                labelStyle: TextStyle(
-                                    color: ColorConstants.textInTextField),
-                                border: InputBorder.none),
-                            style: TextStyle(
-                                color: ColorConstants.bodyText, fontSize: 15),
-                          ))),
-                  Container(
-                      width: 300,
-                      margin: new EdgeInsets.all(15),
-                      color: const Color(0xFF071A4A),
-                      child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                          child: TextFormField(
-                            controller: _passwordController,
-                            obscureText: !_passwordVisible,
-                            decoration: InputDecoration(
-                                labelText: "Password",
-                                labelStyle: TextStyle(
-                                    color: ColorConstants.textInTextField),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    // Based on passwordVisible state choose the icon
-                                    _passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: Theme.of(context).primaryColorDark,
-                                  ),
-                                  onPressed: () {
-                                    // Update the state i.e. toogle the state of passwordVisible variable
-                                    setState(() {
-                                      _passwordVisible = !_passwordVisible;
-                                    });
-                                  },
-                                ),
-                                border: InputBorder.none),
-                            style: TextStyle(
-                                color: ColorConstants.bodyText, fontSize: 15),
-                          ))),
-                  ElevatedButton(
-                      onPressed: () async {
-                        var username = _usernameController.text;
-                        var password = _passwordController.text;
-
-                        var returnPayload =
-                            await Authentication().logIn(username, password);
-                        // Map<String, dynamic> returnPayloadObj =
-                        //     jsonDecode(returnPayload.toString());
-                        var returnPayloadObj =
-                            jsonDecode(returnPayload.toString());
-                        print(returnPayloadObj);
-                        if (returnPayload != null) {
-                          Navigator.pushNamed(context, RoutesConstants.homeRoute);
-                          var jwt = returnPayloadObj["token"];
-                          storage.write(key: "jwt", value: jwt);
-                          storage.write(
-                              key: "username",
-                              value: returnPayloadObj["User"]["username"]);
-                          storage.write(
-                              key: "user_id",
-                              value: returnPayloadObj["User"]["user_id"]
-                                  .toString());
-                          storage.write(
-                              key: "amount",
-                              value: returnPayloadObj["User"]["amount"]
-                                  .toString());
-                          storage.write(
-                              key: "user",
-                              value: returnPayloadObj["User"].toString());
-                        
-                        } else {
-                          _showErrorDialog(
-                              "No account was found that matches this username and password combination.");
-                        }
-                        _usernameController.clear();
-                        _passwordController.clear();
-                      },
-                      child: Text(
-                        'Log in'.toUpperCase(),
-                        style: TextStyle(color: ColorConstants.bodyText),
+        body: SingleChildScrollView(
+            child: Center(
+                key: _formKey,
+                child: Form(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Inkwell".toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 50,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      style: ElevatedButton.styleFrom(
-                        primary: ColorConstants.button,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      )),
-                ],
-              ),
-            )));
+                      InkWell(
+                        child: Text("Don't have an account? Register.",
+                            style: TextStyle(fontSize: 15),
+                            textAlign: TextAlign.center),
+                        onTap: () => Navigator.pushNamed(
+                            context, RoutesConstants.registerRoute),
+                      ),
+                      Container(
+                          width: 300,
+                          margin: new EdgeInsets.all(15),
+                          color: ColorConstants.textFieldBox,
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 2),
+                              child: TextFormField(
+                                controller: _usernameController,
+                                decoration: InputDecoration(
+                                    labelText: "Username",
+                                    labelStyle: TextStyle(
+                                        color: ColorConstants.textInTextField),
+                                    border: InputBorder.none),
+                                style: TextStyle(
+                                    color: ColorConstants.bodyText,
+                                    fontSize: 15),
+                              ))),
+                      Container(
+                          width: 300,
+                          margin: new EdgeInsets.all(15),
+                          color: const Color(0xFF071A4A),
+                          child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 2),
+                              child: TextFormField(
+                                controller: _passwordController,
+                                obscureText: !_passwordVisible,
+                                decoration: InputDecoration(
+                                    labelText: "Password",
+                                    labelStyle: TextStyle(
+                                        color: ColorConstants.textInTextField),
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        // Based on passwordVisible state choose the icon
+                                        _passwordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color:
+                                            Theme.of(context).primaryColorDark,
+                                      ),
+                                      onPressed: () {
+                                        // Update the state i.e. toogle the state of passwordVisible variable
+                                        setState(() {
+                                          _passwordVisible = !_passwordVisible;
+                                        });
+                                      },
+                                    ),
+                                    border: InputBorder.none),
+                                style: TextStyle(
+                                    color: ColorConstants.bodyText,
+                                    fontSize: 15),
+                              ))),
+                      ElevatedButton(
+                          onPressed: () async {
+                            var username = _usernameController.text;
+                            var password = _passwordController.text;
+
+                            var returnPayload = await Authentication()
+                                .logIn(username, password);
+                            // Map<String, dynamic> returnPayloadObj =
+                            //     jsonDecode(returnPayload.toString());
+                            var returnPayloadObj =
+                                jsonDecode(returnPayload.toString());
+                            print(returnPayloadObj);
+                            if (returnPayload != null) {
+                              Navigator.pushNamed(
+                                  context, RoutesConstants.homeRoute);
+                              var jwt = returnPayloadObj["token"];
+                              storage.write(key: "jwt", value: jwt);
+                              storage.write(
+                                  key: "username",
+                                  value: returnPayloadObj["User"]["username"]);
+                              storage.write(
+                                  key: "user_id",
+                                  value: returnPayloadObj["User"]["user_id"]
+                                      .toString());
+                              storage.write(
+                                  key: "amount",
+                                  value: returnPayloadObj["User"]["amount"]
+                                      .toString());
+                              storage.write(
+                                  key: "user",
+                                  value: returnPayloadObj["User"].toString());
+                            } else {
+                              _showErrorDialog(
+                                  "No account was found that matches this username and password combination.");
+                            }
+                            _usernameController.clear();
+                            _passwordController.clear();
+                          },
+                          child: Text(
+                            'Log in'.toUpperCase(),
+                            style: TextStyle(color: ColorConstants.bodyText),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: ColorConstants.button,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                          )),
+                    ],
+                  ),
+                ))));
   }
 }
