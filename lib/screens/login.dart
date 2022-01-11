@@ -77,7 +77,10 @@ class MyLoginState extends State<MyLogin> {
           actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,
-        body: SingleChildScrollView(
+        body: 
+          Scrollbar (
+            isAlwaysShown: false, 
+            child:SingleChildScrollView(
             child: Center(
                 key: _formKey,
                 child: Form(
@@ -201,6 +204,6 @@ class MyLoginState extends State<MyLogin> {
                           )),
                     ],
                   ),
-                ))));
+                )))));
   }
 }
