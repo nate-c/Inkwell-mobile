@@ -148,7 +148,9 @@ class MyRegistrationState extends State<MyRegistration> {
           actions: <Widget>[],
         ),
         backgroundColor: ColorConstants.background,
-        body: Center(
+        body: Scrollbar( 
+          isAlwaysShown: false,
+          child:Center(
             child: SingleChildScrollView(
                 child: Form(
           key: _formKey,
@@ -305,6 +307,6 @@ class MyRegistrationState extends State<MyRegistration> {
                   )),
             ],
           )),
-        ))));
+        )))));
   }
 }
